@@ -101,59 +101,6 @@ const Step3Form: React.FC<Step3FormProps> = ({
         {formData.noOfChildren.map((field, index) => (
           <div key={index} className="col-span-1 flex items-center space-x-2">
             <FormControl variant="outlined" className="w-52">
-              {/* <InputLabel htmlFor={`noOfChildren-${index}`}>
-                Number of Children and Age
-              </InputLabel>
-              <OutlinedInput
-                id={`noOfChildren-${index}`}
-                name="noOfChildren"
-                type="number"
-                value={field}
-                label="Number of Children and Age"
-                onChange={(e) =>
-                  handleInputChangeChildren(index, e.target.value)
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      disableTouchRipple
-                      size="small"
-                      onClick={() => handleRemoveField(index)}
-                      disabled={formData.noOfChildren.length === 1}
-                    >
-                      <CancelOutlinedIcon className="hover:text-error" />
-                    </IconButton>
-                  </InputAdornment>
-                }
-                sx={{
-                  color: "#404942",
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#404942",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#404942",
-                  },
-                  "& .MuiOutlinedInput-input": {
-                    color: "#404942",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#404942",
-                    },
-                    "& input": {
-                      color: "#404942",
-                    },
-                  },
-                  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
-                    {
-                      color: "#404942",
-                    },
-                  "& .MuiOutlinedInput-input:-webkit-autofill": {
-                    WebkitBoxShadow: "0 0 0 1000px #F6FBF4 inset",
-                    WebkitTextFillColor: "#404942",
-                  },
-                }}
-              /> */}
               <InputLabel htmlFor={`noOfChildren-${index}`}>
                 No of Children & Age
               </InputLabel>
@@ -179,6 +126,7 @@ const Step3Form: React.FC<Step3FormProps> = ({
                   },
                 }}
               >
+                <MenuItem value="0">None</MenuItem>
                 <MenuItem value="1">1</MenuItem>
                 <MenuItem value="2">2</MenuItem>
                 <MenuItem value="3">3</MenuItem>
