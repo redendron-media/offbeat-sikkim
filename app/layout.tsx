@@ -6,6 +6,7 @@ import Footer from "@/components/footer";
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from "./theme";
+import Script from "next/script";
 
 const roboto = Roboto({
   weight: ['100','300','400','700'],
@@ -27,6 +28,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <Script async  src="https://www.googletagmanager.com/gtag/js?id=G-6FEZLY447N"/>
+        <Script       dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-6FEZLY447N');
+            `,
+          }}
+        />
+      </head>
       <body className={`${roboto.className} bg-[#F6FBF4] pt-20 md:pt-32`}>
         <ThemeProvider theme={theme}>
         <CssBaseline />
