@@ -32,10 +32,10 @@ function about() {
           Our Vision
         </h1>
         <p className="bodym md:bodyl lg:pb-14 text-[#EDF2EB]">
-          Our mission is to help travelers find and explore the natural beauty
-          of the most Offbeat locations of Northeast India, promote the rural
-          tourism market and preserve their identity and heritage, and help the
-          economic development of Northeast India.
+          We aspire to build a community around travel enthusiasts who want to
+          explore the natural beauty of Northeast India in the most radical way, by
+          providing them the best travel experiences and guidance while helping
+          promote eco-tourism and most of all, Offbeat tourism.
         </p>
       </section>
 
@@ -79,8 +79,7 @@ function about() {
           <Carousel>
             <CarouselContent className="flex ml-0 relative ">
               {team.map((item) => (
-                <CarouselItem key={item.id}
-                className="basis-auto px-4 py-2">
+                <CarouselItem key={item.id} className="basis-auto px-4 py-2">
                   <div
                     key={item.id}
                     className="relative snap-center flex-shrink-0 w-fit h-[369px] bg-[#f5f5f5] rounded-[10px] text-center shadow-cardShadow flex flex-col px-6 pb-6 gap-3"
@@ -101,8 +100,8 @@ function about() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious/>
-            <CarouselNext/>
+            <CarouselPrevious />
+            <CarouselNext />
           </Carousel>
         </div>
 
