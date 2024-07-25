@@ -7,7 +7,7 @@ import { Stack } from "@mui/material";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import React from "react";
-export const revalidate = 30;
+export const revalidate = 60;
 
 async function getData(slug: string) {
   const query = `

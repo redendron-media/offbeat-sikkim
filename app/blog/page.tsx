@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export const revalidate = 30;
+export const revalidate = 60;
 
 async function getData() {
   const query = `*[_type == 'blog' ] | order(_createdAt desc) {
