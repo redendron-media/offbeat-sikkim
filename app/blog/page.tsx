@@ -106,9 +106,8 @@ async function blog() {
                   )}
                 >
                   {group.slice(1).map((post, index) => (
-                    <Link href={`/blog/${post.currentSlug}`}>
-                      <div
-                        key={index}
+                    <Link key={index} href={`/blog/${post.currentSlug}`}>
+                      <div  
                         className="flex-1 pb-4 rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-cardShadow"
                       >
                         <div className={cn("w-full  relative",`${group.length ===2 ?'h-[600px]':'h-[240px]' }`)}>
@@ -145,9 +144,9 @@ async function blog() {
           {/* Small screens */}
           <section className="flex flex-col gap-6 p-8 md:hidden">
             {data.map((post, index) => (
-              <Link href={`/blog/${post.currentSlug}`}>
+              <Link  key={index} href={`/blog/${post.currentSlug}`}>
                 <div
-                  key={index}
+                 
                   className="flex-1 pb-4 rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-cardShadow"
                 >
                   <div className="w-full h-[240px] relative">
