@@ -195,7 +195,7 @@ function PackagePage() {
           <section className="bg-[#E4EAE3] py-6 rounded-xl my-6  md:my-[76px] px-6 flex flex-col gap-4">
             <Stack direction={"row"} className="justify-between items-center">
               <h2 className="headlines text-[#171D19]">Your itinerary</h2>
-              <Button onClick={handleClickOpen}>
+              <Button variant={"outline"} onClick={handleClickOpen}>
                 Share <ShareIcon className="text-sm ml-1" />{" "}
               </Button>
               <Dialog open={isShareOpen} maxWidth="md" fullWidth>

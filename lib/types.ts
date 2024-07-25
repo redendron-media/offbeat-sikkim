@@ -113,3 +113,28 @@ export interface photoGallery {
     name:string,
     images:string,
   }
+
+  export interface blogCard {
+    title:string,
+    caption: string,
+    titleImage: any,
+    currentSlug: string,
+    _createdAt:string;
+  }
+
+  export interface BlogPage {
+    currentSlug:string;
+    title:string;
+    titleImage:any;
+    caption:string;
+    content:any;
+    image1?:any;
+    content2?:any;
+    content3?:any;
+  content4?:any;
+    content5?:any;
+    image2?:any;
+    image3?:any;
+    image4?:any;
+    _createdAt:string;
+  }
