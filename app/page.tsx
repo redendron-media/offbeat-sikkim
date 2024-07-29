@@ -35,7 +35,9 @@ export default function Home() {
         </h2>
         <Slider items={Treks} />
       </section>
+      <section id="create-your-itinerary" className="scroll-m-20 lg:scroll-m-10">
       <Custom_Form />
+      </section>
       <Testimonials />
       <FeaturedArticles />
       <section className="flex flex-col justify-center items-center w-full gap-6 py-[60px] md:py-[88px]">
