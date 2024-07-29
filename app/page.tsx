@@ -1,4 +1,3 @@
-import Cards from "@/components/Cards";
 import Slider from "@/components/Slider";
 import ContactDialog from "@/components/contact-dialog/page";
 import Custom_Form from "@/components/custom-itinerary/custom-itinerary-form";

@@ -31,7 +31,7 @@ const ShareButton = ({currentPageLink}:{currentPageLink:string}) => {
 
   return (
     <>
-      <Button variant={"outline"} onClick={handleClickOpen}>
+      <Button className="w-fit" variant={"outline"} onClick={handleClickOpen}>
         Share <ShareIcon className="text-sm ml-1" />{" "}
       </Button>
       <Dialog open={isShareOpen} maxWidth="md" fullWidth>

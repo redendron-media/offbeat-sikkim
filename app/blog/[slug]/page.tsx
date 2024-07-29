@@ -46,8 +46,8 @@ async function BlogArticle({ params }: { params: { slug: string } }) {
 
   return (
     <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto py-12 md:py-[76px] flex flex-col gap-6 md:gap-9">
-      <Stack gap={1} className="text-center md:px-28 lg:px-52 md:text-start">
-        <div className="flex justify-between items-center">
+      <Stack gap={1} className="md:px-28 lg:px-52 text-start">
+        <div className="flex flex-col md:flex-row gap-4 md:justify-between md:items-center">
         <h1 className="headlines md:displaym lg:displayl text-[#171D19]">
           {data.title}
         </h1>
