@@ -286,7 +286,7 @@ function PackagePage() {
           </section>
 
           <section className=" flex flex-col  md:flex-row  md:gap-4">
-            <div className="bg-[#E4EAE3] w-full rounded-xl p-6 flex flex-col lg:hidden gap-4">
+            <div className="bg-[#E4EAE3] w-full rounded-xl  flex flex-col lg:hidden gap-4">
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -321,10 +321,10 @@ function PackagePage() {
                       direction={"row"}
                       gap={2}
                       key={index}
-                      className="border border-b-2 border-b-[#C0C9C0] py-2"
+                      className="border border-b-2 border-b-[#C0C9C0] py-2 "
                     >
-                      <ClearIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
-                      <p className="text-[#171D19] bodyl">{item}</p>
+                      <ClearIcon className="text-[#002111] bg-primary-container rounded-full" />
+                      <p className="text-[#171D19] w-full text-balance bodyl">{item}</p>
                     </Stack>
                   ))}
                 </>

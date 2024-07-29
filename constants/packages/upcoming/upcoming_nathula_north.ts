@@ -160,7 +160,7 @@ export const UPCOMING_NORTH_NATHULA = {
         ],
         exclusions: [
           "GST (5%) is applicable extra",
-          "Any kind of food and beverages that is not included in the package like alcohol drinks, mineral water, meals/refreshments/lunches on the highway",
+          "Any kind of food and beverages that is not included in the package like alcohol drinks, mineral water, meals/ refreshments/ lunches on the highway",
           "Any personal expense like tip to the drivers, entry to the monuments, monasteries, camera/video camera charges, laundry, telephone bills, tips etc.",
           "Any cost arising due to natural calamities like landslides, roadblocks, route diversion etc. (to be borne by the customer on the spot)",
           "Anything not mentioned in the inclusion",
