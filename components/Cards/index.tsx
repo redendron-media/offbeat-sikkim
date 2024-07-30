@@ -47,12 +47,13 @@ const Cards = ({ card }: TourCardProps) => {
             )}
             {card.currentPrice && (
               <>
-                {card.originalPrice && (
-                  <p className="bodys line-through">{card.originalPrice}</p>
-                )}
-                <h4 className="labell ">Starts at {card.currentPrice}</h4>
+                <h4 className="labell text-pretty">Starts at {card.currentPrice}
+                   {card.originalPrice && (
+                  <span className="bodys line-through"> {card.originalPrice}</span>
+                )} 
+                   </h4>
               </>
-            )}
+            )}       
           </div>
           <Link href={`/packages/${link}`}>
             <IconButton className="bg-primary hover:bg-primary/80">

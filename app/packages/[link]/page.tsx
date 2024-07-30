@@ -143,9 +143,13 @@ function PackagePage() {
                   gap={1}
                   className="bg-primary-container rounded-xl px-3 py-2"
                 >
-                  <p className="labels md:labell text-black">Starts at</p>
+                  <p className="labels md:labell text-black text-balance">Starts at</p>
                   <p className="bodys md:bodyl text-black">
-                    {packageData.currentPrice} per head
+                    {packageData.currentPrice}
+                    {packageData.originalPrice && (
+                      <span className="bodys line-through">  {packageData.originalPrice} </span>
+                    )}
+                     per head
                   </p>
                 </Stack>
               )}
@@ -166,6 +170,7 @@ function PackagePage() {
               <Stack
                 direction={"column"}
                 gap={1}
+                justifyContent={"center"}
                 className="bg-primary-container rounded-xl px-3 py-2"
               >
                 <p className="labels md:labell text-black">Duration</p>
@@ -186,7 +191,7 @@ function PackagePage() {
               />
               {isUpcoming && (
                 <Link href={`/${packageData.pdf}.pdf`} download={`${packageData.pdf}`}>
-                  <Button className="w-fit">Download Itinerary</Button>
+                  <Button className="bg-secondary-30  w-fit">Download Itinerary</Button>
                 </Link>
               )}
             </Stack>
