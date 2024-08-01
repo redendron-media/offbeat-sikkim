@@ -56,7 +56,7 @@ const PrivacyPolicy = () => {
           customer information. We may, however, share customer information with
           reputable companies when a customer has expressed an interest in their
           service or product. Please note that this Privacy Policy does not
-          apply to these other companies' use of customer information.
+          apply to these other companies&apos; use of customer information.
         </li>
         <li className="text-black bodym md:bodyl">
           Whenever we hire other organizations to provide support services, we
@@ -171,6 +171,15 @@ const PrivacyPolicy = () => {
           </Link>{" "}
           and communicating electronically with us, you acknowledge and agree to
           our processing of personal data in this way. ​
+        </p>
+      </Stack>
+      <Stack gap={1}>
+        <h4 className="titlel">Refunds</h4>
+        <p className="text-black bodym md:bodyl">
+          Refunds will only be entertained following a cancellation. Once your
+          cancellation request is approved, refunds will be processed within 48
+          hours. <br/>For more detailed information regarding our refund and
+          cancellation policies, please refer to our <Link href={'/cancellation-policy'} className="underline">Cancellation Page</Link>.
         </p>
       </Stack>
       <Stack gap={1}>
