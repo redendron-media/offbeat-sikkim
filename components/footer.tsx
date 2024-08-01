@@ -68,6 +68,11 @@ const Footer = () => {
                   Cancellation Policy
                 </p>
               </Link>
+              <Link href="/privacy-policy">
+                <p className="bodyl hover:text-primary hover:underline hover:transition-colors hover:duration-500">
+                  Privacy Policy
+                </p>
+              </Link>
             </Stack>
           </Stack>
         </div>

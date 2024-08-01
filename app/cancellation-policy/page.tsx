@@ -22,6 +22,9 @@ const Cancellation = () => {
           the trip, 100% of the trip cost will be charged as cancellation fees.
         </li>
         <li className="text-black bodym md:bodyl">
+         The refund will be processed within 48 hours.
+        </li>
+        <li className="text-black bodym md:bodyl">
           In the case of unforeseen weather conditions or government
           restrictions, certain activities may be cancelled and in such cases,
           the operator will try their best to provide an alternate feasible
