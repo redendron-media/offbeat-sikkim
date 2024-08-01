@@ -77,7 +77,7 @@ export const UPCOMING_SANDAKPHU = {
       },
       {
         day: "Day 2",
-        title: " 2: Okhrey to Ghorkhey | 10km (7700ft)/ 3 hours",
+        title: "Okhrey to Ghorkhey | 10km (7700ft)/ 3 hours",
         activities: [
           "Begin the trek in the afternoon, soaking in the beauty of the natural surroundings.",
           "Traverse through forests, observing the local flora and fauna along the way.",

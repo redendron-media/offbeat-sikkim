@@ -27,7 +27,15 @@ const tripDetailFields = [
   defineField({
     name: 'image',
     type: 'image',
-    title: 'Cover Image',
+    title: 'Cover Image for page ',
+    options: {
+      hotspot: true,
+    },
+  }),
+  defineField({
+    name: 'cover',
+    type: 'image',
+    title: 'Cover Image for card',
     options: {
       hotspot: true,
     },
