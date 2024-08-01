@@ -15,6 +15,7 @@ import { TREK_SANDAKPHU } from "./packages/treks/treks_sandakphu";
 import { TREK_GOECHALA } from "./packages/treks/treks_goechala";
 import { TREK_DZUKOU } from "./packages/treks/treks_dzukou";
 import { UPCOMING_MEGHALAYA } from "./packages/upcoming/upcoming_meghalaya";
+import { UPCOMING_SIKKIMDARJ } from "./packages/upcoming/upcoming_sikkimdarj";
 export const navlinks = [
   {
     id: "1",
@@ -148,7 +149,8 @@ export const UpcomingTours: TripDetail[] = [
  UPCOMING_BHUTAN,
  UPCOMING_SANDAKPHU,
  UPCOMING_GOECHALA,
- UPCOMING_MEGHALAYA
+ UPCOMING_MEGHALAYA,
+ UPCOMING_SIKKIMDARJ,
 ];
 
 export const CuratedPackages: TripDetail[] = [
@@ -178,7 +180,8 @@ export const BhutanCuratedPackages: TripDetail[] = [
 
 
 export const NorthBengalUpcomingTours: TripDetail[] = [
- UPCOMING_SANDAKPHU
+ UPCOMING_SANDAKPHU,
+ UPCOMING_SIKKIMDARJ
 ];
 
 export const NorthBengalTreks: TripDetail[] = [
@@ -198,7 +201,8 @@ export const SikkimCuratedPackages: TripDetail[] = [
 
 export const SikkimUpcomingTours: TripDetail[] = [
   UPCOMING_NORTH_NATHULA,
-  UPCOMING_GOECHALA
+  UPCOMING_GOECHALA,
+  UPCOMING_SIKKIMDARJ
 ];
 
 export const NagalandCuratedPackages: TripDetail[] = [
