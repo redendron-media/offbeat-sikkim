@@ -33,24 +33,24 @@ export async function POST(req: NextRequest) {
     console.log("r===", response.data.code);
 
     if (response.data.code == "PAYMENT_SUCCESS") {
-      const query = `*[_type == "formData" && transactionId == $transactionId][0]`;
-      const params = { transactionId };
-      const formData = await client.fetch(query, params);
+      // const query = `*[_type == "formData" && transactionId == $transactionId][0]`;
+      // const params = { transactionId };
+      // const formData = await client.fetch(query, params);
       
-      if (!formData) {
-        throw new Error("FormData not found");
-      }
+      // if (!formData) {
+      //   throw new Error("FormData not found");
+      // }
 
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-      const emailResponse = await fetch(`${baseUrl}/api/send-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      await client.delete(formData._id);
+      // const emailResponse = await fetch(`${baseUrl}/api/send-email`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
+      // await client.delete(formData._id);
       // //@ts-ignore
       // const formDataJson = await kv.get(transactionId);
       //  //@ts-ignore

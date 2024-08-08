@@ -102,17 +102,18 @@ const BookingPage = () => {
   } else { tcs = 0}
   const finalCost = totalCost + gst + tcs;
   const advance = 5000 * noOfPeople;
+  const paymentPartial = finalCost - advance;
   let paylater = 0;
   if (paymentOption === "partial") {
     paylater = finalCost - advance;
   }
 
-  let gatewayCost =100 ;
-  // if(paymentOption === "full"){
-  //   gatewayCost = finalCost* 100;
-  // } else {
-  //   gatewayCost = advance * 100;
-  // }
+  let gatewayCost ;
+  if(paymentOption === "full"){
+    gatewayCost = finalCost* 100;
+  } else {
+    gatewayCost = advance * 100;
+  }
 
   const formatIndian = (number: number) => {
     return new Intl.NumberFormat("en-IN").format(number);
@@ -170,21 +171,21 @@ const BookingPage = () => {
     const redirect = await payment(formData.phone, gatewayCost);
     const transactionId = redirect.transactionid;
 
-    await fetch("/api/store-formdata", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ transactionId, formData: payload }),
-    });
-
-    // await fetch("/api/send-email", {
+    // await fetch("/api/store-formdata", {
     //   method: "POST",
     //   headers: {
     //     "Content-Type": "application/json",
     //   },
-    //   body: JSON.stringify({ ...payload, transactionId }),
+    //   body: JSON.stringify({ transactionId, formData: payload }),
     // });
+
+    await fetch("/api/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...payload, transactionId }),
+    });
 
     console.log("redirect >>", redirect.url);
     router.push(redirect.url);
@@ -754,7 +755,7 @@ const BookingPage = () => {
                       <p className="w-1/2 xl:w-2/3">
                         Pay due amount 2 days before trip starts
                       </p>
-                      <p>INR {formatIndian(paylater)}/-</p>
+                      <p>INR {formatIndian(paymentPartial)}/-</p>
                     </div>
                   </div>
                 </RadioGroup>
