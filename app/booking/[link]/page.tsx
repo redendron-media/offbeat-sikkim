@@ -11,7 +11,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { UpcomingForm } from "@/lib/types";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import AddIcon from "@mui/icons-material/Add";
@@ -138,6 +138,13 @@ const BookingPage = () => {
     setStep(step + 1);
     setActiveStep(activeStep + 1);
   };
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      noOfAdults: noOfPeople.toString(),
+    }));
+  }, [noOfPeople]);
 
   const makePayment = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
