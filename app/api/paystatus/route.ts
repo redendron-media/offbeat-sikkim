@@ -2,8 +2,6 @@ import { hashSHA256 } from "@/lib/utils";
 import axios from "axios";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { kv } from "@vercel/kv";
-
 
 export async function POST(req: NextRequest) {
   try {
@@ -34,29 +32,29 @@ export async function POST(req: NextRequest) {
     console.log("r===", response.data.code);
 
     if (response.data.code == "PAYMENT_SUCCESS") {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-      //@ts-ignore
-      const formDataJson = await kv.get(transactionId);
-       //@ts-ignore
-      const formData = JSON.parse(formDataJson);
+      // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      // //@ts-ignore
+      // const formDataJson = await kv.get(transactionId);
+      //  //@ts-ignore
+      // const formData = JSON.parse(formDataJson);
 
-      if (!formData) {
-        throw new Error("FormData not found");
-      }
+      // if (!formData) {
+      //   throw new Error("FormData not found");
+      // }
 
-      console.log("Retrieved formData: ", formData);
-      formData.transactionId = transactionId;
+      // console.log("Retrieved formData: ", formData);
+      // formData.transactionId = transactionId;
 
-      const emailResponse = await fetch(`${baseUrl}/api/send-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const emailResult = await emailResponse.json();
-      console.log("Send email response:", emailResult);
-      
+      // const emailResponse = await fetch(`${baseUrl}/api/send-email`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
+      // const emailResult = await emailResponse.json();
+      // console.log("Send email response:", emailResult);
+
         return NextResponse.redirect(`https://offbeatsikkim.com/success?transactionId=${transactionId}&amount=${amount}&providerReferenceId=${providerReferenceId}`, { status: 301 });
     } else {
       return NextResponse.redirect(`https://offbeatsikkim.com/failure?transactionId=${transactionId}&amount=${amount}&providerReferenceId=${providerReferenceId}`, { status: 301 });

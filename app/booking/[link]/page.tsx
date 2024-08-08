@@ -104,12 +104,12 @@ const BookingPage = () => {
   const advance = 5000 * noOfPeople;
   const paylater = finalCost - advance;
 
-  let gatewayCost =100;
-  // if(paymentOption === "full"){
-  //   gatewayCost = finalCost* 100;
-  // } else {
-  //   gatewayCost = advance * 100;
-  // }
+  let gatewayCost ;
+  if(paymentOption === "full"){
+    gatewayCost = finalCost* 100;
+  } else {
+    gatewayCost = advance * 100;
+  }
 
   const formatIndian = (number: number) => {
     return new Intl.NumberFormat("en-IN").format(number);
@@ -135,7 +135,6 @@ const BookingPage = () => {
       setErrors(validationErrors);
       return;
     }
-    setFormData((prevData) => ({ ...prevData, noOfAdults: noOfPeople.toString() }));
     setStep(step + 1);
     setActiveStep(activeStep + 1);
   };
@@ -161,16 +160,14 @@ const BookingPage = () => {
     const redirect = await payment(formData.phone, gatewayCost);
     const transactionId = redirect.transactionid;
 
-    const response=await fetch("/api/store-formdata", {
+    await fetch("/api/send-email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ transactionId, formData: payload }),
+      body: JSON.stringify({ ...payload, transactionId }),
     });
-    const result = await response.json();
-    console.log(`Store formData response: ${JSON.stringify(result)}`);
-    
+
     console.log("redirect >>", redirect.url);
     router.push(redirect.url);
   }
