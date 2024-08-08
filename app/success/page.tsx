@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams,redirect } from "next/navigation";
 
-import React from "react";
+import React, { Suspense } from "react";
 
 const Success = () => {
   const searchParams = useSearchParams();
@@ -45,4 +45,11 @@ const Success = () => {
   );
 };
 
-export default Success;
+const SuspenseWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Success />
+  </Suspense>
+);
+
+
+export default SuspenseWrapper;

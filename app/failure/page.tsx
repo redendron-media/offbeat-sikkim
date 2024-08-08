@@ -1,5 +1,5 @@
 "use client";
-import React from 'react'
+import React, {Suspense} from 'react'
 import Link from "next/link";
 import { useSearchParams,redirect } from "next/navigation";
 
@@ -42,4 +42,10 @@ const Failure = () => {
   )
 }
 
-export default Failure
+const SuspenseWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Failure />
+  </Suspense>
+);
+
+export default SuspenseWrapper;
