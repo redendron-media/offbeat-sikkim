@@ -102,7 +102,10 @@ const BookingPage = () => {
   } else { tcs = 0}
   const finalCost = totalCost + gst + tcs;
   const advance = 5000 * noOfPeople;
-  const paylater = finalCost - advance;
+  let paylater = 0;
+  if (paymentOption === "partial") {
+    paylater = finalCost - advance;
+  }
 
   let gatewayCost ;
   if(paymentOption === "full"){
