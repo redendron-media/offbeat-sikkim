@@ -1,18 +1,18 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { kv } from "@vercel/kv";
-interface FormDataStore {
-  [key: string]: any;
-}
+import {client} from "@/lib/sanity";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function POST(req:NextRequest) {
   try {
-    const { transactionId, formData } = await req.json();
+    const body = await req.json();
+    const { transactionId, formData } = body;
 
-    // Store formData in Vercel's KV store
-    await kv.set(transactionId, JSON.stringify(formData));
+    await client.create({
+      _type: "formData",
+      transactionId,
+      ...formData,
+    });
 
-    return NextResponse.json({ message: "Form data stored successfully" });
+    return NextResponse.json({ message: "Form data stored successfully" }, { status: 200 });
   } catch (error) {
     console.error("Error storing form data:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
