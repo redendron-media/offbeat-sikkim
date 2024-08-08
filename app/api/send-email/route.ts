@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     const transformedFormData = {
       ...formData,
-      age: formData.age.join(", "),
+      ...(formData.source.includes("upcoming") ? {} : { age: formData.age && Array.isArray(formData.age) ? formData.age.join(", ") : formData.age || '' }),
     };
 
     const adminMsg = {

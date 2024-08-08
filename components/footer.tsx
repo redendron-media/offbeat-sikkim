@@ -90,7 +90,7 @@ const Footer = () => {
             href={"https://www.redendron.media/"}
             target="_blank"
           >
-            <p className="bodym hover:text-primary-500 duration-700 transition-colors">
+            <p className="bodym hover:text-primary duration-700 transition-colors">
               Creative Credit: Redendron Media
             </p>
           </Link>

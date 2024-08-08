@@ -9,7 +9,8 @@ export const UPCOMING_MEGHALAYA =  {
     desc: "Embark on a rustic, offbeat adventure through the heart of Meghalaya with us. This journey promises a blend of breathtaking landscapes, thrilling treks, and serene waterfalls. Explore the double-decker root bridge from a unique perspective, swim in magnificent waterfalls, and hike through perilous terrains. This adventure is not for the faint-hearted but for those seeking the thrill of the unknown. Join us as we traverse the home of the clouds, visiting villages and forests that embody the essence of Meghalaya.",
     durationn: "5",
     durationd: "6",
-    costDouble: "INR 24,499/-",
+    originalPrice:"26,499",
+    currentPrice:"24,499",
     link: "upcoming-meghalaya-tour",
     photoGalleries: [
       {

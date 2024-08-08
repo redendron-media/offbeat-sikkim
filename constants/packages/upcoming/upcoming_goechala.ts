@@ -9,7 +9,8 @@ export const UPCOMING_GOECHALA =  {
     desc: "GoechaLa trek is nestled at a height of 16,207ft, with a closer look at the third-highest peak-Mt. Kanchenjunga. It is a dream and desire for hundreds of adventure lovers. Bounded by the mesmerizing flora and fauna, which are so vibrant and colourful to cheer up one's mood. The GoechaLa pass trek is a bundle of big summits, making it an absolute adventure to embark on. The trail link with the famous Kanchenjunga National Park, where one can witness the true nature, enough to revitalize your senses. To watch the mountains clearly, April and May are the ideal months. Since the sky is completely clear during this time and the sunset-sunrise views can be captured.",
     durationn: "9",
     durationd: "10",
-    costDouble: "INR 24,499/-",
+    currentPrice:"24,499",
+    originalPrice:"26,499",
     link: "upcoming-goechala-trek",
     photoGalleries: [
       {

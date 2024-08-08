@@ -26,16 +26,19 @@
     "dayjs": "^1.11.11",
     "embla-carousel-react": "^8.1.6",
     "framer-motion": "^11.2.10",
+    "fs": "^0.0.1-security",
     "lucide-react": "^0.395.0",
     "next": "14.2.3",
     "next-sanity": "^9.4.2",
     "next-seo": "^6.5.0",
     "next-share": "^0.27.0",
+    "path": "^0.12.7",
     "react": "^18",
     "react-dom": "^18",
     "sanity": "^3.51.0",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",

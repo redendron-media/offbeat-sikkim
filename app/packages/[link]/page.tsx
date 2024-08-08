@@ -143,9 +143,9 @@ function PackagePage() {
                   gap={1}
                   className="bg-primary-container rounded-xl px-3 py-2"
                 >
-                  <p className="labels md:labell text-black text-balance">Starts at</p>
+                  <p className="labels md:labell text-black text-balance">Starts at </p>
                   <p className="bodys md:bodyl text-black">
-                    {packageData.currentPrice}
+                  INR {packageData.currentPrice}/-
                     {packageData.originalPrice && (
                       <span className="bodys line-through">  {packageData.originalPrice} </span>
                     )}
@@ -182,19 +182,26 @@ function PackagePage() {
                 </p>
               </Stack>
             </Stack>
-            <Stack direction={{ xs: "column", sm: "row" }} gap={1}>
+            {!isUpcoming && (
               <ContactDialog
                 link={linkString}
                 packageTitle={packageData.title}
                 title="Enquire Now"
                 tourDates={packageData.tourDates ? packageData.tourDates : []}
               />
+            )}
+              
               {isUpcoming && (
+                 <Stack direction={{ xs: "column", sm: "row" }} gap={1}>
+                  <Link href={`/booking/${packageData.link}`}>
+                    <Button>Book Now</Button>
+                  </Link>
                 <Link href={`/${packageData.pdf}.pdf`} download={`${packageData.pdf}`}>
                   <Button className="bg-secondary-30  w-fit">Download Itinerary</Button>
                 </Link>
+                </Stack>
               )}
-            </Stack>
+           
           </section>
 
           <section className="bg-[#E4EAE3] py-6 rounded-xl my-6  md:my-[76px] px-6 flex flex-col gap-4">
@@ -426,7 +433,7 @@ function PackagePage() {
                       <Stack
                         direction={"row"}
                         gap={2}
-                        className="border border-b-2 items-start border-b-[#C0C9C0] py-2"
+                        className="border border-b-2 items-start  py-2"
                       >
                         <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
                         <p className="text-[#171D19]">{booking}</p>

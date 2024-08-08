@@ -43,13 +43,13 @@ const Cards = ({ card }: TourCardProps) => {
               </p>
             )}
             {card.costDouble && (
-              <p className="labell">Starts at {card.costDouble}</p>
+              <p className="labell">Starts at INR {card.costDouble}/-</p>
             )}
             {card.currentPrice && (
               <>
-                <h4 className="labell text-pretty">Starts at {card.currentPrice}
+                <h4 className="labell text-pretty">Starts at INR {card.currentPrice}/-
                    {card.originalPrice && (
-                  <span className="bodys line-through"> {card.originalPrice}</span>
+                  <span className="bodys line-through"> INR {card.originalPrice}/-</span>
                 )} 
                    </h4>
               </>

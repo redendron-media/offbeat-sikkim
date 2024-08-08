@@ -9,6 +9,8 @@ export const UPCOMING_SIKKIMDARJ = {
     desc: "Sikkim, A gem of North East, is renowned for its unrivalled excellence and stunning beauty. Sikkim is situated in the immaculate characteristic magnificence of the Himalayas, wedged between Nepal, Bhutan, and Tibet. This all-around improved custom visit is a blend of tranquilly and harmony through which you can investigate the astounding excellence of this Himalayan slope region. Darjeeling, also known as the Queen of the Hills, is equally enchanting. It's a beautiful Victorian town known for its Buddhist monasteries and temples, as well as its mountain scenery.",
     durationn: "6",
     durationd: "7",
+    originalPrice:"24,900",
+    currentPrice:"22,900",
     costDouble: "INR 22,900/-",
     link: "upcoming-sikkim-darjeeling",
     photoGalleries: [

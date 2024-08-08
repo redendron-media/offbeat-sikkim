@@ -9,8 +9,8 @@ export const UPCOMING_BHUTAN = {
     desc: "Bhutan, nestled in the Himalayas, is a treasure trove of natural beauty and cultural wonders. This enchanting country, with its fluttering prayer flags and joyous faces, offers a magical experience that transcends words. With OffbeatSikkim Travels, immerse yourself in Bhutan's awe-inspiring landscapes and profound sense of happiness.",
     durationn: "7",
     durationd: "8",
-    originalPrice: "INR 34,999/-",
-    currentPrice:"INR 32,999/-",
+    originalPrice: "34,999",
+    currentPrice:"32,999",
     link: "upcoming-bhutan-tour",
     photoGalleries: [
       {

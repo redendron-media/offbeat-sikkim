@@ -138,3 +138,13 @@ export interface photoGallery {
     image4?:any;
     _createdAt:string;
   }
+
+  export interface UpcomingForm {
+    name:string,
+    email:string,
+    phone:string,
+    tourDates:string,
+    packageName:string,
+    noOfAdults:string,
+    source:string,
+  }

@@ -9,8 +9,8 @@ export const UPCOMING_NORTH_NATHULA = {
         desc: "When you think of Sikkim, you can definitely relate snow with its name. Our North Sikkim Tour package will let you have an enlightening experience with nature, snow and the amazing landscapes that come with it.",
         durationn: "5",
         durationd: "6",
-        originalPrice: "",
-        currentPrice: "INR 22,499/-",
+        originalPrice: "24,499",
+        currentPrice: "22,499",
         link: "upcoming-north-sikkim-tour-nathula-pass",
         photoGalleries: [
           {
