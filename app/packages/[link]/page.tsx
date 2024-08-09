@@ -143,13 +143,18 @@ function PackagePage() {
                   gap={1}
                   className="bg-primary-container rounded-xl px-3 py-2"
                 >
-                  <p className="labels md:labell text-black text-balance">Starts at </p>
+                  <p className="labels md:labell text-black text-balance">
+                    Starts at{" "}
+                  </p>
                   <p className="bodys md:bodyl text-black">
-                  INR {packageData.currentPrice}/-
+                    INR {packageData.currentPrice}/-
                     {packageData.originalPrice && (
-                      <span className="bodys line-through">  {packageData.originalPrice} </span>
+                      <span className="bodys line-through">
+                        {" "}
+                        {packageData.originalPrice}{" "}
+                      </span>
                     )}
-                     per head
+                    per head
                   </p>
                 </Stack>
               )}
@@ -190,18 +195,22 @@ function PackagePage() {
                 tourDates={packageData.tourDates ? packageData.tourDates : []}
               />
             )}
-              
-              {isUpcoming && (
-                 <Stack direction={{ xs: "column", sm: "row" }} gap={1}>
-                  <Link href={`/booking/${packageData.link}`}>
-                    <Button>Book Now</Button>
-                  </Link>
-                <Link href={`/${packageData.pdf}.pdf`} download={`${packageData.pdf}`}>
-                  <Button className="bg-secondary-30  w-fit">Download Itinerary</Button>
+
+            {isUpcoming && (
+              <Stack direction={{ xs: "column", sm: "row" }} gap={1}>
+                <Link href={`/booking/${packageData.link}`}>
+                  <Button>Book Now</Button>
                 </Link>
-                </Stack>
-              )}
-           
+                <Link
+                  href={`/${packageData.pdf}.pdf`}
+                  download={`${packageData.pdf}`}
+                >
+                  <Button className="bg-secondary-30  w-fit">
+                    Download Itinerary
+                  </Button>
+                </Link>
+              </Stack>
+            )}
           </section>
 
           <section className="bg-[#E4EAE3] py-6 rounded-xl my-6  md:my-[76px] px-6 flex flex-col gap-4">
@@ -286,12 +295,22 @@ function PackagePage() {
               </Accordion>
             ))}
           </section>
-          <ContactDialog
-            link={linkString}
-            packageTitle={packageData.title}
-            title="Enquire Now"
-            tourDates={packageData.tourDates ? packageData.tourDates : []}
-          />
+          <section className="flex justify-end md:justify-start">
+            {!isUpcoming && (
+              <ContactDialog
+                link={linkString}
+                packageTitle={packageData.title}
+                title="Enquire Now"
+                tourDates={packageData.tourDates ? packageData.tourDates : []}
+              />
+            )}
+            {isUpcoming && (
+              <Link href={`/booking/${packageData.link}`}>
+                <Button>Book Now</Button>
+              </Link>
+            )}
+          </section>
+
           <section className="flex flex-col gap-5 py-12 md:py-[76px]">
             <h2 className="text-black headlines md:displaym">Photo Gallery</h2>
             <PhotoGallery items={packageData.photoGalleries ?? []} />
@@ -336,7 +355,9 @@ function PackagePage() {
                       className="border border-b-2 border-b-[#C0C9C0] py-2 "
                     >
                       <ClearIcon className="text-[#002111] bg-primary-container rounded-full" />
-                      <p className="text-[#171D19] w-full text-balance bodyl">{item}</p>
+                      <p className="text-[#171D19] w-full text-balance bodyl">
+                        {item}
+                      </p>
                     </Stack>
                   ))}
                 </>
@@ -494,14 +515,23 @@ function PackagePage() {
             )}
           </section>
           <div className="my-4">
-          <ContactDialog
-            link={linkString}
-            packageTitle={packageData.title}
-            title="Enquire Now"
-            tourDates={packageData.tourDates ? packageData.tourDates : []}
-          />
+          <section className="flex justify-end md:justify-start">
+            {!isUpcoming && (
+              <ContactDialog
+                link={linkString}
+                packageTitle={packageData.title}
+                title="Enquire Now"
+                tourDates={packageData.tourDates ? packageData.tourDates : []}
+              />
+            )}
+            {isUpcoming && (
+              <Link href={`/booking/${packageData.link}`}>
+                <Button>Book Now</Button>
+              </Link>
+            )}
+          </section>
           </div>
-         
+
           <section className="flex flex-col py-12 md:py-[76px] gap-4 md:gap-9">
             <h2 className="text-secondary-oncontainer headlines md:displays lg:displaym">
               Related Packages
