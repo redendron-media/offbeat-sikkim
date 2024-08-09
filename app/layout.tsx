@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 import Script from "next/script";
+import WhatsAppButton from "@/components/WhatappButton/page";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "700"],
@@ -49,7 +50,9 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
+          <WhatsAppButton/>
         </ThemeProvider>
+        
       </body>
     </html>
   );
