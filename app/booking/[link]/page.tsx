@@ -108,12 +108,12 @@ const BookingPage = () => {
     paylater = finalCost - advance;
   }
 
-  let gatewayCost=100 ;
-  // if(paymentOption === "full"){
-  //   gatewayCost = finalCost* 100;
-  // } else {
-  //   gatewayCost = advance * 100;
-  // }
+  let gatewayCost ;
+  if(paymentOption === "full"){
+    gatewayCost = finalCost* 100;
+  } else {
+    gatewayCost = advance * 100;
+  }
 
   const formatIndian = (number: number) => {
     return new Intl.NumberFormat("en-IN").format(number);
