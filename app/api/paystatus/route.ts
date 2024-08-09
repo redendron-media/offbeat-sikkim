@@ -1,4 +1,4 @@
-import { client } from "@/lib/sanity";
+import { kv } from "@vercel/kv";
 import { hashSHA256 } from "@/lib/utils";
 import axios from "axios";
 import { NextResponse } from "next/server";
@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
     const options = {
       method: "GET",
       url: `https://api.phonepe.com/apis/hermes/pg/v1/status/${merchantId}/${transactionId}`,
+      // url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${merchantId}/${transactionId}`,
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
@@ -33,53 +34,43 @@ export async function POST(req: NextRequest) {
     console.log("r===", response.data.code);
 
     if (response.data.code == "PAYMENT_SUCCESS") {
-      // const query = `*[_type == "formData" && transactionId == $transactionId][0]`;
-      // const params = { transactionId };
-      // const formData = await client.fetch(query, params);
-      
-      // if (!formData) {
-      //   throw new Error("FormData not found");
-      // }
+      //@ts-ignore
+      const formDataString = await kv.get<string | null>(transactionId);
+      if (!formDataString) {
+        throw new Error("FormData not found");
+      }
 
-      // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      let formData;
+      try {
+        formData = JSON.parse(formDataString);
+      } catch (e) {
+        formData = formDataString;
+      }
 
-      // const emailResponse = await fetch(`${baseUrl}/api/send-email`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-      // await client.delete(formData._id);
-      // //@ts-ignore
-      // const formDataJson = await kv.get(transactionId);
-      //  //@ts-ignore
-      // const formData = JSON.parse(formDataJson);
+      const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/send-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData, transactionId }),
+      });
 
-      // if (!formData) {
-      //   throw new Error("FormData not found");
-      // }
-
-      // console.log("Retrieved formData: ", formData);
-      // formData.transactionId = transactionId;
-
-      // const emailResponse = await fetch(`${baseUrl}/api/send-email`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-      // const emailResult = await emailResponse.json();
-      // console.log("Send email response:", emailResult);
+      if (!emailResponse.ok) {
+        throw new Error("Failed to send email");
+      }
+      //@ts-ignore
+      await kv.del(transactionId);
+   
 
       return NextResponse.redirect(
         `https://offbeatsikkim.com/success?transactionId=${transactionId}&amount=${amount}&providerReferenceId=${providerReferenceId}`,
+        // `http://localhost:3000/success?transactionId=${transactionId}&amount=${amount}&providerReferenceId=${providerReferenceId}`,
         { status: 301 }
       );
     } else {
       return NextResponse.redirect(
         `https://offbeatsikkim.com/failure?transactionId=${transactionId}&amount=${amount}&providerReferenceId=${providerReferenceId}`,
+        // `http://localhost:3000/failure?transactionId=${transactionId}&amount=${amount}&providerReferenceId=${providerReferenceId}`,
         { status: 301 }
       );
     }

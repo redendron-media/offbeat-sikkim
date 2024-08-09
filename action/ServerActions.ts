@@ -9,10 +9,11 @@ export async function payment( mobileNumber:string,amount:number) {
       merchantId: process.env.NEXT_PUBLIC_MERCHANT_ID,
       merchantTransactionId: transactionid,
       merchantUserId: `MUID-${uuidv4().replace(/-/g, "").slice(0, 28)}`,
-      amount: amount,
+      amount: amount,redirectMode: "POST",
       redirectUrl: `https://offbeatsikkim.com/api/paystatus`,
-      redirectMode: "POST",
       callbackUrl: "https://offbeatsikkim.com/api/paystatus",
+      // redirectUrl: `http://localhost:3000/api/paystatus`,
+      // callbackUrl: "http://localhost:3000/api/paystatus",
       mobileNumber: mobileNumber,
       paymentInstrument: {
         type: "PAY_PAGE",
@@ -28,7 +29,7 @@ export async function payment( mobileNumber:string,amount:number) {
     const checksum = dataSha256 + "###" + process.env.NEXT_PUBLIC_SALT_INDEX;
     const UAT_PAY_API_URL =
       "https://api.phonepe.com/apis/hermes/pg/v1/pay";
-
+      // "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay";
     const response = await axios.post(
       UAT_PAY_API_URL,
       {

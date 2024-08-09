@@ -1,16 +1,10 @@
-import {client} from "@/lib/sanity";
+import { kv } from "@vercel/kv";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req:NextRequest) {
   try {
-    const body = await req.json();
-    const { transactionId, formData } = body;
-
-    await client.create({
-      _type: "formData",
-      transactionId,
-      ...formData,
-    });
+    const { transactionId, formData } = await req.json();
+    await kv.set(transactionId, JSON.stringify(formData));
 
     return NextResponse.json({ message: "Form data stored successfully" }, { status: 200 });
   } catch (error) {

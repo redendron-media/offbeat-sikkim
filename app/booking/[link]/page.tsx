@@ -108,12 +108,12 @@ const BookingPage = () => {
     paylater = finalCost - advance;
   }
 
-  let gatewayCost ;
-  if(paymentOption === "full"){
-    gatewayCost = finalCost* 100;
-  } else {
-    gatewayCost = advance * 100;
-  }
+  let gatewayCost=100 ;
+  // if(paymentOption === "full"){
+  //   gatewayCost = finalCost* 100;
+  // } else {
+  //   gatewayCost = advance * 100;
+  // }
 
   const formatIndian = (number: number) => {
     return new Intl.NumberFormat("en-IN").format(number);
@@ -171,21 +171,22 @@ const BookingPage = () => {
     const redirect = await payment(formData.phone, gatewayCost);
     const transactionId = redirect.transactionid;
 
-    // await fetch("/api/store-formdata", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ transactionId, formData: payload }),
-    // });
-
-    await fetch("/api/send-email", {
+    const response = await fetch("/api/store-formdata", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...payload, transactionId }),
+      body: JSON.stringify({ transactionId, formData: payload }),
     });
+
+
+    // await fetch("/api/send-email", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ ...payload, transactionId }),
+    // });
 
     console.log("redirect >>", redirect.url);
     router.push(redirect.url);
