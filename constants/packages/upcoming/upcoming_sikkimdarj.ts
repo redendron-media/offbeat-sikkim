@@ -11,7 +11,7 @@ export const UPCOMING_SIKKIMDARJ = {
     durationd: "7",
     originalPrice:"24,900",
     currentPrice:"22,900",
-    costDouble: "INR 22,900/-",
+    costDouble: "",
     link: "upcoming-sikkim-darjeeling",
     photoGalleries: [
       {
