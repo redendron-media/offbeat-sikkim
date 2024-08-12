@@ -24,6 +24,7 @@ import { motion } from "framer-motion";
 import { packagesData } from "@/constants";
 import { useParams, useRouter } from "next/navigation";
 import { payment } from "@/action/ServerActions";
+import { cn } from "@/lib/utils";
 
 interface CustomConnectorWrapperProps {
   activeStep: number;
@@ -32,7 +33,7 @@ interface CustomConnectorWrapperProps {
 const CustomConnectorWrapper = ({
   activeStep,
 }: CustomConnectorWrapperProps) => {
-  const progress = (activeStep + 1) * 50;
+  const progress = (activeStep + 1) * 25;
   const remaining = 100 - progress;
   return (
     <div className="flex w-full h-full p-4 flex-row gap-1.5">
@@ -60,6 +61,7 @@ const BookingPage = () => {
     (packagedata) => packagedata.link === decodedLink
   );
 
+  
   const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -75,14 +77,14 @@ const BookingPage = () => {
     email: "",
     phone: "",
     noOfAdults: noOfPeople.toString(),
-    tourDates:packageData?.tourDates?.[0] ?? "",
+    tourDates: packageData?.tourDates?.[0] ?? "",
     source: "upcoming",
   });
   const [paymentOption, setPaymentOption] = useState("full");
-  
-  const [loading,setLoading] = useState(false);
+
+  const [loading, setLoading] = useState(false);
   const cost = Number(packageData?.currentPrice?.replace(/,/g, ""));
- 
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -97,9 +99,11 @@ const BookingPage = () => {
   const totalCost = cost * noOfPeople;
   const gst = Math.round(totalCost * 0.05);
   let tcs;
-  if(packageData?.title.includes("Bhutan")) {
-     tcs = Math.round(totalCost * 0.05);;
-  } else { tcs = 0}
+  if (packageData?.title.includes("Bhutan")) {
+    tcs = Math.round(totalCost * 0.05);
+  } else {
+    tcs = 0;
+  }
   const finalCost = totalCost + gst + tcs;
   const advance = 5000 * noOfPeople;
   const paymentPartial = finalCost - advance;
@@ -108,9 +112,9 @@ const BookingPage = () => {
     paylater = finalCost - advance;
   }
 
-  let gatewayCost ;
-  if(paymentOption === "full"){
-    gatewayCost = finalCost* 100;
+  let gatewayCost;
+  if (paymentOption === "full") {
+    gatewayCost = finalCost * 100;
   } else {
     gatewayCost = advance * 100;
   }
@@ -148,7 +152,7 @@ const BookingPage = () => {
       ...prevData,
       noOfAdults: noOfPeople.toString(),
     }));
-  }, [noOfPeople]);
+  }, [noOfPeople, formData.noOfAdults]);
 
   const makePayment = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -163,7 +167,7 @@ const BookingPage = () => {
       noOfAdults: parseInt(formData.noOfAdults, 10) || 0,
       tourDates: formData.tourDates,
       modeOfPayment: paymentOption,
-      amountPaid: formatIndian(gatewayCost/100),
+      amountPaid: formatIndian(gatewayCost / 100),
       amountRemaining: formatIndian(paylater),
       source: formData.source,
     };
@@ -178,28 +182,46 @@ const BookingPage = () => {
       },
       body: JSON.stringify({ transactionId, formData: payload }),
     });
-
-
-    // await fetch("/api/send-email", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ ...payload, transactionId }),
-    // });
-
     console.log("redirect >>", redirect.url);
     router.push(redirect.url);
+  };
+
+  const goForward = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+   
+    if (activeStep === 1) {
+      e.preventDefault();
+      const validationErrors = validateForm();
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return; // Stop here if there are validation errors
+      }
+    }
+    if (activeStep < 3) {
+      setActiveStep(activeStep + 1);
+      setStep(step + 1);
+    } else if (activeStep === 3) {
+      makePayment(e);
+    }
   }
+
+  const goBack = () => {
+    setActiveStep(activeStep-1);
+    setStep(step-1)
+  }
+
+
   return (
-    <main className="flex bg-[#F6FBF4] flex-col py-6 px-4 md:px-6 max-w-screen-2xl gap-4 mx-auto">
+    <main className="flex h-screen bg-[#F6FBF4] flex-col py-6 px-4 md:px-6 max-w-screen-2xl gap-4 mx-auto">
+      <section className="flex flex-row gap-4 md:gap-8 w-full">
+        <CustomConnectorWrapper activeStep={activeStep} />
+      </section>
       {step === 0 && (
         <>
-          <section className="bg-[#E4EAE3] rounded-xl px-6 py-4 md:p-6 flex-col gap-4 justify-between items-center">
-            <h2 className="headlines md:displaym lg:displayl text-black">
+          <section className="bg-[#E4EAE3] rounded-xl flex-col gap-4 justify-between items-center">
+            <h2 className="headlines px-6 pt-4 md:pt-6 md:displaym lg:displayl text-black">
               {packageData?.title}
             </h2>
-            <p className="bodyl text-black">
+            <p className="bodyl bg-[#286A48] rounded-b-xl text-secondary-90 px-6 py-4 md:pb-6">
               {packageData?.durationn}N {packageData?.durationd}D
             </p>
           </section>
@@ -236,10 +258,8 @@ const BookingPage = () => {
               </FormControl>
             </div>
             <div className=" w-full md:w-1/2  md:h-[65svh] flex flex-col justify-between gap-4">
-              <div className="h-fit bg-[#E4EAE3] py-6 rounded-xl">
-                <h2 className="headlines px-6 text-[#171D19] border border-b-2 border-b-[#C0C9C0] md:py-4">
-                  Cost
-                </h2>
+              <div className="h-fit py-6 rounded-xl">
+                <h2 className="headlines text-[#171D19]  md:py-4">Cost</h2>
                 <div className=" flex flex-row items-stretch gap-1 mt-4">
                   <div className="w-full text-center text-balance bg-primary-90 px-1 py-4 bodys lg:titlem">
                     <p>Room Sharing</p>
@@ -266,28 +286,9 @@ const BookingPage = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="bg-[#E4EAE3] w-full rounded-xl p-4 md:p-6 text-start flex flex-col gap-1">
-                <h2 className="titlem md:headlines font-normal text-[#171D19]">
-                  Starting Price
-                </h2>
-                <div className="flex flex-row justify-between items-center">
-                  <h2 className="text-secondary-oncontainer text-balance titlel md:headlinem">
-                    INR {packageData?.currentPrice}/-{" "}
-                    <span className="titlem font-normal">per head</span>
-                  </h2>
-                  <Button onClick={() => setStep(step + 1)}>Book now</Button>
-                </div>
-              </div>
             </div>
           </section>
         </>
-      )}
-
-      {step > 0 && (
-        <section className="flex flex-row gap-4 md:gap-8 w-full">
-          <CustomConnectorWrapper activeStep={activeStep} />
-        </section>
       )}
 
       {step === 1 && (
@@ -460,53 +461,20 @@ const BookingPage = () => {
                 </FormControl>
               </div>
 
-              <div className="hidden md:flex">
-                <Button
-                  className="w-fit "
-                  onClick={() => {
-                    setStep(step - 1);
-                  }}
-                >
-                  Go Back
-                </Button>
-              </div>
             </div>
           </div>
 
           <div className="w-full md:w-1/2 md:h-[65svh] flex flex-col justify-between gap-4">
-            <div className="h-fit bg-[#E4EAE3] py-6 rounded-xl">
-              <h2 className="headlines md:text-start px-6 text-[#171D19] border border-b-2 border-b-[#C0C9C0] md:py-4">
-                Trip Detail
-              </h2>
-              <div className=" flex flex-col gap-2 px-4">
-                <div className="w-full text-balance  px-1  pt-4 headlines md:headlinem">
+            <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
+              <div className=" flex flex-col gap-2 ">
+                <div className="w-full text-balance  px-4  pt-4 headlines md:headlinem">
                   <p>{packageData?.title}</p>
                 </div>
-
-                <p className="bodys lg:titlem">{formData.tourDates}</p>
-                <p className="bodys lg:titlem">
-                  {packageData?.durationn}N{packageData?.durationd}D
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-[#E4EAE3] w-full rounded-xl p-4 md:p-6 text-start flex flex-col gap-1">
-              <h2 className="titlem md:headlines font-normal text-[#171D19]">
-                Starting Price
-              </h2>
-              <div className="flex flex-col md:flex-row gap-4 justify-between md:items-center">
-                <h2 className="text-secondary-oncontainer text-balance titlel md:headlinem">
-                  INR {packageData?.currentPrice}/-{" "}
-                  <span className="titlem font-normal">per head</span>
-                </h2>
-                <div className="flex flex-row justify-between">
-                  <Button
-                    className="flex md:hidden"
-                    onClick={() => setStep(step - 1)}
-                  >
-                    Go Back
-                  </Button>
-                  <Button onClick={handleValidateAndNext}>Continue</Button>
+                <div className="pb-6 px-4 bg-[#286A48] rounded-b-xl pt-2 text-secondary-90">
+                  <p className="bodys lg:titlem">{formData.tourDates}</p>
+                  <p className="bodys lg:titlem">
+                    {packageData?.durationn}N{packageData?.durationd}D
+                  </p>
                 </div>
               </div>
             </div>
@@ -547,27 +515,21 @@ const BookingPage = () => {
                   </IconButton>
                 </div>
               </div>
-              <Button
-                className="w-fit mx-6 hidden md:flex"
-                onClick={() => setStep(step - 1)}
-              >
-                Go Back
-              </Button>
             </div>
           </div>
 
           <div className="w-full md:w-1/2 flex flex-col justify-between gap-4">
-            <div className="h-fit bg-[#E4EAE3] py-6 rounded-xl">
-              <h2 className="headlines text-start px-6 text-[#171D19] border border-b-2 border-b-[#C0C9C0] md:py-4">
-                Trip Detail
-              </h2>
-              <div className=" flex flex-col gap-2 px-6">
-                <div className="w-full text-balance  px-1 pt-4 headlines md:headlinem">
+            <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
+              <div className=" flex flex-col gap-2 ">
+                <div className="w-full text-balance px-6 pt-4 headlines md:headlinem">
                   <p>{packageData?.title}</p>
                 </div>
-
-                <p className="bodys lg:titlem">{formData?.tourDates}</p>
-                <p className="bodys lg:titlem">{packageData?.durationn}N{packageData?.durationd}D</p>
+                <div className="px-6 bg-[#286A48] pb-4 rounded-b-xl pt-2 text-secondary-90">
+                  <p className="bodys  lg:titlem">{formData.tourDates}</p>
+                  <p className="bodys lg:titlem">
+                    {packageData?.durationn}N{packageData?.durationd}D
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -586,15 +548,12 @@ const BookingPage = () => {
                   <p>GST @ 5%</p>
                   <p>INR {formatIndian(gst)}/-</p>
                 </div>
-                { 
-                  tcs !== 0 && (
-                    <div className="w-full flex flex-row justify-between items-center text-balance">
+                {tcs !== 0 && (
+                  <div className="w-full flex flex-row justify-between items-center text-balance">
                     <p>TCS @ 5%</p>
                     <p>INR {formatIndian(tcs)}/-</p>
                   </div>
-                  )
-                }
-              
+                )}
               </div>
               <div className="w-full px-6 flex flex-row justify-between items-center border border-t-2 border-t-[#C0C9C0] pt-4 text-balance">
                 <h2 className="headlines text-center md:text-start text-[#171D19]">
@@ -606,23 +565,6 @@ const BookingPage = () => {
               </div>
             </div>
 
-            <div className="w-full rounded-xl p-4 md:p-6 text-start flex flex-row md:flex-col justify-between md:items-end">
-              <Button
-                className="w-fit flex md:hidden"
-                onClick={() => {setStep(step - 1);setActiveStep(activeStep-1)}}
-              >
-                Go Back
-              </Button>
-              <Button
-                className="w-fit"
-                onClick={() => {
-                  setStep(step + 1);
-                  setActiveStep(activeStep + 1);
-                }}
-              >
-                Continue
-              </Button>
-            </div>
           </div>
         </section>
       )}
@@ -676,15 +618,12 @@ const BookingPage = () => {
                     <p>GST @ 5%</p>
                     <p>INR {formatIndian(gst)}/-</p>
                   </div>
-                  {
-                    tcs !== 0 && (
-                      <div className="w-full flex flex-row justify-between items-center text-balance">
+                  {tcs !== 0 && (
+                    <div className="w-full flex flex-row justify-between items-center text-balance">
                       <p>TCS @ 5%</p>
                       <p>INR {formatIndian(tcs)}/-</p>
                     </div>
-                    )
-                  }
-                
+                  )}
                 </div>
                 <div className="w-full px-3 md:px-6 flex flex-row justify-between items-center border border-t-2 border-t-[#C0C9C0] pt-2 text-balance">
                   <h2 className="titlem lg:titlel text-center md:text-start text-[#171D19]">
@@ -696,30 +635,20 @@ const BookingPage = () => {
                 </div>
               </div>
             </div>
-            <div className="px-6">
-              <Button
-                className="w-fit hidden md:flex"
-                onClick={() => {
-                  setStep(step - 1);
-                }}
-              >
-                Go Back
-              </Button>
-            </div>
           </div>
 
           <div className="w-full md:w-1/2 flex flex-col justify-between gap-4">
-            <div className="h-fit bg-[#E4EAE3] py-6 rounded-xl">
-              <h2 className="headlines  px-6 text-[#171D19] border border-b-2 border-b-[#C0C9C0] md:py-4">
-                Trip Detail
-              </h2>
-              <div className=" flex flex-col gap-2 px-6">
-                <div className="w-full text-balance  px-1  pt-4 headlines md:headlinem">
+            <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
+              <div className=" flex flex-col gap-2 ">
+                <div className="w-full text-balance px-6   pt-4 headlines md:headlinem">
                   <p>{packageData?.title}</p>
                 </div>
-
-                <p className="bodys lg:titlem">{formData.tourDates}</p>
-                <p className="bodys lg:titlem">{packageData?.durationn}N{packageData?.durationd}D</p>
+                <div className="px-6 bg-[#286A48] pb-4 rounded-b-xl pt-2 text-secondary-90">
+                  <p className="bodys  lg:titlem">{formData.tourDates}</p>
+                  <p className="bodys lg:titlem">
+                    {packageData?.durationn}N{packageData?.durationd}D
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -763,24 +692,46 @@ const BookingPage = () => {
               </FormControl>
             </div>
 
-            <div className=" w-full rounded-xl p-4 md:p-6 text-start flex md:flex-col justify-between md:items-end">
-              <Button
-                className="w-fit md:hidden"
-                onClick={() => {
-                  setActiveStep(activeStep - 1);
-                  setStep(step - 1);
-                }}
-              >
-                Go Back
-              </Button>
-              <Button disabled={loading} className="w-fit" onClick={makePayment}>
-              {" "}
-              {loading ? <CircularProgress className="text-white" size={24} /> : "Pay now"}
-              </Button>
-            </div>
           </div>
         </section>
       )}
+      <section className={cn(`bg-[#E4EAE3] shadow-md fixed flex left-0 bottom-0 w-full rounded-xl p-4 gap-2 md:p-6 text-start`,`${activeStep !== 0 ? 'flex-col':'flex-row justify-between'}`)}>
+        {
+          activeStep< 2 && (
+            <div className="flex flex-col gap-1">
+            <h2 className="titles md:titlem font-normal text-[#171D19]">
+              Starting Price
+            </h2>
+            <h2 className="text-secondary-oncontainer text-balance titlel md:headlines">
+              INR {packageData?.currentPrice}/-{" "}
+              <span className="titlem font-normal">per head</span>
+            </h2>
+          </div>
+          )
+        }
+      
+
+        <div className="flex flex-row justify-between items-center">
+          {
+            activeStep !== 0 && (
+              <Button variant={"outline"} onClick={goBack}>
+              Go Back
+            </Button>
+            )
+          }
+          <Button onClick={goForward}>
+            {activeStep === 3 ? (
+              loading ? (
+                <CircularProgress className="text-white" size={24} />
+              ) : (
+                "Pay now"
+              )
+            ) : (
+              "Book Now"
+            )}
+          </Button>
+        </div>
+      </section>
     </main>
   );
 };
