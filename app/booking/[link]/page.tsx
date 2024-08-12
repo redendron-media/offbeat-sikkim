@@ -211,7 +211,7 @@ const BookingPage = () => {
 
 
   return (
-    <main className="flex h-screen bg-[#F6FBF4] flex-col py-6 px-4 md:px-6 max-w-screen-2xl gap-4 mx-auto">
+    <main className="flex min-h-screen bg-[#F6FBF4] flex-col py-6 px-4 md:px-6 max-w-screen-2xl gap-4 mx-auto">
       <section className="flex flex-row gap-4 md:gap-8 w-full">
         <CustomConnectorWrapper activeStep={activeStep} />
       </section>
