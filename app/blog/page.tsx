@@ -142,7 +142,7 @@ async function blog() {
           </section>
 
           {/* Small screens */}
-          <section className="flex flex-col gap-6 p-8 md:hidden">
+          <section className="flex flex-col gap-6 py-8 md:hidden">
             {data.map((post, index) => (
               <Link  key={index} href={`/blog/${post.currentSlug}`}>
                 <div
