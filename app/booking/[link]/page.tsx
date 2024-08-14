@@ -648,7 +648,7 @@ const BookingPage = () => {
 
               {noOfPeople > 1 && (
                 <div className="flex px-6 flex-col gap-4">
-                  <p className="bodys lg:titlem">Co-Traveller's Name</p>
+                  <p className="bodys lg:titlem">Co-Traveller&apos;s Name</p>
                   {formData.coTraveler?.map((coTraveller, index) => {
                     return (
                       <div key={index} className="space-y-4">
