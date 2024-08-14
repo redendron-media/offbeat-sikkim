@@ -205,7 +205,7 @@ function PackagePage() {
                   href={`/${packageData.pdf}.pdf`}
                   download={`${packageData.pdf}`}
                 >
-                  <Button className="bg-secondary-30  w-fit">
+                  <Button className="bg-secondary-35  w-fit">
                     Download Itinerary
                   </Button>
                 </Link>
@@ -286,7 +286,7 @@ function PackagePage() {
                   </p>
                 </AccordionSummary>
                 <AccordionDetails className="bodym text-[#171D19]">
-                  <ul className="space-y-4 list-decimal pl-4">
+                  <ul className="space-y-4 list-disc pl-4">
                     {day.activities.map((activity, activityIndex) => (
                       <li key={activityIndex}>{activity}</li>
                     ))}

@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
+  Chip,
   CircularProgress,
   FormControl,
   FormControlLabel,
@@ -12,10 +13,11 @@ import {
   RadioGroup,
 } from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { UpcomingForm } from "@/lib/types";
+import { FormErrors, UpcomingForm } from "@/lib/types";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import PhoneIcon from "@mui/icons-material/Phone";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import PersonIcon from "@mui/icons-material/Person";
@@ -61,16 +63,23 @@ const BookingPage = () => {
     (packagedata) => packagedata.link === decodedLink
   );
 
-  
-  const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
-  };
+  const datesByMonth = packageData?.tourDates?.reduce((acc, date) => {
+    const month = date.split(' ')[1];
+    if (!acc[month]) {
+      acc[month] = [];
+    }
+    acc[month].push(date);
+    return acc;
+  }, {} as { [key: string]: string[] }) || {};
+
+  const initialMonth = Object.keys(datesByMonth)[0] || null;
+  const initialDate = initialMonth ? datesByMonth[initialMonth][0] : null;
+
   const [activeStep, setActiveStep] = useState(0);
   const [step, setStep] = useState(0);
   const [noOfPeople, setNoOfPeople] = useState(1);
   const [errors, setErrors] = useState<Partial<UpcomingForm>>({});
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(initialMonth);
   const [formData, setFormData] = useState<UpcomingForm>({
     packageName: packageData?.title || "",
     name: "",
@@ -79,21 +88,81 @@ const BookingPage = () => {
     noOfAdults: noOfPeople.toString(),
     tourDates: packageData?.tourDates?.[0] ?? "",
     source: "upcoming",
+    coTraveler: [],
   });
   const [paymentOption, setPaymentOption] = useState("full");
 
   const [loading, setLoading] = useState(false);
   const cost = Number(packageData?.currentPrice?.replace(/,/g, ""));
 
+ 
+  const handleMonthSelect = (month: string) => {
+    setSelectedMonth(month);
+    setFormData((prevData) => ({
+      ...prevData,
+      tourDates: datesByMonth[month][0],
+    }));
+  };
+
+  const handleDateSelect = (date: string) => {
+    setFormData({ ...formData, tourDates: date }); 
+  };
+
+  const handlePeopleInputChange = (
+    field: keyof UpcomingForm,
+    value: string,
+    index?: number
+  ) => {
+    if (field === "coTraveler" && typeof index === "number") {
+      const updatedCoTravellers = [...(formData.coTraveler || [])];
+      updatedCoTravellers[index] = value;
+      setFormData({
+        ...formData,
+        coTraveler: updatedCoTravellers,
+      });
+    } else {
+      setFormData({ ...formData, [field]: value });
+    }
+    setErrors({ ...errors, [field]: "" });
+  };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
 
-  const handleClear = (field: keyof UpcomingForm) => {
-    setFormData({ ...formData, [field]: "" });
+  const handleClear = (field: keyof UpcomingForm, index?: number) => {
+    if (field === "coTraveler" && typeof index === "number") {
+      const updatedCoTravellers = [...(formData.coTraveler || [])];
+      updatedCoTravellers[index] = "";
+      setFormData({
+        ...formData,
+        coTraveler: updatedCoTravellers,
+      });
+    } else {
+      setFormData({ ...formData, [field]: "" });
+    }
     setErrors({ ...errors, [field]: "" });
+  };
+
+  const handleAddField = () => {
+    setNoOfPeople(noOfPeople + 1);
+    setFormData({
+      ...formData,
+      noOfAdults: (noOfPeople + 1).toString(),
+      coTraveler: [...(formData.coTraveler || []), ""],
+    });
+  };
+
+  const handleRemoveField = () => {
+    if (noOfPeople > 1) {
+      setNoOfPeople(noOfPeople - 1);
+      setFormData({
+        ...formData,
+        noOfAdults: (noOfPeople - 1).toString(),
+        coTraveler: (formData.coTraveler || []).slice(0, -1),
+      });
+    }
   };
 
   const totalCost = cost * noOfPeople;
@@ -124,7 +193,7 @@ const BookingPage = () => {
   };
 
   const validateForm = () => {
-    const newErrors: Partial<UpcomingForm> = {};
+    const newErrors: FormErrors = {};
     if (!formData.name) newErrors.name = "Name is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
@@ -132,19 +201,7 @@ const BookingPage = () => {
     if (!formData.phone) newErrors.phone = "Phone is required";
     if (!/^\d{10}$/.test(formData.phone))
       newErrors.phone = "Phone number must be 10 digits";
-
     return newErrors;
-  };
-
-  const handleValidateAndNext = (e: React.FormEvent) => {
-    e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-    setStep(step + 1);
-    setActiveStep(activeStep + 1);
   };
 
   useEffect(() => {
@@ -152,7 +209,14 @@ const BookingPage = () => {
       ...prevData,
       noOfAdults: noOfPeople.toString(),
     }));
-  }, [noOfPeople, formData.noOfAdults]);
+    if (initialDate) {
+      setFormData((prevData) => ({
+        ...prevData,
+        tourDates: initialDate,
+      }));
+    }
+
+  }, [noOfPeople, formData.noOfAdults,initialDate, setFormData]);
 
   const makePayment = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -170,6 +234,7 @@ const BookingPage = () => {
       amountPaid: formatIndian(gatewayCost / 100),
       amountRemaining: formatIndian(paylater),
       source: formData.source,
+      coTraveler: formData.coTraveler?.filter(name => name).join(", ")
     };
 
     const redirect = await payment(formData.phone, gatewayCost);
@@ -186,29 +251,49 @@ const BookingPage = () => {
     router.push(redirect.url);
   };
 
+  const validateCoTravellers = (): (string | undefined)[] => {
+    return (formData.coTraveler || []).map((coTraveller, index) => {
+      if (!coTraveller) {
+        return `Co-Traveller ${index + 1} name is required`;
+      }
+      return undefined;
+    });
+  };
   const goForward = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-   
     if (activeStep === 1) {
       e.preventDefault();
       const validationErrors = validateForm();
       if (Object.keys(validationErrors).length > 0) {
         setErrors(validationErrors);
-        return; // Stop here if there are validation errors
+        return;
       }
     }
+
+    if (activeStep === 2) {
+      const coTravellerErrors = validateCoTravellers();
+      const hasErrors = coTravellerErrors.some((error) => error !== undefined);
+
+      if (hasErrors) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          coTraveler: coTravellerErrors as string[], // Type is now (string | undefined)[]
+        }));
+        return;
+      }
+    }
+
     if (activeStep < 3) {
       setActiveStep(activeStep + 1);
       setStep(step + 1);
     } else if (activeStep === 3) {
       makePayment(e);
     }
-  }
+  };
 
   const goBack = () => {
-    setActiveStep(activeStep-1);
-    setStep(step-1)
-  }
-
+    setActiveStep(activeStep - 1);
+    setStep(step - 1);
+  };
 
   return (
     <main className="flex min-h-screen bg-[#F6FBF4] flex-col py-6 px-4 md:px-6 max-w-screen-2xl gap-4 mx-auto">
@@ -226,35 +311,85 @@ const BookingPage = () => {
             </p>
           </section>
           <section className="flex flex-col md:flex-row gap-4 md:gap-8">
-            <div className="bg-[#E4EAE3] w-full md:w-1/2 rounded-xl py-6 flex flex-col gap-4">
-              <h2 className="headlines text-[#171D19] px-6 border border-b-2 border-b-[#C0C9C0] md:py-4">
+            <div className=" w-full md:w-1/2 rounded-xl py-6 flex flex-col gap-4">
+              <h2 className="headlines text-[#171D19] px-6 md:py-4">
                 Available Dates
               </h2>
               <FormControl className="px-4 md:px-6">
-                <RadioGroup
-                  aria-labelledby="dates"
-                  name="tourDates"
-                  value={formData?.tourDates}
-                  onChange={handleRadioChange}
-                >
-                  {packageData?.tourDates?.map((date, index) => (
-                    <FormControlLabel
-                      id={`${index}`}
-                      key={index}
-                      value={date}
-                      control={
-                        <Radio
-                          sx={{
-                            "&.Mui-checked": {
-                              color: "#19A96C",
-                            },
-                          }}
-                        />
-                      }
-                      label={date}
-                    />
+               <div className="flex overflow-x-scroll custom-scrollbar gap-2 mb-4">
+                  {Object.keys(datesByMonth).map((month,index)=> (
+                    <Chip
+                    key={index}
+                    label={month}
+                    clickable
+                    className={cn(`${selectedMonth === month ? 'shadow-cardShadow' : 'shadow-none'}`)}
+                    onClick={() => handleMonthSelect(month)}
+                    variant={selectedMonth === month ? 'filled' : 'outlined'}
+                    sx={{
+                      ...(selectedMonth === month
+                        ? {
+                            backgroundColor: 'primary.main',
+                            color: 'white',
+                            '& .MuiChip-label': { color: 'white' },
+                          }
+                        : {
+                            borderColor: 'primary.main',
+                            color: 'primary.main',
+                            '& .MuiChip-label': { color: 'primary.main' },
+                          }),
+                      '&:hover': {
+                        backgroundColor:
+                          selectedMonth === month
+                            ? 'primary.dark'
+                            : 'rgba(25, 169, 108, 0.1)',
+                      },
+                    }}
+                  />
                   ))}
-                </RadioGroup>
+               </div>
+               {selectedMonth && (
+                 <div className="flex overflow-x-scroll custom-scrollbar gap-4 py-3">
+                 {datesByMonth[selectedMonth].map((date, index) => (
+                   <Chip
+                     key={index}
+                     label={
+                      <div className="space-y-2">
+                        <div>{date}</div>
+                        <div className={cn(" rounded-xl p-2",`text-${formData.tourDates === date ? 'primary' : 'white'} ${formData.tourDates === date ? 'bg-secondary-95' : 'bg-primary' }`)} style={{ fontSize: '0.75rem'}}>
+                          Starting Price: INR {packageData?.currentPrice}/-
+                        </div>
+                      </div>
+                    }
+                     clickable
+                     className={cn(`py-10 `,`${formData.tourDates === date ? 'shadow-cardShadow' : 'shadow-none'}`)}
+                     onClick={() => handleDateSelect(date)}
+                     variant={
+                       formData.tourDates === date ? 'filled' : 'outlined'
+                     }
+                     sx={{
+                       ...(formData.tourDates === date
+                         ? {
+                             backgroundColor: 'primary.main',
+                             color: 'white',
+                             '& .MuiChip-label': { color: 'white' },
+                           }
+                         : {
+                             borderColor: 'primary.main',
+                             color: 'primary.main',
+                             '& .MuiChip-label': { color: 'primary.main' },
+                           }),
+                       '&:hover': {
+                         backgroundColor:
+                           formData.tourDates === date
+                             ? 'primary.dark'
+                             : 'rgba(25, 169, 108, 0.1)',
+                       },
+                     }}
+                   />
+                 ))}
+               </div>
+               )}
+
               </FormControl>
             </div>
             <div className=" w-full md:w-1/2  md:h-[65svh] flex flex-col justify-between gap-4">
@@ -460,7 +595,6 @@ const BookingPage = () => {
                   )}
                 </FormControl>
               </div>
-
             </div>
           </div>
 
@@ -488,14 +622,12 @@ const BookingPage = () => {
             <h2 className="headlines  text-[#171D19] px-6 border border-b-2 border-b-[#C0C9C0] md:py-4">
               Fill in the details
             </h2>
-            <div className="flex flex-col justify-between h-full">
+            <div className="flex flex-col gap-4 h-full">
               <div className="px-6 flex flex-row justify-between items-center">
                 <p className="bodys lg:titlem">Adults</p>
                 <div className="flex gap-0.5 justify-between items-center border border-secondary rounded-2xl">
                   <IconButton
-                    onClick={() => {
-                      setNoOfPeople(Math.max(noOfPeople - 1, 1));
-                    }}
+                    onClick={handleRemoveField}
                     disableFocusRipple
                     disableRipple
                     disableTouchRipple
@@ -504,9 +636,7 @@ const BookingPage = () => {
                   </IconButton>
                   <p className="text-base">{noOfPeople}</p>
                   <IconButton
-                    onClick={() => {
-                      setNoOfPeople(noOfPeople + 1);
-                    }}
+                    onClick={handleAddField}
                     disableFocusRipple
                     disableRipple
                     disableTouchRipple
@@ -515,6 +645,82 @@ const BookingPage = () => {
                   </IconButton>
                 </div>
               </div>
+
+              {noOfPeople > 1 && (
+                <div className="flex px-6 flex-col gap-4">
+                  <p className="bodys lg:titlem">Co-Traveller's Name</p>
+                  {formData.coTraveler?.map((coTraveller, index) => {
+                    return (
+                      <div key={index} className="space-y-4">
+                        <FormControl variant="outlined" fullWidth>
+                          <InputLabel htmlFor={`name-${index}`}>
+                            Co-Traveller {index + 1}
+                          </InputLabel>
+                          <OutlinedInput
+                            id={`name-${index}`}
+                            name={`name-${index}`}
+                            label={`Co-Traveller ${index + 1}*`}
+                            value={coTraveller}
+                            error={!!errors.coTraveler?.[index]}
+                            onChange={(e) =>
+                              handlePeopleInputChange(
+                                "coTraveler",
+                                e.target.value,
+                                index
+                              )
+                            }
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <IconButton
+                                  disableTouchRipple
+                                  onClick={() =>
+                                    handleClear("coTraveler", index)
+                                  }
+                                >
+                                  <CancelOutlinedIcon />
+                                </IconButton>
+                              </InputAdornment>
+                            }
+                            sx={{
+                              color: "#404942",
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: "#404942",
+                              },
+                              "& .MuiInputLabel-root": {
+                                color: "#404942",
+                              },
+                              "& .MuiOutlinedInput-input": {
+                                color: "#404942",
+                              },
+                              "& .MuiOutlinedInput-root": {
+                                "& fieldset": {
+                                  borderColor: "#404942",
+                                },
+                                "& input": {
+                                  color: "#404942",
+                                },
+                              },
+                              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
+                                {
+                                  color: "#404942",
+                                },
+                              "& .MuiOutlinedInput-input:-webkit-autofill": {
+                                WebkitBoxShadow: "0 0 0 1000px #E4EAE3 inset",
+                                WebkitTextFillColor: "#404942",
+                              },
+                            }}
+                          />
+                        </FormControl>
+                        {errors.coTraveler?.[index] && (
+                          <p className="text-error bodyl">
+                            {errors.coTraveler[index]}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
 
@@ -564,7 +770,6 @@ const BookingPage = () => {
                 </p>
               </div>
             </div>
-
           </div>
         </section>
       )}
@@ -600,6 +805,17 @@ const BookingPage = () => {
                       {noOfPeople} {noOfPeople > 1 ? "Adults" : "Adult"}
                     </p>
                   </div>
+                  {formData.coTraveler && formData.coTraveler.length > 0 && (
+                    <div className="w-full flex flex-row gap-2 items-center text-balance">
+                      <PersonAddIcon className="text-sm md:text-base" />
+                      <p>
+                        {formData.coTraveler
+                          .filter((name) => name) 
+                          .join(", ")}{" "}
+                       
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -691,15 +907,17 @@ const BookingPage = () => {
                 </RadioGroup>
               </FormControl>
             </div>
-
-
           </div>
         </section>
       )}
-      <section className={cn(`bg-[#E4EAE3]  shadow-cardShadow border-t-2 fixed flex left-0 bottom-0 w-full rounded-xl p-4 gap-2 md:p-6 text-start`,`${activeStep !== 0 ? 'flex-col':'flex-row justify-between'}`)}>
-        {
-          activeStep< 2 && (
-            <div className="flex flex-col gap-1">
+      <section
+        className={cn(
+          `bg-[#E4EAE3]  shadow-cardShadow border-t-2 fixed flex left-0 bottom-0 w-full rounded-xl p-4 gap-2 md:p-6 text-start`,
+          `${activeStep !== 0 ? "flex-col" : "flex-row justify-between"}`
+        )}
+      >
+        {activeStep < 2 && (
+          <div className="flex flex-col gap-1">
             <h2 className="titles md:titlem font-normal text-[#171D19]">
               Starting Price
             </h2>
@@ -708,18 +926,14 @@ const BookingPage = () => {
               <span className="titlem font-normal">per head</span>
             </h2>
           </div>
-          )
-        }
-      
+        )}
 
         <div className="flex flex-row justify-between items-center">
-          {
-            activeStep !== 0 && (
-              <Button variant={"outline"} onClick={goBack}>
+          {activeStep !== 0 && (
+            <Button variant={"outline"} onClick={goBack}>
               Go Back
             </Button>
-            )
-          }
+          )}
           <Button onClick={goForward}>
             {activeStep === 3 ? (
               loading ? (

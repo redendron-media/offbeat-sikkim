@@ -147,4 +147,17 @@ export interface photoGallery {
     packageName:string,
     noOfAdults:string,
     source:string,
+    coTraveler?:string[],
   }
+
+  export interface FormErrors {
+    packageName?: string;
+    name?: string;
+    email?: string;
+    phone?: string;
+    noOfAdults?: string;
+    tourDates?: string;
+    source?: string;
+    coTraveler?: string[] | undefined;
+  }
+  

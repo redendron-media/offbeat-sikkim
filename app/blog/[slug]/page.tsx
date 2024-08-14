@@ -7,6 +7,7 @@ import { Stack } from "@mui/material";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import React from "react";
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 export const revalidate = 60;
 
 async function getData(slug: string) {
@@ -36,14 +37,15 @@ function formatDate(dateString:string) {
     return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
   }
   
-async function BlogArticle({ params }: { params: { slug: string } }) {
-  const headersList = headers();
-  const domain = headersList.get('host') || "";
-  const currentPageLink = headersList.get('referer') || "";
+  interface BlogArticleProps {
+    params: { slug: string };
+  }
+
+async function BlogArticle({params }: BlogArticleProps) {
   const data: BlogPage = await getData(params.slug);
   const originalDate = new Date(data._createdAt).toISOString().split('T')[0]
   const formattedDate = formatDate(originalDate)
-
+  let currentPageLink = process.env.NEXT_PUBLIC_BASE_URL+"/blog/"+params.slug
   return (
     <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto py-12 md:py-[76px] flex flex-col gap-6 md:gap-9">
       <Stack gap={1} className="md:px-28 lg:px-52 text-start">

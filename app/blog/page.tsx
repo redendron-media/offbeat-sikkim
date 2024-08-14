@@ -60,7 +60,7 @@ async function blog() {
             {groupPosts.map((group, idx) => (
               <div
                 key={idx}
-                className="w-full p-8 space-y-4 md:space-y-0 md:flex gap-4"
+                className="w-full py-8 space-y-4 md:space-y-0 md:flex gap-4"
               >
                 <div
                   className={cn(
