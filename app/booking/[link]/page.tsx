@@ -912,7 +912,7 @@ const BookingPage = () => {
       )}
       <section
         className={cn(
-          `bg-[#E4EAE3]  shadow-cardShadow border-t-2 fixed flex left-0 bottom-0 w-full rounded-xl p-4 gap-2 md:p-6 text-start`,
+          `bg-[#E4EAE3]  shadow-cardShadow border-t-2 sticky flex left-0 bottom-0 w-full rounded-xl p-4 gap-2 md:p-6 text-start`,
           `${activeStep !== 0 ? "flex-col" : "flex-row justify-between"}`
         )}
       >

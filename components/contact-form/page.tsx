@@ -71,7 +71,7 @@ const ContactForm = () => {
 
 
   return (
-    <form onSubmit={handleSubmit} className="p-5 gap-6 flex flex-col justify-center items-center shadow-cardShadow bg-white w-[320px] md:w-[368px] rounded-lg">
+    <form onSubmit={handleSubmit} className="p-5 gap-6 flex flex-col justify-center items-center shadow-cardShadow bg-white w-[320px] md:w-full rounded-lg">
       <FormControl variant="outlined" fullWidth>
         <InputLabel htmlFor="name">Name</InputLabel>
         <OutlinedInput

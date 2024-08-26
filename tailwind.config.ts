@@ -159,6 +159,7 @@ const config: Config = {
      },
      boxShadow:{
       cardShadow:'0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 1px 3px 1px rgba(0, 0, 0, 0.15)',
+      footerShadow:'0px -4px 6px -2px rgba(0, 0, 0, 0.25)'
      }
     },
   },

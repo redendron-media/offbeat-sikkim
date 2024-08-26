@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { navlinks } from "@/constants";
 import { cn } from "@/lib/utils";
 import { IconButton, Stack } from "@mui/material";
@@ -12,11 +12,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import ContactDialog from "./contact-dialog/page";
 interface NavbarScrollProps {
   toggleMenu: () => void;
+  isScrolling: boolean;
 }
 
 function Header() {
   const [navbar, setNavbar] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 768;
   const toggleMenu = () => {
     setNavbar((prevOpen) => !prevOpen);
   };
@@ -43,7 +46,7 @@ function Header() {
 
   const linkVars = {
     initial: {
-      opacity: 0,
+      opacity: 0.8,
     },
     animate: {
       opacity: 1,
@@ -62,9 +65,75 @@ function Header() {
     },
   };
 
-  const Navbar: React.FC<NavbarScrollProps> = ({ toggleMenu }) => {
+  const NavAnimations = {
+    initial: {
+      opacity: 1,
+      boxShadow: "none",
+      paddingTop:"1.5rem" ,
+      paddingBottom:"1.5rem",
+      transition: {
+        duration: 0.7,
+        ease: [0.33, 1, 0.68, 1],
+      }
+    },
+    animate: {
+ 
+      opacity: 1,
+      boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+      paddingTop: isSmallScreen ? "1.25rem" : "0.75rem",
+      paddingBottom: isSmallScreen ? "1.25rem" : "0.5rem", 
+      transition: {
+        duration: 0.7,
+        ease: [0.33, 1, 0.68, 1],
+      }
+    },
+    backToTop: {
+      paddingTop:"1.5rem" ,
+      paddingBottom:"1.5rem",
+      opacity: 1,
+      boxShadow: "none",
+      transition: {
+        duration: 0.7,
+        ease: [0.33, 1, 0.68, 1],
+      }
+    },
+    exit: {
+      paddingTop:"1.5rem" ,
+      paddingBottom:"1.5rem",
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.3, 
+        ease: [0.33, 1, 0.68, 1],
+      }
+    },
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollOffset = window.scrollY;
+  
+      if (scrollOffset > 10) {
+        setIsScrolled(true);
+      } else if (scrollOffset === 0) {
+        setIsScrolled(false);
+      }
+    };
+  
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const Navbar: React.FC<NavbarScrollProps> = ({ toggleMenu,isScrolling }) => {
     return (
-      <nav className="fixed top-0 bg-[#F6FBF4] z-30 flex flex-row w-full justify-between px-4 md:px-6 py-6 md:py-9">
+      <motion.nav 
+      initial="initial"
+      animate={isScrolling ? "animate" : "backToTop"}
+      exit="exit"
+      variants={NavAnimations}
+      className="fixed top-0 bg-[#F6FBF4] z-30 flex flex-row w-full justify-between px-4 md:px-6 py-6 md:py-9">
         <Link href={"/"}>
           <Image
             className="md:w-28 md:h-9 lg:w-40 lg:h-11"
@@ -97,14 +166,14 @@ function Header() {
         <IconButton className="lg:hidden rounded-none p-0" onClick={toggleMenu}>
           <MenuIcon />
         </IconButton>
-      </nav>
+      </motion.nav>
     );
   };
   const isCurrentPath = (path: string) => pathname.startsWith(path);
   return (
     <>
       <AnimatePresence>
-        <Navbar toggleMenu={toggleMenu} />
+        <Navbar toggleMenu={toggleMenu} isScrolling={isScrolled} />
       </AnimatePresence>
       <AnimatePresence>
         {navbar && (

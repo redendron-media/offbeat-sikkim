@@ -10,7 +10,7 @@ interface GalleryProps {
 
 const PhotoGallery: FC<GalleryProps> = ({ items }) => {
   return (
-    <div className=" w-full overflow-hidden ">
+    <div className="w-full overflow-hidden ">
       <Carousel>
         <CarouselContent className="flex ml-0 relative ">
           {items.map((image, index) => (

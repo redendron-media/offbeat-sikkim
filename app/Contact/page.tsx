@@ -29,7 +29,9 @@ function Contact() {
             </Stack>
           </Link>
         </Stack>
+        <div className="w-[320px] md:w-[368px]">
         <ContactForm />
+        </div>
       </div>
     </main>
   );
