@@ -128,17 +128,21 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
   };
 
   const handleInputChangeChildren = (index: number, value: string) => {
-    const updatedFormData = { ...formData };
-    const updatedNoOfChildren = [...(updatedFormData.age || [""])];
+    const updatedAgeArray = [...(formData.age || [""])];
 
-    updatedNoOfChildren[index] = value;
+    if (value === "0") {
+      updatedAgeArray[index] = "";
+    } else {
+      updatedAgeArray[index] = value;
+    }
+  
+    const cleanedAgeArray = updatedAgeArray.filter((age) => age.trim() !== "");
 
     setFormData((prevFormData) => ({
       ...prevFormData,
-      age: updatedNoOfChildren,
-      noOfChildren: updatedNoOfChildren.length.toString(),
+      age: cleanedAgeArray.length > 0 ? cleanedAgeArray : [""],
+      noOfChildren: cleanedAgeArray.length.toString(),
     }));
-
     setErrors((prevErrors) => ({
       ...prevErrors,
       age: [""],
@@ -193,8 +197,8 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
         tourPackage: formData.tourPackage,
         start_Date: formData.startDate,
         no_of_adults: parseInt(formData.noOfAdults, 10) || 0,
-        no_of_children: parseInt(formData.noOfChildren ?? "0", 10) || 0,
-        children_details: formData.age,
+        no_of_children: (formData.age ?? []).filter((age) => age.trim() !== "").length,
+        children_details: (formData.age ?? []).filter((age) => age.trim() !== ""),
         travel_style: formData.travelstyle,
         accommodation: formData.accommodation,
         comments: formData.additionalInformation,

@@ -61,7 +61,7 @@ export interface photoGallery {
     email: string;
     phone: string;
     travel_style: string;
-    places:string[];
+    places:string;
     accommodation: string;
   }
   

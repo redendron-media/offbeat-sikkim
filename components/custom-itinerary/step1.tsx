@@ -11,10 +11,10 @@ interface Step1FormProps {
   handleClear: (field: keyof Step1FormData) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectChange: (event: SelectChangeEvent<string>) => void;
-  handlePlacesChange: (event: SelectChangeEvent<string[]>) => void;
+ 
 }
 
-const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, handleInputChange, handleSelectChange,handlePlacesChange }) => {
+const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, handleInputChange, handleSelectChange }) => {
  
   return (
     <div className="flex flex-col gap-6 md:grid md:grid-cols-2">
@@ -208,9 +208,8 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, ha
           labelId="places"
           label="Places of Interest"
           name="places"
-          multiple
           value={formData.places}
-          onChange={handlePlacesChange}
+          onChange={handleSelectChange}
           required
           error={!!errors.places}
           sx={{

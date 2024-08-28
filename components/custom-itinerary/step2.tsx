@@ -5,7 +5,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import dayjs from "dayjs";
-import { Chip,FormControl, TextField, Button, IconButton, InputAdornment} from "@mui/material";
+import { Chip} from "@mui/material";
 import { placesAndDestinations } from "@/constants";
 
 interface Step2FormProps {
@@ -14,7 +14,7 @@ interface Step2FormProps {
   handleClear?: (field: keyof Step2FormData) => void;
   handleDateChange: (date: dayjs.Dayjs | null, field: keyof Step2FormData) => void;
   handleDestinationToggle: (destination: string) => void;
-  selectedPlaceOfInterest: string[];
+  selectedPlaceOfInterest: string;
 }
 
 const Step2Form: React.FC<Step2FormProps> = ({ 
@@ -24,8 +24,7 @@ const Step2Form: React.FC<Step2FormProps> = ({
   handleDateChange,
   handleDestinationToggle,
   selectedPlaceOfInterest,}) => {
-
-   
+    const availableDestinations = placesAndDestinations[selectedPlaceOfInterest] || [];
     return (
       <div className="flex flex-col gap-6 md:grid md:grid-cols-2">
         <div className="flex flex-col col-span-2 gap-1 -mt-6 pb-4 text-center">
@@ -87,12 +86,10 @@ const Step2Form: React.FC<Step2FormProps> = ({
   
         <div className="col-span-2 space-y-3">
           <p className="text-black bodym">Select Destinations</p>
-          {selectedPlaceOfInterest.map((place) => {
-            const availableDestinations = placesAndDestinations[place] || [];
-            return(
-              <div key={place} className="space-y-4">
+          {selectedPlaceOfInterest &&(  
+              <div className="space-y-4">
                 <h3 className="bodyl">
-                {place}
+                {selectedPlaceOfInterest}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                 {availableDestinations.map((destination, index) => (
@@ -127,8 +124,7 @@ const Step2Form: React.FC<Step2FormProps> = ({
             ))}
                 </div>
               </div>
-            )
-          })}
+          )}
           {errors.destination && (
             <p className="text-error bodyl">{errors.destination}</p>
           )}

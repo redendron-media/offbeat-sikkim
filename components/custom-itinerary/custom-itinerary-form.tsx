@@ -49,7 +49,7 @@ const Custom_Form = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     travel_style: "Premium",
-    places: ["Sikkim"],
+    places: "Sikkim",
     accommodation: "Resort",
     email: "",
     phone: "",
@@ -71,19 +71,23 @@ const Custom_Form = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
-  const handlePlacesChange = (e: SelectChangeEvent<string[]>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
-  };
 
   const handleInputChangeChildren = (index: number, value: string) => {
     const updatedFields = [...formData.noOfChildren];
-    updatedFields[index] = value;
+
+    if (value === "0") {
+      
+      updatedFields[index] = "";
+    } else {
+      updatedFields[index] = value;
+    }
+  
+    const cleanedFields = updatedFields.filter((field) => field.trim() !== "");
     setFormData((prevFormData) => ({
       ...prevFormData,
-      noOfChildren: updatedFields,
+      noOfChildren: cleanedFields.length > 0 ? cleanedFields : [""], 
     }));
+  
     setErrors((prevErrors) => ({ ...prevErrors, noOfChildren: [] }));
   };
 
@@ -144,7 +148,7 @@ const Custom_Form = () => {
     if (!formData.travel_style)
       newErrors.travel_style = "Please select your travel style";
     if (!formData.places)
-      newErrors.places = ["Please select your place of interest"];
+      newErrors.places = "Please select your place of interest";
     if (!formData.accommodation)
       newErrors.accommodation = "Please select your accommodation type";
 
@@ -202,12 +206,12 @@ const Custom_Form = () => {
         email: formData.email,
         start_Date: formData.startDate,
         no_of_adults: parseInt(formData.noOfAdults, 10) || 0,
-        no_of_children: formData.noOfChildren.length,
-        children_details: formData.noOfChildren.map((age) => ({
-          age: parseInt(age, 10),
-        })),
+        no_of_children: formData.noOfChildren.filter(age => age.trim() !== "").length,
+        children_details: formData.noOfChildren
+        .filter(age => age.trim() !== "")
+        .map(age => ({ age: parseInt(age, 10) })),
         travel_style: formData.travel_style,
-        places: formData.places,
+        destination: formData.places,
         accommodation: formData.accommodation,
         endDate: formData.endDate,
         destinations: formData.destination,
@@ -247,7 +251,7 @@ const Custom_Form = () => {
     setFormData({
       name: "",
       travel_style: "Premium",
-      places: ["Sikkim"],
+      places: "Sikkim",
       accommodation: "Resort",
       email: "",
       phone: "",
@@ -276,7 +280,6 @@ const Custom_Form = () => {
             formData={formData}
             errors={errors}
             handleClear={handleClear}
-            handlePlacesChange={handlePlacesChange}
             handleInputChange={handleInputChange}
             handleSelectChange={handleSelectChange}
           />
