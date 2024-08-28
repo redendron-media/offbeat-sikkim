@@ -41,6 +41,7 @@ import {
   TwitterShareButton,
   TwitterIcon,
 } from "next-share";
+import DownloadIcon from '@mui/icons-material/Download';
 import CloseIcon from "@mui/icons-material/Close";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { cn } from "@/lib/utils";
@@ -283,7 +284,8 @@ function PackagePage() {
                     href={`/${packageData.pdf}.pdf`}
                     download={`${packageData.pdf}`}
                   >
-                    <Button className=" w-fit">Download Itinerary</Button>
+                    <Button className=" w-fit flex gap-1">Download Itinerary  <DownloadIcon className="text-[20px] mt-0.5"/></Button>
+                   
                   </Link>
                 </Stack>
               )}
