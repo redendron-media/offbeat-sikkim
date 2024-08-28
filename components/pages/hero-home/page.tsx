@@ -75,7 +75,7 @@ const HeroHome = () => {
 
             <Stack direction={"row"} gap={0.5} alignItems={"center"}>
               <StarIcon className="text-[#e7c262] text-lg" />
-              <p className="font-bold text-[13px]">5.0(23)</p>
+              <p className="font-bold text-[13px]">5.0</p>
             </Stack>
           </Stack>
         </Link>
@@ -98,7 +98,7 @@ const HeroHome = () => {
             />
             <Stack direction={"row"} gap={0.5} alignItems={"center"}>
               <StarIcon className="text-[#e7c262] text-lg" />
-              <p className="font-bold text-[13px]">5.0(24)</p>
+              <p className="font-bold text-[13px]">5.0</p>
             </Stack>
           </Stack>
         </Link>

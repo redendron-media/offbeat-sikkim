@@ -50,7 +50,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
-          <WhatsAppButton/>
+
         </ThemeProvider>
         
       </body>

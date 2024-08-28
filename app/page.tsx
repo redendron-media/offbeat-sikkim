@@ -1,4 +1,5 @@
 import Slider from "@/components/Slider";
+import WhatsAppButton from "@/components/WhatappButton/page";
 import ContactDialog from "@/components/contact-dialog/page";
 import Custom_Form from "@/components/custom-itinerary/custom-itinerary-form";
 import Testimonials from "@/components/pages/Testimonials/page";
@@ -48,6 +49,7 @@ export default function Home() {
         </p>
 
         <ContactDialog link="" title="Contact Us" />
+        <WhatsAppButton/>
       </section>
     </main>
   );
