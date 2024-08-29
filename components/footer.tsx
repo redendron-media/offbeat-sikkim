@@ -83,7 +83,7 @@ const Footer = () => {
           className="md:text-center"
         >
           <p className="bodym">
-            © Offbeat Sikkim Pvt. Ltd, All rights reserved
+            © Offbeat Sikkim Travel, All rights reserved
           </p>
           <Link
             className="hover:text-primary transition-colors duration-500"

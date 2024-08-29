@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "@mui/material/Card";
 import Image from "next/image";
-import { IconButton, Stack } from "@mui/material";
+import { IconButton} from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Link from "next/link";
 import { CardProps } from "@/lib/types";
@@ -19,6 +19,8 @@ const Cards = ({ card }: TourCardProps) => {
     : card.destination
     ? `destinations/${card.destination}`
     : "";
+
+    const isCurated = link.startsWith("curated");
   return (
     <Link href={`/packages/${link}`} className="cursor-pointer">
       <Card className="w-[232px] h-fit md:w-[289px] lg:w-[292px] lg:h-fit rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-cardShadow ">
@@ -31,6 +33,11 @@ const Cards = ({ card }: TourCardProps) => {
             quality={75}
             loading="lazy"
           />
+          {
+            isCurated && (
+              <div className="absolute top-0 left-0 bg-primary rounded-br-xl text-white labell py-1.5 px-4">Customized</div>
+            )
+          }
         </div>
         <div className="px-2 py-5 text-[#051E13] flex justify-between items-end">
           <div className="flex flex-col  space-y-1">
