@@ -266,7 +266,7 @@ function PackagePage() {
         <>
           <div className="flex flex-col px-4 md:px-6">
             <section
-              className={`flex flex-col justify-center gap-6 py-9 px-4  md:px-14 md:py-24 md:gap-6 h-[50vh] rounded-xl bg-cover bg-center bg-no-repeat bg-black bg-opacity-30 bg-blend-overlay`}
+              className={`flex flex-col justify-center gap-6 py-9 px-4  md:px-14 md:py-24 md:gap-6 min-h-[50vh] rounded-xl bg-cover bg-center bg-no-repeat bg-black bg-opacity-30 bg-blend-overlay`}
               style={{ backgroundImage: `url(/${packageData.image}.webp)` }}
             >
               <Stack direction={"column"} gap={1}>
