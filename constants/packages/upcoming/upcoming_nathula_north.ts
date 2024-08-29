@@ -83,7 +83,7 @@ export const UPCOMING_NORTH_NATHULA = {
           {
             day: "Day 2",
             title:
-              "Full day Tsogmo Lake, Baba Mandir and Nathula pass excursion with Tambi View Point",
+              "Full day Tsomgo Lake, Baba Mandir and Nathula pass excursion with Thambi View Point",
             activities: [
               "After breakfast, we will embark on a full-day excursion exploring the beautiful surroundings of Gangtok.",
               "Our first stop will be the glacial Tsomgo Lake, also known as Changu Lake. This stunning lake is renowned for its scenic beauty and ever-changing colors.",
