@@ -80,7 +80,7 @@ const DestinationPage: React.FC = () => {
     {
       matchingDestination && (
         <section
-        className={`flex flex-col gap-6 px-4 py-9 md:px-14 md:py-24 md:gap-6  rounded-xl bg-cover bg-center bg-no-repeat bg-black bg-opacity-30 bg-blend-overlay`}
+        className={`flex flex-col gap-6 px-4 py-9 min-h-[50vh] md:px-14 md:py-24 md:gap-6 items-center justify-center rounded-xl bg-cover bg-center bg-no-repeat bg-black bg-opacity-30 bg-blend-overlay`}
         style={{backgroundImage:`url(/${matchingDestination.pageImage}.webp)`}}
       >
         <Stack direction={"column"} gap={3}>
