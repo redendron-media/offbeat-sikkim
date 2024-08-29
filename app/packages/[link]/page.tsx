@@ -284,7 +284,7 @@ function PackagePage() {
                     href={`/${packageData.pdf}.pdf`}
                     download={`${packageData.pdf}`}
                   >
-                    <Button className=" w-fit flex gap-1">Download Itinerary  <DownloadIcon className="text-[20px] mt-0.5"/></Button>
+                    <Button className=" w-fit flex gap-1 xs:bodys">Download Itinerary  <DownloadIcon className="xs:text-sm text-[20px] mt-0.5"/></Button>
                    
                   </Link>
                 </Stack>
@@ -343,7 +343,7 @@ function PackagePage() {
                   >
                     <h2 className="headlines text-[#171D19]">Your itinerary</h2>
                     <Button variant={"outline"} onClick={handleClickOpen}>
-                      Share <ShareIcon className="text-sm ml-1" />{" "}
+                      <span className="hidden md:flex">Share</span> <ShareIcon className="text-sm ml-1" />{" "}
                     </Button>
                     <Dialog open={isShareOpen} maxWidth="md" fullWidth>
                       <DialogTitle className="bg-[#F5F5F5]">
@@ -800,10 +800,10 @@ function PackagePage() {
                   <p className="labels md:labell text-black text-balance">
                     Starts at{" "}
                   </p>
-                  <p className="bodys md:bodyl text-black">
+                  <p className="bodys  font-semibold md:bodyl text-black">
                     INR {packageData.currentPrice}/-
                     {packageData.originalPrice && (
-                      <span className="bodys line-through">
+                      <span className="bodys font-normal line-through">
                         {" "}
                         {packageData.originalPrice}{" "}
                       </span>
@@ -816,7 +816,7 @@ function PackagePage() {
               {packageData.costDouble && (
                 <Stack direction={"column"} gap={1} className=" px-3 py-2">
                   <p className="labels md:labell text-black">Starts at</p>
-                  <p className="bodys md:bodyl text-black">
+                  <p className="bodys  font-semibold md:bodyl text-black">
                     {packageData.costDouble} per head
                   </p>
                 </Stack>
