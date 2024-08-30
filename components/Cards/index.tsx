@@ -35,7 +35,7 @@ const Cards = ({ card }: TourCardProps) => {
           />
           {
             isCurated && (
-              <div className="absolute top-0 left-0 bg-primary rounded-br-xl text-white labell py-1.5 px-4">Customized</div>
+              <div className="absolute top-0 left-0 bg-[#FFFF00] rounded-br-xl text-black labell py-1.5 px-4">Customized</div>
             )
           }
         </div>

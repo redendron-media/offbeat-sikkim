@@ -1,6 +1,7 @@
 import Slider from "@/components/Slider";
 import WhatsAppButton from "@/components/WhatappButton/page";
 import ContactDialog from "@/components/contact-dialog/page";
+import Credibility from "@/components/credibility/page";
 import Custom_Form from "@/components/custom-itinerary/custom-itinerary-form";
 import Testimonials from "@/components/pages/Testimonials/page";
 import FeaturedArticles from "@/components/pages/featured-articles/page";
@@ -40,6 +41,7 @@ export default function Home() {
       </section>
       <Testimonials />
       <FeaturedArticles />
+      <Credibility/>
       <section className="flex flex-col justify-center items-center w-full gap-6 py-[60px] md:py-[88px]">
         <h2 className="headlines md:headlinem lg:headlinel text-secondary-oncontainer text-center">
           Have a Question?
