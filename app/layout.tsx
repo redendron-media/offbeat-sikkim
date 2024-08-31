@@ -42,19 +42,7 @@ export default function RootLayout({
             gtag('config', 'G-6FEZLY447N');
           `}
         </Script>
-      </head>
-      <body className={`${roboto.className} bg-[#F6FBF4] pt-20 md:pt-32`}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-       
-          <Header />
-  
-          {children}
-     
-          <Footer />
-        </ThemeProvider>   
-
-       <Script
+        <Script
         id="facebook-pixel"
         strategy="afterInteractive"
       >
@@ -71,6 +59,19 @@ export default function RootLayout({
           fbq('track', 'PageView');
         `}
       </Script>
+      </head>
+      <body className={`${roboto.className} bg-[#F6FBF4] pt-20 md:pt-32`}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+       
+          <Header />
+  
+          {children}
+     
+          <Footer />
+        </ThemeProvider>   
+
+    
       <noscript>
         <img
           height="1"
