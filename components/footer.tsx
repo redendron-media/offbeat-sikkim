@@ -5,6 +5,7 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import BusinessIcon from '@mui/icons-material/Business';
 import Link from "next/link";
 
 const Footer = () => {
@@ -31,6 +32,12 @@ const Footer = () => {
                   </p>
                 </Stack>
               </Link>
+              <Stack direction={"row"} gap={1}>
+                  <BusinessIcon />
+                  <p className="bodyl hover:text-primary hover:transition-colors hover:duration-500">
+                   Dotapu, Upper Syari, Gangtok, Sikkim-737101
+                  </p>
+                </Stack>
             </div>
           </div>
           <Stack direction={"column"} gap={3.5}>
