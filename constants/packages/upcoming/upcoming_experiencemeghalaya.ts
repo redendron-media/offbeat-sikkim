@@ -9,8 +9,8 @@ export const UPCOMING_EXPERIENCEMEGHALAYA =  {
     desc: " Meghalaya, a gem in Northeast India, offers a plethora of activities ranging from trekking through lush forests, swimming in blue lagoons, to relaxing by serene riversides. Known as the abode of clouds, Meghalaya is a potpourri of beauty and culture, with charming landscapes, vibrant Khasi,Jaintai  and Garo cultures, and a photographer’s paradise. The best time to visit is during autumn, experiencing the state’s moderate climate and vibrant greenery.",
     durationn: "6",
     durationd: "7",
-    originalPrice:"21,499",
-    currentPrice:"19,499",
+    originalPrice:"21,999",
+    currentPrice:"19,999",
     link: "upcoming-experience-meghalaya",
     photoGalleries: [
       {
