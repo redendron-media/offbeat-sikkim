@@ -119,6 +119,7 @@ export const placesAndDestinations: { [key: string]: string[] } = {
     "Mon",
     "Pfütsero",
     "Shilloi",
+    "Dzukou Valley",
     "Tseminyu",
   ],
   Meghalaya: [
