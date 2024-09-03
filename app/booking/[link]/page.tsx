@@ -296,7 +296,8 @@ const BookingPage = () => {
   };
 
   return (
-    <main className="flex min-h-screen bg-[#F6FBF4] flex-col py-6 px-4 md:px-6 max-w-screen-2xl gap-4 mx-auto">
+    <main className="flex min-h-screen justify-between bg-[#F6FBF4] flex-col py-6 px-4 md:px-6 max-w-screen-2xl gap-4 mx-auto">
+      <section>
       <section className="flex flex-row gap-4 md:gap-8 w-full">
         <CustomConnectorWrapper activeStep={activeStep} />
       </section>
@@ -316,7 +317,7 @@ const BookingPage = () => {
                 Available Dates
               </h2>
               <FormControl className="px-4 md:px-6">
-               <div className="flex overflow-x-scroll custom-scrollbar gap-2 mb-4">
+               <div className="flex overflow-x-scroll hide-scrollbar gap-2 mb-4">
                   {Object.keys(datesByMonth).map((month,index)=> (
                     <Chip
                     key={index}
@@ -348,7 +349,7 @@ const BookingPage = () => {
                   ))}
                </div>
                {selectedMonth && (
-                 <div className="flex overflow-x-scroll custom-scrollbar gap-4 py-3">
+                 <div className="flex overflow-x-scroll hide-scrollbar gap-4 py-3">
                  {datesByMonth[selectedMonth].map((date, index) => (
                    <Chip
                      key={index}
@@ -910,6 +911,8 @@ const BookingPage = () => {
           </div>
         </section>
       )}
+      </section>
+     
       <section
         className={cn(
           `bg-[#E4EAE3]  shadow-cardShadow border-t-2 sticky flex left-0 bottom-0 w-full rounded-xl p-4 gap-2 md:p-6 text-start`,
@@ -919,11 +922,13 @@ const BookingPage = () => {
         {activeStep < 2 && (
           <div className="flex flex-col gap-1">
             <h2 className="titles md:titlem font-normal text-[#171D19]">
-              Starting Price
+              Pay  
+              <span className="text-secondary-oncontainer text-balance titlel md:headlines"> INR {advance}/-</span> now 
             </h2>
+
             <h2 className="text-secondary-oncontainer text-balance titlel md:headlines">
-              INR {packageData?.currentPrice}/-{" "}
-              <span className="titlem font-normal">per head</span>
+            <span className="titlem font-normal">to confirm your trip</span>
+           
             </h2>
           </div>
         )}

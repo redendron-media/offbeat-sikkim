@@ -8,10 +8,11 @@ import {
   styled,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import Image from "next/image";
 import StarIcon from "@mui/icons-material/Star";
 import Link from "next/link";
+import { useScroll, useTransform,motion } from "framer-motion";
 const CustomOutlinedInput = styled(OutlinedInput)({
   "& .MuiOutlinedInput-input::placeholder": {
     color: "#2C322D",
@@ -30,9 +31,23 @@ const HeroHome = () => {
     setSearchURL(encodedSearch ? `/search?query=${encodedSearch}` : "");
   };
 
+
   return (
-    <div className="py-24 px-3  md:px-14 lg:py-36 xl:py-44 bg-[url('../public/images/hero.webp')] bg-cover bg-center bg-no-repeat w-full h-full rounded-lg flex flex-col gap-4 md:gap-6">
-      <Stack direction={"column"} gap={1}>
+    <div  className="py-24 px-3 relative  md:px-14 lg:py-36 xl:py-44 w-full rounded-lg flex flex-col gap-4 md:gap-6">
+      <motion.div 
+        className="absolute  inset-0 w-full z-0">
+        <div className="absolute inset-0 bg-black/10 z-10"/>
+        <Image
+          src="/images/hero.webp"
+          alt="Hero Background"
+          layout="fill"
+          objectFit="cover"
+          className="rounded-lg"
+          priority
+        />
+      </motion.div>
+
+      <Stack className="z-10" direction={"column"} gap={1}>
         <h1 className="displays md:displayl text-white">Where to next?</h1>
         <p className="bodym md:titlel text-white">Let us plan your trip</p>
       </Stack>
@@ -59,7 +74,7 @@ const HeroHome = () => {
         />
       </FormControl>
 
-      <Stack direction={"row"} gap={{ xs: 2, sm: 3 }}>
+      <Stack className="z-10" direction={"row"} gap={{ xs: 2, sm: 3 }}>
         <Link href={"https://g.co/kgs/ycR2zwv"} target="_blank">
           <Stack
             direction={"row"}
@@ -73,9 +88,10 @@ const HeroHome = () => {
               alt="Google"
             />
 
-            <Stack direction={"row"} gap={0.5} alignItems={"center"}>
-              <StarIcon className="text-[#e7c262] text-lg" />
-              <p className="font-bold text-[13px]">5.0</p>
+            <Stack direction={"row"} alignItems={"center"}>
+            {[...Array(5)].map((_, index) => (
+            <StarIcon key={index} className="text-[#e7c262] text-lg" />
+          ))}
             </Stack>
           </Stack>
         </Link>
@@ -96,9 +112,10 @@ const HeroHome = () => {
               height={31}
               alt="Google"
             />
-            <Stack direction={"row"} gap={0.5} alignItems={"center"}>
-              <StarIcon className="text-[#e7c262] text-lg" />
-              <p className="font-bold text-[13px]">5.0</p>
+            <Stack direction={"row"} alignItems={"center"}>
+            {[...Array(5)].map((_, index) => (
+            <StarIcon key={index} className="text-[#e7c262] text-lg" />
+          ))}
             </Stack>
           </Stack>
         </Link>

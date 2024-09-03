@@ -88,9 +88,7 @@ const Step2Form: React.FC<Step2FormProps> = ({
           <p className="text-black bodym">Select Destinations</p>
           {selectedPlaceOfInterest &&(  
               <div className="space-y-4">
-                <h3 className="bodyl">
-                {selectedPlaceOfInterest}
-                </h3>
+            
                 <div className="flex flex-wrap gap-2">
                 {availableDestinations.map((destination, index) => (
               <Chip

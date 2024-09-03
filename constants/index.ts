@@ -16,6 +16,7 @@ import { TREK_GOECHALA } from "./packages/treks/treks_goechala";
 import { TREK_DZUKOU } from "./packages/treks/treks_dzukou";
 import { UPCOMING_MEGHALAYA } from "./packages/upcoming/upcoming_meghalaya";
 import { UPCOMING_SIKKIMDARJ } from "./packages/upcoming/upcoming_sikkimdarj";
+import { UPCOMING_EXPERIENCEMEGHALAYA } from "./packages/upcoming/upcoming_experiencemeghalaya";
 export const navlinks = [
   {
     id: "1",
@@ -154,6 +155,7 @@ export const UpcomingTours: TripDetail[] = [
  UPCOMING_BHUTAN,
  UPCOMING_SANDAKPHU,
  UPCOMING_GOECHALA,
+ UPCOMING_EXPERIENCEMEGHALAYA,
  UPCOMING_MEGHALAYA,
  UPCOMING_SIKKIMDARJ,
 ];
