@@ -7,7 +7,6 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 import Script from "next/script";
-import { ReactLenis, useLenis } from '@/lib/lenis'
 import WhatsAppButton from "@/components/WhatappButton/page";
 const roboto = Roboto({
   weight: ["100", "300", "400", "700"],
