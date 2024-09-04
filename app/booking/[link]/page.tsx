@@ -923,7 +923,7 @@ const BookingPage = () => {
           <div className="flex flex-col gap-1">
             <h2 className="titles md:titlem font-normal text-[#171D19]">
               Pay  
-              <span className="text-secondary-oncontainer text-balance titlel md:headlines"> INR {advance}/-</span> now 
+              <span className=" text-balance titlel md:headlines text-primary"> INR {formatIndian(advance)}/-</span> now 
             </h2>
 
             <h2 className="text-secondary-oncontainer text-balance titlel md:headlines">

@@ -148,6 +148,7 @@ function PackagePage() {
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
+        console.log(entry.target.id, entry.isIntersecting);
         if (entry.isIntersecting) {
           setActiveSection(entry.target.id);
         }
@@ -290,7 +291,7 @@ function PackagePage() {
                 </Stack>
               )}
             </section>
-            <section className="py-6 rounded-xl px-6 flex flex-col gap-4">
+            <section className="py-6 rounded-xl px-4 md:px-6 flex flex-col md:flex-row gap-4">
               <Stack
                 direction={"row"}
                 gap={1}
@@ -299,13 +300,31 @@ function PackagePage() {
               >
                 <AccessTimeIcon className="text-primary-oncontainer" />
                 <Stack direction={"column"} gap={1} justifyContent={"center"}>
-                  <p className="bodys md:hidden text-black">
-                    {packageData.durationn}N{packageData.durationd}D
-                  </p>
-                  <p className="hidden bodyl md:flex text-black">
+                
+                  <p className=" bodys md:bodyl flex text-black">
                     {packageData.durationn} Nights {packageData.durationd} Days
                   </p>
                 </Stack>
+              </Stack>
+              <Stack
+                 direction={"row"}
+                 gap={1}
+                 className="bg-primary-98 shadow-cardShadow w-fit rounded-xl px-3 py-3"
+                 alignItems={"center"}
+              >
+              <p className="labels md:labell text-black text-balance">
+                    Starts at{" "}
+                  </p>
+                  <p className="bodys  md:bodyl text-black">
+                    <span className="text-primary font-semibold ">INR {packageData.currentPrice}/-</span>
+                   {" "}
+                    {packageData.originalPrice && (
+                      <span className="bodys font-normal line-through">
+                        {" "}{packageData.originalPrice}
+                      </span>
+                    )}
+                    {" "} per head
+                  </p>
               </Stack>
             </section>
             <section className="flex flex-row">
@@ -716,17 +735,10 @@ function PackagePage() {
                     {packageData.currentPrice && (
                       <Stack direction={"column"} gap={1}>
                         <p className="labels md:titlel text-black text-balance">
-                          Starts at{" "}
+                         Confirm your booking with only 
                         </p>
-                        <p className="bodys md:headlines text-black">
-                          INR {packageData.currentPrice}/-
-                          {packageData.originalPrice && (
-                            <span className="titlem line-through">
-                              {"  "}
-                              {packageData.originalPrice}{" "}
-                            </span>
-                          )}
-                          per head
+                        <p className="bodys md:headlines text-primary">
+                          INR 5,000
                         </p>
                       </Stack>
                     )}
@@ -798,17 +810,11 @@ function PackagePage() {
               {packageData.currentPrice && (
                 <Stack direction={"column"} gap={1} className=" px-3 py-2">
                   <p className="labels md:labell text-black text-balance">
-                    Starts at{" "}
+                   Confirm your booking with only{" "}
                   </p>
-                  <p className="bodys  font-semibold md:bodyl text-black">
-                    INR {packageData.currentPrice}/-
-                    {packageData.originalPrice && (
-                      <span className="bodys font-normal line-through">
-                        {" "}
-                        {packageData.originalPrice}{" "}
-                      </span>
-                    )}
-                    per head
+                  <p className="bodys  font-semibold md:bodyl text-primary">
+                    INR 5,000
+                   
                   </p>
                 </Stack>
               )}
