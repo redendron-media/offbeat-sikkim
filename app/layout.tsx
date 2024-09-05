@@ -8,6 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 import Script from "next/script";
 import WhatsAppButton from "@/components/WhatappButton/page";
+import Loader from "@/components/loader/page";
 const roboto = Roboto({
   weight: ["100", "300", "400", "700"],
   style: ["normal", "italic"],
@@ -55,7 +56,7 @@ export default function RootLayout({
           t.src=v;s=b.getElementsByTagName(e)[0];
           s.parentNode.insertBefore(t,s)}(window, document,'script',
           'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '8094359647352078');
+          fbq('init','870665934694594');
           fbq('track', 'PageView');
         `}
       </Script>
@@ -63,7 +64,7 @@ export default function RootLayout({
       <body className={`${roboto.className} bg-[#F6FBF4] pt-20 md:pt-32`}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-       
+          <Loader />
           <Header />
   
           {children}
@@ -77,7 +78,7 @@ export default function RootLayout({
           height="1"
           width="1"
           style={{ display: "none" }}
-          src={`https://www.facebook.com/tr?id=id=8094359647352078&ev=PageView&noscript=1`}
+          src={"https://www.facebook.com/tr?id=870665934694594&ev=PageView&noscript=1"}
         />
       </noscript>
       </body>
