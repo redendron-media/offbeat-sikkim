@@ -456,7 +456,7 @@ function PackagePage() {
                   )}
                   {isUpcoming && (
                     <Link href={`/booking/${packageData.link}`}>
-                      <Button>Book Now</Button>
+                      <Button>View Dates & Complete Booking</Button>
                     </Link>
                   )}
                 </section>
@@ -744,7 +744,7 @@ function PackagePage() {
                     )}
 
                     <Link href={`/booking/${packageData.link}`}>
-                      <Button>Book Now</Button>
+                      <Button>View Dates & Complete Booking</Button>
                     </Link>
                   </div>
                 ) : (
@@ -773,7 +773,7 @@ function PackagePage() {
                 )}
                 {isUpcoming && (
                   <Link href={`/booking/${packageData.link}`}>
-                    <Button>Book Now</Button>
+                    <Button>View Dates & Complete Booking</Button>
                   </Link>
                 )}
               </section>
@@ -808,7 +808,7 @@ function PackagePage() {
               gap={{ xs: 1, md: 3 }}
             >
               {packageData.currentPrice && (
-                <Stack direction={"column"} gap={1} className=" px-3 py-2">
+                <Stack direction={"column"} gap={1} className="w-1/2 py-2">
                   <p className="labels md:labell text-black text-balance">
                    Confirm your booking with only{" "}
                   </p>
@@ -818,19 +818,11 @@ function PackagePage() {
                   </p>
                 </Stack>
               )}
-
-              {packageData.costDouble && (
-                <Stack direction={"column"} gap={1} className=" px-3 py-2">
-                  <p className="labels md:labell text-black">Starts at</p>
-                  <p className="bodys  font-semibold md:bodyl text-black">
-                    {packageData.costDouble} per head
-                  </p>
-                </Stack>
-              )}
-
               {isUpcoming && (
                 <Link href={`/booking/${packageData.link}`}>
-                  <Button>Book Now</Button>
+                  <Button>
+                    <span  className="labels md:labell">View Dates & <br/> Complete Booking</span>
+                    </Button>
                 </Link>
               )}
             </Stack>
