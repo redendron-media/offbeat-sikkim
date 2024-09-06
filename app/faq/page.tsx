@@ -101,7 +101,7 @@ const Faq = () => {
           <AccordionDetails className="bodym md:bodyl px-2 text-pretty text-[#171D19]">
             <p>
               We offer a range of accommodations, from budget-friendly hotels
-              and guesthouses to luxury resorts and boutique stays. You can
+              and homestays to luxury resorts. You can
               choose based on your preferences and budget.
             </p>
           </AccordionDetails>
