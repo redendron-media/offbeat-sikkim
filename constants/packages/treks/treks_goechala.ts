@@ -83,7 +83,7 @@ export const TREK_GOECHALA = {
       {
         day: "Day 5",
         title:
-          "Trek to Dzongri Top | Trek Downhill to Thansing| Trekking Distance: 10 km | Duration: 4-5 hours | Elevation: 13,681 ft",
+          "Trek to Dzongri Top | Trek Downhill to Thansing| Trekking Distance: 10 km | Duration: 4-5 hours | Elevation: 13,681 ft",
         activities: [
           "Start your day with an uphill trek to reach the Dzongri Top to experience the 360-degree view of Kanchenjunga. Once you reach the top, take a moment to breathe and admire the views of the Himalayas. Afterwards, trek back to Dzongri and from there, continue your journey to Thasing, passing through the Kokchurang village to spot Himalayan blue sheep and the Himalayan monal. Upon arrival, settle in your camp surrounded by the Koktang and Pandim peaks of the Himalayas for an overnight stay.",
           "Trek uphill from Dzongri to Dzongri Top, covering a notable distance in the Himalayas.",
@@ -98,40 +98,12 @@ export const TREK_GOECHALA = {
       {
         day: "Day 6",
         title:
-          "Trek from Thansing to Lamuney | Trekking Distance: | Duration: | Elevation: 13,600 ft.",
+          "Trek from Thansing to Lamuney | Elevation: 13,600 ft.",
         activities: [
           "Wake up to the scenic views and nature’s rhythm. Later, embark on an adventurous journey from Thansing to Lamuney, a scenic trek that takes you through the rugged terrain of the Himalayas. Pass through the mesmerizing views of snow-capped peaks, lush green valleys, and streams. Also, witness the vibrant flora and fauna. Upon arrival, get comfortable in your tents for an overnight stay amidst the mountains of Pandim and Kanchenjunga.",
           "Begin your uphill trek from Thansing to Lamuney, exploring the surroundings as you move ahead.",
           "Observe the flora and fauna, such as colorful alpine flowers and beautiful mountain birds.",
           "Upon reaching Lamuney, roam around the village and interact with the locals learning about their culture.",
-        ],
-      },
-      {
-        day: "Day 7",
-        title:
-          "Trek to Goechala | Downhill Trek to Kokchurang | Trekking Distance: 11 km | Duration: 4-5hours | Elevation: 15,100 ft.",
-        activities: [
-          "It’s going to be a long day of trekking, so hydrate well. Begin your trek to Goechala, passing through the still waters of Samiti Lake and challenging trails. Continue until you reach Goechala, via Zemathang. Upon arrival at viewpoint 1 of Goechala Pass, relax for a while amidst the Himalayan ranges. Afterwards, descend to the Kokchurang village crossing the uneven pathways and different mountain ranges. Once you arrive, explore the village before settling in for an overnight stay at your camp.",
-          "Pass through steep slopes and challenging trails as you continue your journey.",
-          "Continue trekking to Goechala, walking past Zemathang.",
-          "After reaching Goecha La Pass viewpoint 1, take-in the beauty of the Himalayan ranges.",
-          "Begin the descent from Goecha La Pass viewpoint 1 to the beautiful Kokchurang village.",
-          "On the way, admire the views of different mountain ranges while walking on uneven pathways.",
-          "After reaching Kokchurang, explore the village, followed by an overnight stay at the campsite.",
-        ],
-      },
-      {
-        day: "Day 8",
-        title:
-          "Descend from Kokchurang to Tshoka| Trekking Distance: 6 km | Duration: 2-3 hours | Elevation: 9,701 ft.",
-        activities: [
-          "Begin your trek downhill towards Tshoka and admire the views of the beautiful Kanchenjunga Peak from a nearby ridge.",
-          "Walk past the Dzongri Plateau and Prek Chu River to continue the journey downwards.",
-          "Then, pass through the deciduous forests of Phedang to reach the beautiful Tshoka village.",
-          "After reaching Goecha La Pass viewpoint 1, take-in the beauty of the Himalayan ranges.",
-          "Begin the descent from Goecha La Pass viewpoint 1 to the beautiful Kokchurang village.",
-          "On the way, admire the views of different mountain ranges while walking on uneven pathways.",
-          "After reaching Kokchurang, explore the village, followed by an overnight stay at the campsite.",
         ],
       },
       {
