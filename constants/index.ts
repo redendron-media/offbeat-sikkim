@@ -1,4 +1,4 @@
-import {TripDetail } from "@/lib/types";
+import { TripDetail } from "@/lib/types";
 import { UPCOMING_NORTH_NATHULA } from "./packages/upcoming/upcoming_nathula_north";
 import { UPCOMING_BHUTAN } from "./packages/upcoming/upcoming_bhutan";
 import { UPCOMING_SANDAKPHU } from "./packages/upcoming/upcoming_sandakphu";

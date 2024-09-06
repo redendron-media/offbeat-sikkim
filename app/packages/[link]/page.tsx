@@ -19,7 +19,6 @@ import {
 } from "@mui/material";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 import Accordion from "@mui/material/Accordion";
-import { useInView } from "react-intersection-observer";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";

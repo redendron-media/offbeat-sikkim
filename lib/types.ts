@@ -160,4 +160,3 @@ export interface photoGallery {
     source?: string;
     coTraveler?: string[] | undefined;
   }
-  
