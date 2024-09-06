@@ -11,7 +11,7 @@ const Faq = () => {
       <h2 className="text-secondary-oncontainer headlines md:displays text-pretty lg:displaym text-center">
         Frequently Asked Questions
       </h2>
-      <section className="bg-[#E4EAE3] py-6 rounded-xl px-4 md:px-6">
+      <section className="bg-[#E4EAE3] py-6 space-y-6 rounded-xl px-4 md:px-6">
         <Accordion
           key="1"
           defaultExpanded={Number("1") === 1}
@@ -23,7 +23,7 @@ const Faq = () => {
             aria-controls={`panel1-content`}
             id={`panel1-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               What regions in North East India do you offer trips to?
             </p>
           </AccordionSummary>
@@ -46,7 +46,7 @@ const Faq = () => {
             aria-controls={`panel2-content`}
             id={`panel2-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               Are your trips customizable?
             </p>
           </AccordionSummary>
@@ -70,7 +70,7 @@ const Faq = () => {
             aria-controls={`panel3-content`}
             id={`panel3-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               What is the best time to visit these regions?
             </p>
           </AccordionSummary>
@@ -94,7 +94,7 @@ const Faq = () => {
             aria-controls={`panel4-content`}
             id={`panel4-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               What types of accommodation do you offer?
             </p>
           </AccordionSummary>
@@ -118,7 +118,7 @@ const Faq = () => {
             aria-controls={`panel5-content`}
             id={`panel5-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               Are your trips suitable for solo travelers, families, or groups?
             </p>
           </AccordionSummary>
@@ -142,7 +142,7 @@ const Faq = () => {
             aria-controls={`panel6-content`}
             id={`panel6-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               Can I include trekking or adventure activities in my trip?
             </p>
           </AccordionSummary>
@@ -166,7 +166,7 @@ const Faq = () => {
             aria-controls={`panel7-content`}
             id={`panel7-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               How are the itineraries planned?
             </p>
           </AccordionSummary>
@@ -191,7 +191,7 @@ const Faq = () => {
             aria-controls={`panel8-content`}
             id={`panel8-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               Will I have a local guide during my trip?
             </p>
           </AccordionSummary>
@@ -215,7 +215,7 @@ const Faq = () => {
             aria-controls={`panel9-content`}
             id={`panel9-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               What should I pack for my trip?
             </p>
           </AccordionSummary>
@@ -240,7 +240,7 @@ const Faq = () => {
             aria-controls={`panel10-content`}
             id={`panel10-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               What is your cancellation policy?
             </p>
           </AccordionSummary>
@@ -266,7 +266,7 @@ const Faq = () => {
             aria-controls={`panel11-content`}
             id={`panel11-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               Will I get a refund if I cancel my trip?
             </p>
           </AccordionSummary>
@@ -290,7 +290,7 @@ const Faq = () => {
             aria-controls={`panel12-content`}
             id={`panel12-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               Can I reschedule my trip after booking?
             </p>
           </AccordionSummary>
@@ -314,7 +314,7 @@ const Faq = () => {
             aria-controls={`panel13-content`}
             id={`panel13-header`}
           >
-            <p className="titlem md:titlel font-medium text-balance text-[#171D19]">
+            <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
               What happens if my trip is canceled due to unforeseen
               circumstances?
             </p>
