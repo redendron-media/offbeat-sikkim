@@ -2,8 +2,7 @@
 import Slider from '@/components/Slider'
 import ContactDialog from '@/components/contact-dialog/page'
 import Custom_Form from '@/components/custom-itinerary/custom-itinerary-form'
-import Testimonials from '@/components/pages/Testimonials/page'
-import { CuratedPackages, Destinations, Treks, UpcomingTours } from '@/constants'
+import Testimonials from '@/components/pages/Testimonials/page';
 import { client } from '@/lib/sanity'
 import React from 'react'
 
