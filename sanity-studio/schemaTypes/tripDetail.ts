@@ -236,6 +236,45 @@ const tripDetailFields = [
   }),
 ]
 
+const destinationFields = [
+  defineField({
+    name: 'id',
+    type: 'string',
+    title: 'ID',
+  }),
+  defineField({
+    name: 'title',
+    type: 'string',
+    title: 'Title',
+  }),
+  defineField({
+    name: 'destination',
+    title: 'Destination',
+    type: 'string',
+  }),
+  defineField({
+    name: 'desc',
+    type: 'string',
+    title: 'Description',
+  }),
+  defineField({
+    name: 'image',
+    type: 'image',
+    title: 'Cover Image for page ',
+    options: {
+      hotspot: true,
+    },
+  }),
+  defineField({
+    name: 'cover',
+    type: 'image',
+    title: 'Cover Image for card',
+    options: {
+      hotspot: true,
+    },
+  }),
+ 
+]
 export const upcomingTripDetail = defineType({
   name: 'upcomingTripDetail',
   title: 'Upcoming Trip Detail',
@@ -256,3 +295,10 @@ export const trekTripDetail = defineType({
   type: 'document',
   fields: tripDetailFields,
 });
+
+export const destinations = defineType({
+  name:'destination',
+  title:'Destination',
+  type:'document',
+  fields: destinationFields,
+})

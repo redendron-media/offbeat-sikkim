@@ -40,9 +40,8 @@ const HeroHome = () => {
         <Image
           src="/images/hero.webp"
           alt="Hero Background"
-          layout="fill"
-          objectFit="cover"
-          className="rounded-lg"
+          fill
+          className="rounded-lg object-cover"
           priority
         />
       </motion.div>

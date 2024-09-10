@@ -1,10 +1,10 @@
 "use client";
 import React, { FC } from "react";
 import Cards from "../Cards";
-import { TripDetail } from "@/lib/types";
+import { CardTrip } from "@/lib/types";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 interface SliderProps {
-  items: TripDetail[];
+  items: CardTrip[];
 }
 
 const Sliderr: FC<SliderProps> = ({ items }) => {

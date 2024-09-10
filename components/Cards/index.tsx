@@ -4,29 +4,27 @@ import Image from "next/image";
 import { IconButton} from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Link from "next/link";
-import { CardProps } from "@/lib/types";
+import { CardTrip } from "@/lib/types";
+import { urlFor } from "@/lib/sanity";
 
 type TourCardProps = {
-  card: CardProps;
+  card: CardTrip;
 };
 
 const Cards = ({ card }: TourCardProps) => {
-  if (!card) {
-    return <></>;
+  if (!card || !card.link) {
+    console.error("Card or link is undefined", card); // Debugging in case link is undefined
+    return null;
   }
-  const link = card.link
-    ? card.link
-    : card.destination
-    ? `destinations/${card.destination}`
-    : "";
 
-    const isCurated = link.startsWith("curated");
+  const link = !card.tripType ? `destinations/${card.link}` : card.link;
+  const isCurated = card.tripType === 'curated';
   return (
     <Link href={`/packages/${link}`} className="cursor-pointer">
       <Card className="w-[232px] h-fit md:w-[289px] lg:w-[292px] lg:h-fit rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-cardShadow ">
         <div className="relative w-full h-[269px] md:h-[364px]">
           <Image
-            src={`/${card.cover ? card.cover:  card.image}.webp`}
+            src={urlFor(card.cover).url()}
             className="object-cover rounded-b-lg select-none"
             fill
             alt={card.title}
@@ -48,9 +46,6 @@ const Cards = ({ card }: TourCardProps) => {
               <p className="bodys">
                 {card.durationn} Nights {card.durationd} Days
               </p>
-            )}
-            {card.costDouble && (
-              <p className="labell">Starts at INR {card.costDouble}/-</p>
             )}
             {card.currentPrice && (
               <>

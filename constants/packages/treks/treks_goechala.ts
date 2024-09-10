@@ -148,10 +148,6 @@ export const TREK_GOECHALA = {
         title: "Departure Day",
         activities: [
           "Saying goodbye to the picturesque valleys, lush forests, rocky terrains, and snow-capped mountains can be a tough pill to swallow. But don't worry, you'll be leaving with a bag full of incredible memories and a few aches and pains from all the trekking. It's time to check out from your cozy camp/homestay and head to the airport or railway station to reunite with your loved ones eagerly waiting for you back home. Safe travels!",
-          "Begin your trek downhill from Tshokha village to Yuksom.",
-          "On the way, explore the Bakhim village and take-in the views of the scenery around.",
-          "Continue the journey, walking on the trail that passes through Sachen.",
-          "Arrive at Yuksom and relax for the day, followed by an overnight stay.",
         ],
       },
     ],

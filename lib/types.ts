@@ -26,7 +26,7 @@ export interface CardProps {
     photoGalleries?:photoGallery[],
     tourDates?:string[], 
     link?:string,
-    pdf?:string,
+    pdfItinerary?:string,
     detailedItinerary?: ItineraryDay[],
     inclusions?: string[],
     exclusions?: string[],
@@ -159,4 +159,24 @@ export interface photoGallery {
     tourDates?: string;
     source?: string;
     coTraveler?: string[] | undefined;
+  }
+
+  interface Cover {
+    asset: {
+      _id: string;
+      url: string;
+    };
+    alt: string;
+  }
+  
+  export interface CardTrip {
+    id: string;
+    title: string;
+    cover: Cover;
+    durationn?: number;
+    durationd?: string;
+    link:string;
+    tripType?:string;
+    originalPrice?: number;
+    currentPrice?: number;
   }

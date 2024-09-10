@@ -1,6 +1,6 @@
 import { blog } from "./blog";
-import { curatedTripDetail, trekTripDetail, upcomingTripDetail } from "./tripDetail";
+import { curatedTripDetail, destinations, trekTripDetail, upcomingTripDetail } from "./tripDetail";
 
 export const schemaTypes = [
-    blog,upcomingTripDetail,curatedTripDetail,trekTripDetail
+    blog,upcomingTripDetail,curatedTripDetail,trekTripDetail,destinations
 ]

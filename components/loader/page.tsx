@@ -26,7 +26,7 @@ const Loader = () => {
                 transition={{ opacity: { duration: 0.8, ease: 'easeOut' } }}
                 className="flex items-center justify-center"
             >
-                <Image src={logo} alt="Logo" className="size-72" />
+                <Image src={logo} alt="Logo" className="size-60 md:size-72" />
             </motion.div>
         </motion.div>
     );

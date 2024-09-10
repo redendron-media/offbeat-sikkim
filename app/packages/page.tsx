@@ -1,30 +1,78 @@
-'use client';
+
 import Slider from '@/components/Slider'
 import ContactDialog from '@/components/contact-dialog/page'
 import Custom_Form from '@/components/custom-itinerary/custom-itinerary-form'
 import Testimonials from '@/components/pages/Testimonials/page'
 import { CuratedPackages, Destinations, Treks, UpcomingTours } from '@/constants'
+import { client } from '@/lib/sanity'
 import React from 'react'
 
+const query = `
+ {
+  "curatedTrips": *[_type == "curatedTripDetail"] | order(id asc) {
+    id,
+    title,
+    cover,
+    link,
+    durationn,
+    durationd,
+    tripType,
+  },
+  
+  "trekTrips": *[_type == "trekTripDetail"] | order(id asc) {
+    id,
+    title,
+    cover,
+    link,
+    durationn,
+    durationd,
+    tripType,
+  },
+  
+  "upcomingTrips": *[_type == "upcomingTripDetail"] | order(id asc) {
+    id,
+    title,
+    cover,
+    link,
+    durationn,
+    durationd,
+    originalPrice,
+    currentPrice,
+    tripType,
+  },
 
-function Packages() {
+  "destinations": *[_type == "destination"] | order(id asc) {
+    id,
+    title,
+    cover,
+     "link": destination
+},
+}
+  `;
+
+  export default async function Packages() {
+    const data = await client.fetch(query);
+    const curatedTrips = data.curatedTrips || [];
+    const trekTrips = data.trekTrips || [];
+    const upcomingTrips = data.upcomingTrips || [];
+    const destinations = data.destinations || [];
   return (
    <main className='pl-4 bg-[#F6FBF4] md:pl-6 flex flex-col'>
         <section className='flex flex-col py-12 md:py-[76px] gap-4 md:gap-9'>
             <h2 className='text-secondary-oncontainer headlines md:displays lg:displaym'>Upcoming Community Trips</h2>
-            <Slider items={UpcomingTours}/>
+            <Slider items={upcomingTrips}/>
         </section>
         <section className='flex flex-col py-12 md:py-[76px] gap-4 md:gap-9'>
             <h2 className='text-secondary-oncontainer headlines md:displays lg:displaym'>Destinations</h2>
-            <Slider items={Destinations}/>
+            <Slider items={destinations}/>
         </section>
         <section className='flex flex-col py-12 md:py-[76px] gap-4 md:gap-9'>
             <h2 className='text-secondary-oncontainer headlines md:displays lg:displaym pr-4'>Curated Packages For the Explorer in You!</h2>
-            <Slider items={CuratedPackages}/>
+            <Slider items={curatedTrips}/>
         </section>
         <section className='flex flex-col py-12 md:py-[76px] gap-4 md:gap-9'>
             <h2 className='text-secondary-oncontainer headlines md:displays lg:displaym'>Trek Expeditions</h2>
-            <Slider items={Treks}/>
+            <Slider items={trekTrips}/>
         </section>
         <section className='pr-4 md:pr-6'>
         <Custom_Form/>
@@ -39,5 +87,3 @@ function Packages() {
    </main>
   )
 }
-
-export default Packages

@@ -252,7 +252,7 @@ export const Nagaland: TripDetail[] = [
 export const Destinations = [
   {
     id: "1",
-    image: "images/north-sikkim/sikkimDestination",
+    cover: "images/north-sikkim/sikkimDestination",
     pageImage:"images/north-sikkim/hero",
     title: "Sikkim",
     destination: "sikkim",
@@ -260,7 +260,7 @@ export const Destinations = [
   },
   {
     id: "2",
-    image: "images/sandakphu/northbengalDestination",
+    cover: "images/sandakphu/northbengalDestination",
     pageImage:"images/sandakphu/hero",
     title: "North Bengal",
     destination: "northbengal",
@@ -268,7 +268,7 @@ export const Destinations = [
   },
   {
     id: "3",
-    image: "images/meghalaya/meghalayaDestination",
+    cover: "images/meghalaya/meghalayaDestination",
     pageImage:"images/meghalaya/hero1",
     title: "Meghalaya",
     destination: "meghalaya",
@@ -276,7 +276,7 @@ export const Destinations = [
   },
   {
     id: "4",
-    image: "images/arunachal/arunachalDestination",
+    cover: "images/arunachal/arunachalDestination",
     pageImage:"images/arunachal/1",
     title: "Arunachal Pradesh",
     destination: "arunachalpradesh",
@@ -284,7 +284,7 @@ export const Destinations = [
   },
   {
     id: "5",
-    image: "images/nagaland/nagalandDestination",
+    cover: "images/nagaland/nagalandDestination",
     pageImage:"images/nagaland/5",
     title: "Nagaland",
     destination: "nagaland",
@@ -292,7 +292,7 @@ export const Destinations = [
   },
   {
     id: "6",
-    image: "images/bhutan/bhutanDestination",
+    cover: "images/bhutan/bhutanDestination",
     pageImage:"images/bhutan/hero",
     title: "Bhutan",
     destination: "bhutan",

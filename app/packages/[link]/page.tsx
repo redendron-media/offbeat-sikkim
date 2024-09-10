@@ -1,12 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  packagesData,
-  UpcomingTours,
-  CuratedPackages,
-  Treks,
-} from "@/constants";
-import {
   Box,
   Dialog,
   DialogTitle,
@@ -16,6 +10,7 @@ import {
   Stack,
   Tab,
   Tabs,
+  CircularProgress,
 } from "@mui/material";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 import Accordion from "@mui/material/Accordion";
@@ -24,10 +19,9 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ContactDialog from "@/components/contact-dialog/page";
 import Sliderr from "@/components/Slider";
-import { TripDetail } from "@/lib/types";
 import PhotoGallery from "@/components/photo-gallery/page";
 import Link from "next/link";
 import ShareIcon from "@mui/icons-material/Share";
@@ -40,19 +34,58 @@ import {
   TwitterShareButton,
   TwitterIcon,
 } from "next-share";
-import DownloadIcon from '@mui/icons-material/Download';
+import DownloadIcon from "@mui/icons-material/Download";
 import CloseIcon from "@mui/icons-material/Close";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { cn } from "@/lib/utils";
 import ContactForm from "@/components/contact-form/page";
-interface PackageData {
-  title: string;
-}
+import { client, fileUrlFor, urlFor } from "@/lib/sanity";
+import { useQuery, QueryClient, QueryClientProvider } from "react-query";
+import Image from "next/image";
+import { CardTrip, TripDetail } from "@/lib/types";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+const fetchPackageData = async (packageType: string, link: string) => {
+  const query = `
+    {
+      "packageData": *[_type == "${packageType}" && link == "${link}"][0] {
+        title,
+        desc,
+        image,
+        durationn,
+        durationd,
+        currentPrice,
+        originalPrice,
+        detailedItinerary,
+        inclusions,
+        exclusions,
+        thingsToCarry,
+        thingsToCarryTrek,
+        bookingProcess,
+        mandatoryDocuments,
+        knowBeforeYouGo,
+        photoGalleries,
+        tourDates,
+        "pdfItinerary": pdfItinerary.asset->url
+      },
+      "relatedPackages": *[_type == "${packageType}" && link != "${link}"] {
+        id,
+        title,
+        cover,
+        link,
+        durationn,
+        durationd,
+        currentPrice,
+        originalPrice,
+        tripType
+      }
+    }`;
+  return await client.fetch(query);
+};
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -83,60 +116,51 @@ interface SectionConfig {
   condition: boolean;
 }
 
-function PackagePage() {
+const PackagePage: React.FC = () => {
   const { link } = useParams();
   const [value, setValue] = useState(0);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = usePathname();
   const [isDesktop, setIsDesktop] = useState<boolean>(false);
+
+  const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const currentPageLink = `https://offbeatsikkim.com/${pathname}`;
-  const handleClickOpen = () => {
-    setIsShareOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsShareOpen(false);
-  };
-
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText(currentPageLink).then(() => {
-      alert("Copied to clipboard ");
-    });
-  };
 
   const decodedLink = decodeURIComponent(link as string);
   const linkString = Array.isArray(link) ? link[0] : link;
-  const packageData = packagesData.find(
-    (packagedata) => packagedata.link === decodedLink
-  );
-
   const isUpcoming = decodedLink.startsWith("upcoming");
   const isTrek = decodedLink.endsWith("trek");
   const isCurated = decodedLink.startsWith("curated");
 
-  let filteredPackages: TripDetail[] = [];
-  if (isUpcoming) {
-    filteredPackages = UpcomingTours.filter((pkg) => pkg.link !== decodedLink);
-  } else if (isTrek) {
-    filteredPackages = Treks.filter((pkg) => pkg.link !== decodedLink);
-  } else if (isCurated) {
-    filteredPackages = CuratedPackages.filter(
-      (pkg) => pkg.link !== decodedLink
-    );
-  }
+  const packageType = isUpcoming
+    ? "upcomingTripDetail"
+    : isTrek
+      ? "trekTripDetail"
+      : "curatedTripDetail";
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-  const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+  const { data, error, isLoading } = useQuery<{
+    packageData: TripDetail;
+    relatedPackages: CardTrip[];
+  }>(
+    ["packageData", packageType, decodedLink],
+    () => fetchPackageData(packageType, decodedLink),
+    {
+      enabled: !!link,
+      retry: 2,
+      staleTime: 1000 * 60 * 5,
+    }
+  );
 
   useEffect(() => {
+    if (!data || !sectionRefs.current) return;
+
     const observerOptions = {
       root: null,
       rootMargin: "-50% 0px -50% 0px",
       threshold: 0,
     };
+
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1024);
     };
@@ -147,7 +171,6 @@ function PackagePage() {
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
-        console.log(entry.target.id, entry.isIntersecting);
         if (entry.isIntersecting) {
           setActiveSection(entry.target.id);
         }
@@ -169,11 +192,51 @@ function PackagePage() {
       });
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [data]);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "90vh",
+        }}
+      >
+        <CircularProgress color="primary" />
+      </Box>
+    );
+  }
+
+  if (error) {
+    console.error("Failed to load package data:", error);
+    return <div>Failed to load package data.</div>;
+  }
+  const packageData = data?.packageData;
+
+  const relatedPackages = data?.relatedPackages;
 
   if (!packageData) {
     return <div>Package data is unavailable.</div>;
   }
+  const handleClickOpen = () => {
+    setIsShareOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsShareOpen(false);
+  };
+
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(currentPageLink).then(() => {
+      alert("Copied to clipboard ");
+    });
+  };
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   const sections: SectionConfig[] = [
     {
@@ -219,18 +282,15 @@ function PackagePage() {
   ];
 
   const filteredSections = sections
-  .filter((section) => section.condition)
-  .filter((section, index, self) => {
-    // Prevent duplicates in case both desktop and mobile versions are being rendered
-    return self.findIndex((s) => s.label === section.label) === index;
-  });
+    .filter((section) => section.condition)
+    .filter((section, index, self) => {
+      return self.findIndex((s) => s.label === section.label) === index;
+    });
 
   const scrollToSection = (sectionName: string) => {
     if (!isDesktop && sectionName === "exclusions-mobile") {
-    
       setValue(1);
-  
-    
+
       setTimeout(() => {
         const sectionElement = document.getElementById(sectionName);
         if (sectionElement) {
@@ -239,10 +299,8 @@ function PackagePage() {
         }
       }, 100);
     } else if (!isDesktop && sectionName === "inclusions-mobile") {
- 
       setValue(0);
-  
-  
+
       setTimeout(() => {
         const sectionElement = document.getElementById(sectionName);
         if (sectionElement) {
@@ -251,7 +309,6 @@ function PackagePage() {
         }
       }, 100);
     } else {
-      // For desktop or other sections
       const sectionElement = document.getElementById(sectionName);
       if (sectionElement) {
         sectionElement.scrollIntoView({ behavior: "smooth" });
@@ -260,16 +317,26 @@ function PackagePage() {
     }
   };
 
+  const pdfUrl =`${packageData?.pdfItinerary ?? ""}?dl=Itinerary.pdf`;
   return (
     <main className=" relative bg-[#F6FBF4]  max-w-screen-2xl mx-auto">
       {packageData && (
         <>
           <div className="flex flex-col px-4 md:px-6">
             <section
-              className={`flex flex-col justify-center gap-6 py-9 px-4  md:px-14 md:py-24 md:gap-6 min-h-[50vh] rounded-xl bg-cover bg-center bg-no-repeat bg-black bg-opacity-30 bg-blend-overlay`}
-              style={{ backgroundImage: `url(/${packageData.image}.webp)` }}
+              className={`flex flex-col justify-center gap-6 py-9 px-4 relative  md:px-14 md:py-24 md:gap-6 min-h-[50vh] rounded-xl `}
             >
-              <Stack direction={"column"} gap={1}>
+              <div className="absolute  inset-0 w-full z-0">
+                <div className="absolute inset-0 bg-black/10 z-10" />
+                <Image
+                  src={urlFor(packageData.image).url()}
+                  alt={packageData.title}
+                  fill
+                  className="rounded-lg object-cover"
+                  priority
+                />
+              </div>
+              <Stack className="z-10" direction={"column"} gap={1}>
                 <h2 className="headlines md:displaym lg:displayl text-white">
                   {packageData.title}
                 </h2>
@@ -279,14 +346,26 @@ function PackagePage() {
               </Stack>
 
               {isUpcoming && (
-                <Stack direction={{ xs: "column", sm: "row" }} gap={1}>
-                  <Link
-                    href={`/${packageData.pdf}.pdf`}
-                    download={`${packageData.pdf}`}
-                  >
-                    <Button className=" w-fit flex gap-1 xs:bodys">Download Itinerary  <DownloadIcon className="xs:text-sm text-[20px] mt-0.5"/></Button>
-                   
-                  </Link>
+                <Stack
+                  className="z-10"
+                  direction={{ xs: "column", sm: "row" }}
+                  gap={1}
+                >
+                  {pdfUrl ? (
+                    <a
+                      href={pdfUrl}
+                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Button className=" w-fit flex gap-1 xs:bodys">
+                        Download Itinerary{" "}
+                        <DownloadIcon className="xs:text-sm text-[20px] mt-0.5" />
+                      </Button>
+                    </a>
+                  ) : (
+                    <></>
+                  )}
                 </Stack>
               )}
             </section>
@@ -299,38 +378,37 @@ function PackagePage() {
               >
                 <AccessTimeIcon className="text-primary-oncontainer" />
                 <Stack direction={"column"} gap={1} justifyContent={"center"}>
-                
                   <p className=" bodys md:bodyl flex text-black">
                     {packageData.durationn} Nights {packageData.durationd} Days
                   </p>
                 </Stack>
               </Stack>
               <Stack
-                 direction={"row"}
-                 gap={1}
-                 className="bg-primary-98 shadow-cardShadow w-fit rounded-xl px-3 py-3"
-                 alignItems={"center"}
+                direction={"row"}
+                gap={1}
+                className="bg-primary-98 shadow-cardShadow w-fit rounded-xl px-3 py-3"
+                alignItems={"center"}
               >
-              <p className="labels md:labell text-black text-balance">
-                    Starts at{" "}
-                  </p>
-                  <p className="bodys  md:bodyl text-black">
-                    <span className="text-primary font-semibold ">INR {packageData.currentPrice}/-</span>
-                   {" "}
-                    {packageData.originalPrice && (
-                      <span className="bodys font-normal line-through">
-                        {" "}{packageData.originalPrice}
-                      </span>
-                    )}
-                    {" "} per head
-                  </p>
+                <p className="labels md:labell text-black text-balance">
+                  Starts at{" "}
+                </p>
+                <p className="bodys  md:bodyl text-black">
+                  <span className="text-primary font-semibold ">
+                    INR {packageData.currentPrice}/-
+                  </span>{" "}
+                  {packageData.originalPrice && (
+                    <span className="bodys font-normal line-through">
+                      {" "}
+                      {packageData.originalPrice}
+                    </span>
+                  )}{" "}
+                  per head
+                </p>
               </Stack>
             </section>
             <section className="flex flex-row">
               <div className=" w-full flex flex-col lg:w-2/3">
-
                 <section className="bg-primary-container titlem md:titlel items-center 2xl:justify-center whitespace-nowrap shadow-cardShadow hide-scrollbar sticky top-16 md:top-14 lg:top-16 z-10 overflow-x-scroll pt-6 rounded-xl my-6  px-6 flex gap-4 md:gap-6 xl:gap-8 2xl:gap-10">
-                  
                   {filteredSections.map((section) => (
                     <p
                       key={section.id}
@@ -345,7 +423,6 @@ function PackagePage() {
                       {section.label}
                     </p>
                   ))}
-                  
                 </section>
 
                 <section
@@ -361,7 +438,8 @@ function PackagePage() {
                   >
                     <h2 className="headlines text-[#171D19]">Your itinerary</h2>
                     <Button variant={"outline"} onClick={handleClickOpen}>
-                      <span className="hidden md:flex">Share</span> <ShareIcon className="text-sm ml-1" />{" "}
+                      <span className="hidden md:flex">Share</span>{" "}
+                      <ShareIcon className="text-sm ml-1" />{" "}
                     </Button>
                     <Dialog open={isShareOpen} maxWidth="md" fullWidth>
                       <DialogTitle className="bg-[#F5F5F5]">
@@ -734,7 +812,7 @@ function PackagePage() {
                     {packageData.currentPrice && (
                       <Stack direction={"column"} gap={1}>
                         <p className="labels md:titlel text-black text-balance">
-                         Confirm your booking with only 
+                          Confirm your booking with only
                         </p>
                         <p className="bodys md:headlines text-primary">
                           INR 5,000
@@ -782,7 +860,7 @@ function PackagePage() {
               <h2 className="text-secondary-oncontainer headlines md:displays lg:displaym">
                 Related Packages
               </h2>
-              <Sliderr items={filteredPackages} />
+              <Sliderr items={relatedPackages ?? []} />
             </section>
 
             <section className="flex flex-col justify-center items-center w-full gap-6 py-[60px]">
@@ -809,19 +887,20 @@ function PackagePage() {
               {packageData.currentPrice && (
                 <Stack direction={"column"} gap={1} className="w-1/2 py-2">
                   <p className="labels md:labell text-black text-balance">
-                   Confirm your booking with only{" "}
+                    Confirm your booking with only{" "}
                   </p>
                   <p className="bodys  font-semibold md:bodyl text-primary">
                     INR 5,000
-                   
                   </p>
                 </Stack>
               )}
               {isUpcoming && (
                 <Link href={`/booking/${packageData.link}`}>
                   <Button>
-                    <span  className="labels md:labell">View Dates & <br/> Complete Booking</span>
-                    </Button>
+                    <span className="labels md:labell">
+                      View Dates & <br /> Complete Booking
+                    </span>
+                  </Button>
                 </Link>
               )}
             </Stack>
@@ -838,6 +917,16 @@ function PackagePage() {
       )}
     </main>
   );
-}
+};
 
-export default PackagePage;
+const queryClient = new QueryClient();
+
+const PackagePageWrapper: React.FC = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <PackagePage />
+    </QueryClientProvider>
+  );
+};
+
+export default PackagePageWrapper;

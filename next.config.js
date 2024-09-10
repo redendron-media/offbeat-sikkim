@@ -9,6 +9,11 @@ const nextConfig = {
         hostname: "cdn.sanity.io",
         port: "", // You can omit `port` if it's empty
       },
+      {
+        protocol: "https",
+        hostname: "www.facebook.com",
+        port: "", // You can omit `port` if it's empty
+      },
     ],
   },
   async rewrites() {

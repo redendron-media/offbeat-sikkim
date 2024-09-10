@@ -13,7 +13,6 @@ async function getData() {
     "currentSlug":slug.current,_createdAt
 }`;
   const data = await client.fetch(query);
-  console.log(data);
   return data;
 }
 
@@ -22,7 +21,6 @@ const chunkPosts = (posts: blogCard[], size: number): blogCard[][] => {
   for (let i = 0; i < posts.length; i += size) {
     chunks.push(posts.slice(i, i + size));
   }
-  console.log("Chunked posts:", chunks);
   return chunks;
 };
 

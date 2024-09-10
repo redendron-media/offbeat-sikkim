@@ -9,6 +9,7 @@ import theme from "./theme";
 import Script from "next/script";
 import WhatsAppButton from "@/components/WhatappButton/page";
 import Loader from "@/components/loader/page";
+import Image from "next/image";
 const roboto = Roboto({
   weight: ["100", "300", "400", "700"],
   style: ["normal", "italic"],
@@ -74,7 +75,8 @@ export default function RootLayout({
 
     
       <noscript>
-        <img
+        <Image
+          alt="Facebook"
           height="1"
           width="1"
           style={{ display: "none" }}

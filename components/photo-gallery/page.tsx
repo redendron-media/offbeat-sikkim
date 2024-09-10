@@ -3,6 +3,7 @@ import { photoGallery } from "@/lib/types";
 import Image from "next/image";
 import React, { FC, useRef } from "react";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import { urlFor } from "@/lib/sanity";
 
 interface GalleryProps {
   items: photoGallery[];
@@ -22,10 +23,9 @@ const PhotoGallery: FC<GalleryProps> = ({ items }) => {
                 key={index}
               >
                 <Image
-                  src={`/${image.images}.webp`}
+                  src={urlFor(image.images).url()}
                   alt={image.title}
                   fill
-                 
                   loading="lazy"
                   className="object-cover select-none"
                 />
