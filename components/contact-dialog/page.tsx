@@ -10,11 +10,11 @@ interface ContactDialogProps {
     link:string;
     packageTitle?:string;
     title:string;
-    tourDates?:string[];
+   
 }
 
 
-const ContactDialog: React.FC<ContactDialogProps> = ({ link, packageTitle, title,tourDates }) => {
+const ContactDialog: React.FC<ContactDialogProps> = ({ link, packageTitle, title }) => {
     const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,7 +50,6 @@ const ContactDialog: React.FC<ContactDialogProps> = ({ link, packageTitle, title
           link={link}
           packageTitle={packageTitle}
           handleClose={handleClose}
-          tourDates={tourDates}
         />
       </Dialog>
     </>

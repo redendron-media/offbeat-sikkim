@@ -527,9 +527,6 @@ const PackagePage: React.FC = () => {
                       link={linkString}
                       packageTitle={packageData.title}
                       title="Enquire Now"
-                      tourDates={
-                        packageData.tourDates ? packageData.tourDates : []
-                      }
                     />
                   )}
                   {isUpcoming && (
@@ -844,9 +841,7 @@ const PackagePage: React.FC = () => {
                     link={linkString}
                     packageTitle={packageData.title}
                     title="Enquire Now"
-                    tourDates={
-                      packageData.tourDates ? packageData.tourDates : []
-                    }
+                 
                   />
                 )}
                 {isUpcoming && (
@@ -910,7 +905,7 @@ const PackagePage: React.FC = () => {
                 link={linkString}
                 packageTitle={packageData.title}
                 title="Enquire Now"
-                tourDates={packageData.tourDates ? packageData.tourDates : []}
+             
               />
             )}
           </div>
