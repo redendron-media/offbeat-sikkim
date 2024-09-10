@@ -39,7 +39,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { cn } from "@/lib/utils";
 import ContactForm from "@/components/contact-form/page";
-import { client, fileUrlFor, urlFor } from "@/lib/sanity";
+import { client, urlFor } from "@/lib/sanity";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import Image from "next/image";
 import { CardTrip, TripDetail } from "@/lib/types";
