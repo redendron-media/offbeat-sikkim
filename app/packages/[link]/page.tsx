@@ -384,28 +384,33 @@ const PackagePage: React.FC = () => {
                   </p>
                 </Stack>
               </Stack>
-              <Stack
-                direction={"row"}
-                gap={1}
-                className="bg-primary-98 shadow-cardShadow w-fit rounded-xl px-3 py-3"
-                alignItems={"center"}
-              >
-                <p className="labels md:labell text-black text-balance">
-                  Starts at{" "}
-                </p>
-                <p className="bodys  md:bodyl text-black">
-                  <span className="text-primary font-semibold ">
-                    INR {packageData.currentPrice}/-
-                  </span>{" "}
-                  {packageData.originalPrice && (
-                    <span className="bodys font-normal line-through">
-                      {" "}
-                      {packageData.originalPrice}
-                    </span>
-                  )}{" "}
-                  per head
-                </p>
-              </Stack>
+              {isUpcoming
+                && (
+                  <Stack
+                  direction={"row"}
+                  gap={1}
+                  className="bg-primary-98 shadow-cardShadow w-fit rounded-xl px-3 py-3"
+                  alignItems={"center"}
+                >
+                  <p className="labels md:labell text-black text-balance">
+                    Starts at{" "}
+                  </p>
+                  <p className="bodys  md:bodyl text-black">
+                    <span className="text-primary font-semibold ">
+                      INR {packageData.currentPrice}/-
+                    </span>{" "}
+                    {packageData.originalPrice && (
+                      <span className="bodys font-normal line-through">
+                        {" "}
+                        {packageData.originalPrice}
+                      </span>
+                    )}{" "}
+                    per head
+                  </p>
+                </Stack>
+                )
+              }
+             
             </section>
             <section className="flex flex-row">
               <div className=" w-full flex flex-col lg:w-2/3">
