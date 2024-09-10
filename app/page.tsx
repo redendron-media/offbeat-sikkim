@@ -5,7 +5,6 @@ import Custom_Form from "@/components/custom-itinerary/custom-itinerary-form";
 import Testimonials from "@/components/pages/Testimonials/page";
 import FeaturedArticles from "@/components/pages/featured-articles/page";
 import HeroHome from "@/components/pages/hero-home/page";
-import { CuratedPackages, Destinations, Treks, UpcomingTours } from "@/constants";
 import { client } from "@/lib/sanity";
 
   const query = `

@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
+  Box,
   Chip,
   CircularProgress,
   FormControl,
@@ -12,7 +13,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { FormErrors, UpcomingForm } from "@/lib/types";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import AddIcon from "@mui/icons-material/Add";
@@ -23,10 +24,11 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import PersonIcon from "@mui/icons-material/Person";
 import GroupIcon from "@mui/icons-material/Group";
 import { motion } from "framer-motion";
-import { packagesData } from "@/constants";
 import { useParams, useRouter } from "next/navigation";
 import { payment } from "@/action/ServerActions";
 import { cn } from "@/lib/utils";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { client } from "@/lib/sanity";
 
 interface CustomConnectorWrapperProps {
   activeStep: number;
@@ -55,15 +57,38 @@ const CustomConnectorWrapper = ({
   );
 };
 
+const fetchPackageData = async (link: string) => {
+  const query = `
+    *[_type == "upcomingTripDetail" && link == "${link}"][0] {
+      title,
+      durationn,
+      durationd,
+      currentPrice,
+      originalPrice,
+      tourDates, // Ensure this field exists in the Sanity schema
+      coTraveler,
+      tripType
+    }
+  `;
+  const data = await client.fetch(query);
+  return data;
+};
+
 const BookingPage = () => {
   const router = useRouter();
   const { link } = useParams();
   const decodedLink = decodeURIComponent(link as string);
-  const packageData = packagesData.find(
-    (packagedata) => packagedata.link === decodedLink
+  const [dataLoading, setDataLoading] = useState(true);
+
+  const { data: packageData, isLoading, error } = useQuery(
+    ['packageData', link],
+    () => fetchPackageData(decodedLink),
+    { enabled: !!link } 
   );
 
-  const datesByMonth = packageData?.tourDates?.reduce((acc, date) => {
+ 
+
+  const datesByMonth = packageData?.tourDates?.reduce((acc: { [key: string]: string[] }, date: string) => {
     const month = date.split(' ')[1];
     if (!acc[month]) {
       acc[month] = [];
@@ -95,7 +120,21 @@ const BookingPage = () => {
   const [loading, setLoading] = useState(false);
   const cost = Number(packageData?.currentPrice?.replace(/,/g, ""));
 
- 
+  
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      noOfAdults: noOfPeople.toString(),
+    }));
+    if (initialDate) {
+      setFormData((prevData) => ({
+        ...prevData,
+        tourDates: initialDate,
+      }));
+    }
+
+  }, [noOfPeople, formData.noOfAdults,initialDate, setFormData]);
+
   const handleMonthSelect = (month: string) => {
     setSelectedMonth(month);
     setFormData((prevData) => ({
@@ -165,6 +204,35 @@ const BookingPage = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "90vh",
+        }}
+      >
+        <CircularProgress color="primary" />
+      </Box>
+    );
+  }
+  if (error || !packageData) {
+    return(
+    <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "90vh",
+    }}
+  >
+    <div>Error fetching package data or package not found.</div>
+  </Box>
+    )
+  }
+
   const totalCost = cost * noOfPeople;
   const gst = Math.round(totalCost * 0.05);
   let tcs;
@@ -204,19 +272,6 @@ const BookingPage = () => {
     return newErrors;
   };
 
-  useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      noOfAdults: noOfPeople.toString(),
-    }));
-    if (initialDate) {
-      setFormData((prevData) => ({
-        ...prevData,
-        tourDates: initialDate,
-      }));
-    }
-
-  }, [noOfPeople, formData.noOfAdults,initialDate, setFormData]);
 
   const makePayment = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -350,7 +405,7 @@ const BookingPage = () => {
                </div>
                {selectedMonth && (
                  <div className="flex overflow-x-scroll hide-scrollbar gap-4 py-3">
-                 {datesByMonth[selectedMonth].map((date, index) => (
+                 {datesByMonth[selectedMonth].map((date: string, index: number) => (
                    <Chip
                      key={index}
                      label={
@@ -955,5 +1010,15 @@ const BookingPage = () => {
     </main>
   );
 };
+const queryClient = new QueryClient();
 
-export default BookingPage;
+const PackagePageWrapper: React.FC = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BookingPage />
+    </QueryClientProvider>
+  );
+};
+
+export default PackagePageWrapper;
+

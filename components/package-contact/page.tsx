@@ -23,16 +23,31 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/L
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { CuratedPackages, UpcomingTours } from "@/constants";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import axios from "axios";
-
+import { client } from "@/lib/sanity"; 
+import { useQuery } from "react-query";
 interface PackageContactFormProps {
   link: string;
   packageTitle?: string;
   handleClose: () => void;
   tourDates?: string[];
 }
+
+interface CuratedPackage {
+  title: string;
+}
+
+const fetchCuratedTitles = async () => {
+  const query = `
+    *[_type == "curatedTripDetail"] {
+      title
+    }
+  `;
+  const data = await client.fetch(query);
+  return data;
+};
+
 
 const PackageContactForm: React.FC<PackageContactFormProps> = ({
   link,
@@ -45,6 +60,10 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
   const isCurated = link.startsWith("curated");
   const isDefault = link === "";
 
+  const { data: CuratedPackages, isLoading, error } = useQuery(
+    ['curatedTripTitles'],
+    fetchCuratedTitles
+  );
   const source = isUpcoming
     ? "upcoming"
     : isTrek
@@ -597,7 +616,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
                       },
                     }}
                   >
-                    {CuratedPackages.map((item, index) => (
+                    {CuratedPackages.map((item:CuratedPackage, index:number) => (
                       <MenuItem
                         key={index}
                         value={item.title}

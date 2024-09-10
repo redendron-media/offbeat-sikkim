@@ -64,6 +64,7 @@ const fetchPackageData = async (packageType: string, link: string) => {
         inclusions,
         exclusions,
         thingsToCarry,
+        link,
         thingsToCarryTrek,
         bookingProcess,
         mandatoryDocuments,
