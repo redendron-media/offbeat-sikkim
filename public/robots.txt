@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://offbeatsikkim.com
+
+# Sitemaps
+Sitemap: https://offbeatsikkim.com/sitemap.xml
