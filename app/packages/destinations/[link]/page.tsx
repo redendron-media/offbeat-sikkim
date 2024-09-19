@@ -6,6 +6,9 @@ import React from "react";
 import { Stack } from "@mui/material";
 import { client, urlFor } from "@/lib/sanity";
 import Image from "next/image";
+import { blog } from "@/schemaTypes/blog";
+import { blogCard } from "@/lib/types";
+import Link from "next/link";
 
 interface DestinationPageProps {
   params: { link: string };
@@ -50,7 +53,14 @@ const query = (link: string) => `
     image,
     desc,
     "link": destination
-  }
+  },
+   "blogs": *[_type == "blog" && (title match "${link}" || caption match "${link}")] {
+      title,
+      caption,
+      titleImage,
+      "currentSlug": slug.current,
+      _createdAt
+    }
 }
 `;
 
@@ -66,6 +76,13 @@ export default async function DestinationPage({
   const treks = data.treks || [];
   const upcomingTours = data.upcomingTours || [];
   const destinationDetails = data.destinationDetails[0] || {};
+  const blogs = data.blogs || [];
+
+  
+  function formatDate(dateString: string) {
+    const dateParts = dateString.split("-");
+    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+  }
 
   return (
     <main className="px-4 bg-[#F6FBF4] md:px-6 flex flex-col">
@@ -116,6 +133,48 @@ export default async function DestinationPage({
             Trek Expeditions
           </h2>
           <Sliderr items={treks} />
+        </section>
+      )}
+
+      {blogs.length > 0 && (
+        <section className="flex flex-col py-12 md:py-[76px] gap-4 md:gap-9">
+          <h2 className="text-secondary-oncontainer headlines md:displays lg:displaym">
+           Related  Blogs
+          </h2>
+          <div className="flex w-full flex-row flex-wrap  gap-8">
+              {blogs.map((blog: blogCard, index:number) => (
+                <Link
+                  key={index}
+                  href={`/blog/${blog.currentSlug}`}
+                  className="w-full lg:w-[45%]"
+                >
+                  <div key={blog.title} className="h-full w-full rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-cardShadow pb-4">
+                    <div className="w-full h-[240px] md:h-[600px] relative">
+                      <Image
+                        src={urlFor(blog.titleImage).url()}
+                        fill
+                        loading="lazy"
+                        alt={blog.title}
+                        className="rounded-lg object-cover lg:rounded-[10px]"
+                      />
+                    </div>
+                    <div className="px-4 pt-4 space-y-1 text-[#051E13]">
+                      <p className="labels text-[#404942]">
+                        {formatDate(
+                          new Date(blog._createdAt).toISOString().split("T")[0]
+                        )}
+                      </p>
+                      <h2 className="titles line-clamp-2 md:titlel font-bold">
+                        {blog.title}
+                      </h2>
+                      <p className="labell line-clamp-2 overflow-ellipsis select-none">
+                        {blog.caption}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
         </section>
       )}
 
