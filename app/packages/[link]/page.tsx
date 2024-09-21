@@ -43,6 +43,7 @@ import { client, urlFor } from "@/lib/sanity";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import Image from "next/image";
 import { CardTrip, TripDetail } from "@/lib/types";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;

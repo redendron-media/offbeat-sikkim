@@ -191,12 +191,15 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       setLoading(false);
       return;
     }
+
 
     const finalFormData = { ...formData };
     if (isTrek) {
@@ -205,9 +208,10 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
       delete finalFormData.tourDates;
     }
 
+    let payload: any = {};
     if (isCurated || isDefault) {
       delete finalFormData.tourDates;
-      const payload = {
+      payload = {
         name: formData.name,
         phone_number: formData.phone,
         email: formData.email,
@@ -245,6 +249,57 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
           config: error.config,
         });
         setResponseMessage("An error occurred. Please try again.");
+      }
+
+      const templateParams = [
+        { name: "fname", value: formData.name },
+        { name: "packageName", value: formData.tourPackage },
+        { name: "email", value: formData.email },
+        { name: "mobile", value: formData.phone },
+        { name: "start_date", value: formData.startDate },
+        { name: "travel_style", value: formData.travelstyle || "" },
+        { name: "accommodation", value: formData.accommodation || "" },
+        { name: "adults", value: formData.noOfAdults },
+        {
+          name: "children",
+          value: (formData.age && formData.age.length > 0)
+            ? formData.age.filter((age) => age.trim() !== "").length.toString()
+            : "None"
+        },
+        {
+          name: "age",
+          value: Array.isArray(formData.age) && formData.age.some((age) => age.trim() !== "")
+            ? formData.age.filter((age) => age.trim() !== "").join(", ")
+            : "-"
+        },
+        {
+          name: "additional",
+          value: formData.additionalInformation?.trim() || "-"
+        }
+      ];
+
+   
+
+      try {
+        const templateResponse = await fetch("/api/sendTemplateMessage", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phone_number: `91${formData.phone}`,
+            template_message_id: "5946",
+            template_params: templateParams,
+          }),
+        });
+
+        if (templateResponse.ok) {
+          console.log("Template message sent successfully.");
+        } else {
+          console.error("Template message sending failed.");
+        }
+      } catch (error) {
+        console.error("Error sending template message:", error);
       }
     }
 
