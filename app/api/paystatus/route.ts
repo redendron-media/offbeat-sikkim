@@ -43,24 +43,59 @@ export async function POST(req: NextRequest) {
       let formData;
       try {
         formData = JSON.parse(formDataString);
+       
       } catch (e) {
         formData = formDataString;
       }
 
-      const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/send-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...formData, transactionId }),
-      });
+      const emailResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/send-email`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...formData, transactionId }),
+        }
+      );
 
       if (!emailResponse.ok) {
         throw new Error("Failed to send email");
       }
+
+      const whatsappPayload = {
+        phone_number: `91${formData.phone}`,
+        template_message_id: "5947",
+        template_params: [
+          { name: "1", value: formData.name },
+          {name:  "2", value: formData.tourPackage},
+          { name: "3", value: formData.email },
+          { name: "4", value: formData.phone },
+          { name: "5", value: formData.tourDates },
+          { name: "6", value: formData.noOfAdults.toString() },
+          { name: "7", value:  formData.amountPaid },
+          { name: "8", value: transactionId },
+        ],
+      };
+
+      const whatsappResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/sendTemplateMessage`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": process.env.NEXT_PUBLIC_HAPILEE_API_KEY!,
+          },
+          body: JSON.stringify(whatsappPayload),
+        }
+      );
+
+      if (!whatsappResponse.ok) {
+        console.error("Failed to send WhatsApp message");
+      }
+
       //@ts-ignore
       await kv.del(transactionId);
-   
 
       return NextResponse.redirect(
         `https://offbeatsikkim.com/success?transactionId=${transactionId}&amount=${amount}&providerReferenceId=${providerReferenceId}`,

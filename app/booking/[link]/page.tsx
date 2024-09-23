@@ -65,7 +65,7 @@ const fetchPackageData = async (link: string) => {
       durationd,
       currentPrice,
       originalPrice,
-      tourDates, // Ensure this field exists in the Sanity schema
+      tourDates,
       coTraveler,
       tripType
     }
@@ -106,7 +106,7 @@ const BookingPage = () => {
   const [errors, setErrors] = useState<Partial<UpcomingForm>>({});
   const [selectedMonth, setSelectedMonth] = useState<string | null>(initialMonth);
   const [formData, setFormData] = useState<UpcomingForm>({
-    packageName: packageData?.title || "",
+    packageName: packageData?.title ,
     name: "",
     email: "",
     phone: "",
@@ -282,7 +282,7 @@ const BookingPage = () => {
       name: formData.name,
       phone: formData.phone,
       email: formData.email,
-      tourPackage: formData.packageName,
+      tourPackage: packageData.title,
       noOfAdults: parseInt(formData.noOfAdults, 10) || 0,
       tourDates: formData.tourDates,
       modeOfPayment: paymentOption,
