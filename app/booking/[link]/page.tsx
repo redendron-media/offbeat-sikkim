@@ -501,7 +501,7 @@ const BookingPage = () => {
                     {datesByMonth[selectedMonth]?.find(
                       (date: { tourDate: string; }) => date.tourDate === formData.tourDates
                     )?.spots && (
-                      <span className="bodyl text-gray-600">Only{" "}
+                      <span className="bodyl text-error">Only{" "}
                         {
                           datesByMonth[selectedMonth]?.find(
                             (date: { tourDate: string; }) => date.tourDate === formData.tourDates
