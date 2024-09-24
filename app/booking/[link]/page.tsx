@@ -13,7 +13,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormErrors, UpcomingForm } from "@/lib/types";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import AddIcon from "@mui/icons-material/Add";
@@ -32,6 +32,10 @@ import { client } from "@/lib/sanity";
 
 interface CustomConnectorWrapperProps {
   activeStep: number;
+}
+interface Tour {
+  tourDate: string;
+  spots?: string; // spots can be optional
 }
 
 const CustomConnectorWrapper = ({
@@ -65,7 +69,10 @@ const fetchPackageData = async (link: string) => {
       durationd,
       currentPrice,
       originalPrice,
-      tourDates,
+       tourDates[] {
+      tourDate,
+      spots
+    },
       coTraveler,
       tripType
     }
@@ -80,22 +87,30 @@ const BookingPage = () => {
   const decodedLink = decodeURIComponent(link as string);
   const [dataLoading, setDataLoading] = useState(true);
 
-  const { data: packageData, isLoading, error } = useQuery(
-    ['packageData', link],
-    () => fetchPackageData(decodedLink),
-    { enabled: !!link } 
-  );
+  const {
+    data: packageData,
+    isLoading,
+    error,
+  } = useQuery(["packageData", link], () => fetchPackageData(decodedLink), {
+    enabled: !!link,
+  });
 
- 
+  const datesByMonth =
+    packageData?.tourDates?.reduce(
+      (acc: { [key: string]: Tour[] }, tour: Tour) => {
+        if (!tour || !tour.tourDate) {
+          return acc;
+        }
 
-  const datesByMonth = packageData?.tourDates?.reduce((acc: { [key: string]: string[] }, date: string) => {
-    const month = date.split(' ')[1];
-    if (!acc[month]) {
-      acc[month] = [];
-    }
-    acc[month].push(date);
-    return acc;
-  }, {} as { [key: string]: string[] }) || {};
+        const month = tour.tourDate.split(" ")[1];
+        if (!acc[month]) {
+          acc[month] = [];
+        }
+        acc[month].push(tour);
+        return acc;
+      },
+      {} as { [key: string]: { tourDate: string; spots: string }[] }
+    ) || {};
 
   const initialMonth = Object.keys(datesByMonth)[0] || null;
   const initialDate = initialMonth ? datesByMonth[initialMonth][0] : null;
@@ -104,14 +119,16 @@ const BookingPage = () => {
   const [step, setStep] = useState(0);
   const [noOfPeople, setNoOfPeople] = useState(1);
   const [errors, setErrors] = useState<Partial<UpcomingForm>>({});
-  const [selectedMonth, setSelectedMonth] = useState<string | null>(initialMonth);
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(
+    initialMonth
+  );
   const [formData, setFormData] = useState<UpcomingForm>({
-    packageName: packageData?.title ,
+    packageName: packageData?.title,
     name: "",
     email: "",
     phone: "",
     noOfAdults: noOfPeople.toString(),
-    tourDates: packageData?.tourDates?.[0] ?? "",
+    tourDates: packageData?.tourDates?.[0]?.tourDate ?? "",
     source: "upcoming",
     coTraveler: [],
   });
@@ -120,7 +137,6 @@ const BookingPage = () => {
   const [loading, setLoading] = useState(false);
   const cost = Number(packageData?.currentPrice?.replace(/,/g, ""));
 
-  
   useEffect(() => {
     setFormData((prevData) => ({
       ...prevData,
@@ -132,21 +148,22 @@ const BookingPage = () => {
         tourDates: initialDate,
       }));
     }
-
-  }, [noOfPeople, formData.noOfAdults,initialDate, setFormData]);
+  }, [noOfPeople, formData.noOfAdults, initialDate, setFormData]);
 
   const handleMonthSelect = (month: string) => {
     setSelectedMonth(month);
     setFormData((prevData) => ({
       ...prevData,
-      tourDates: datesByMonth[month][0],
+      tourDates: datesByMonth[month]?.[0]?.tourDate ?? "",
     }));
   };
 
   const handleDateSelect = (date: string) => {
-    setFormData({ ...formData, tourDates: date }); 
+    setFormData((prevData) => ({
+      ...prevData,
+      tourDates: date,
+    }));
   };
-
   const handlePeopleInputChange = (
     field: keyof UpcomingForm,
     value: string,
@@ -219,18 +236,18 @@ const BookingPage = () => {
     );
   }
   if (error || !packageData) {
-    return(
-    <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "90vh",
-    }}
-  >
-    <div>Error fetching package data or package not found.</div>
-  </Box>
-    )
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "90vh",
+        }}
+      >
+        <div>Error fetching package data or package not found.</div>
+      </Box>
+    );
   }
 
   const totalCost = cost * noOfPeople;
@@ -272,7 +289,6 @@ const BookingPage = () => {
     return newErrors;
   };
 
-
   const makePayment = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -289,7 +305,7 @@ const BookingPage = () => {
       amountPaid: formatIndian(gatewayCost / 100),
       amountRemaining: formatIndian(paylater),
       source: formData.source,
-      coTraveler: formData.coTraveler?.filter(name => name).join(", ")
+      coTraveler: formData.coTraveler?.filter((name) => name).join(", "),
     };
 
     const redirect = await payment(formData.phone, gatewayCost);
@@ -331,7 +347,7 @@ const BookingPage = () => {
       if (hasErrors) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          coTraveler: coTravellerErrors as string[], // Type is now (string | undefined)[]
+          coTraveler: coTravellerErrors as string[],
         }));
         return;
       }
@@ -353,533 +369,504 @@ const BookingPage = () => {
   return (
     <main className="flex min-h-screen justify-between bg-[#F6FBF4] flex-col py-6 px-4 md:px-6 max-w-screen-2xl gap-4 mx-auto">
       <section>
-      <section className="flex flex-row gap-4 md:gap-8 w-full">
-        <CustomConnectorWrapper activeStep={activeStep} />
-      </section>
-      {step === 0 && (
-        <>
-          <section className="bg-[#E4EAE3] rounded-xl flex-col gap-4 justify-between items-center">
-            <h2 className="headlines px-6 pt-4 md:pt-6 md:displaym lg:displayl text-black">
-              {packageData?.title}
-            </h2>
-            <p className="bodyl bg-[#286A48] rounded-b-xl text-secondary-90 px-6 py-4 md:pb-6">
-              {packageData?.durationn}N {packageData?.durationd}D
-            </p>
-          </section>
-          <section className="flex flex-col md:flex-row gap-4 md:gap-8">
-            <div className=" w-full md:w-1/2 rounded-xl py-6 flex flex-col gap-4">
-              <h2 className="headlines text-[#171D19] px-6 md:py-4">
-                Available Dates
-              </h2>
-              <FormControl className="px-4 md:px-6">
-               <div className="flex overflow-x-scroll hide-scrollbar gap-2 mb-4">
-                  {Object.keys(datesByMonth).map((month,index)=> (
-                    <Chip
-                    key={index}
-                    label={month}
-                    clickable
-                    className={cn(`${selectedMonth === month ? 'shadow-cardShadow' : 'shadow-none'}`)}
-                    onClick={() => handleMonthSelect(month)}
-                    variant={selectedMonth === month ? 'filled' : 'outlined'}
-                    sx={{
-                      ...(selectedMonth === month
-                        ? {
-                            backgroundColor: 'primary.main',
-                            color: 'white',
-                            '& .MuiChip-label': { color: 'white' },
-                          }
-                        : {
-                            borderColor: 'primary.main',
-                            color: 'primary.main',
-                            '& .MuiChip-label': { color: 'primary.main' },
-                          }),
-                      '&:hover': {
-                        backgroundColor:
-                          selectedMonth === month
-                            ? 'primary.dark'
-                            : 'rgba(25, 169, 108, 0.1)',
-                      },
-                    }}
-                  />
-                  ))}
-               </div>
-               {selectedMonth && (
-                 <div className="flex overflow-x-scroll hide-scrollbar gap-4 py-3">
-                 {datesByMonth[selectedMonth].map((date: string, index: number) => (
-                   <Chip
-                     key={index}
-                     label={
-                      <div className="space-y-2">
-                        <div>{date}</div>
-                        <div className={cn(" rounded-xl p-2",`text-${formData.tourDates === date ? 'primary' : 'white'} ${formData.tourDates === date ? 'bg-secondary-95' : 'bg-primary' }`)} style={{ fontSize: '0.75rem'}}>
-                          Starting Price: INR {packageData?.currentPrice}/-
-                        </div>
-                      </div>
-                    }
-                     clickable
-                     className={cn(`py-10 `,`${formData.tourDates === date ? 'shadow-cardShadow' : 'shadow-none'}`)}
-                     onClick={() => handleDateSelect(date)}
-                     variant={
-                       formData.tourDates === date ? 'filled' : 'outlined'
-                     }
-                     sx={{
-                       ...(formData.tourDates === date
-                         ? {
-                             backgroundColor: 'primary.main',
-                             color: 'white',
-                             '& .MuiChip-label': { color: 'white' },
-                           }
-                         : {
-                             borderColor: 'primary.main',
-                             color: 'primary.main',
-                             '& .MuiChip-label': { color: 'primary.main' },
-                           }),
-                       '&:hover': {
-                         backgroundColor:
-                           formData.tourDates === date
-                             ? 'primary.dark'
-                             : 'rgba(25, 169, 108, 0.1)',
-                       },
-                     }}
-                   />
-                 ))}
-               </div>
-               )}
-
-              </FormControl>
-            </div>
-            <div className=" w-full md:w-1/2  md:h-[65svh] flex flex-col justify-between gap-4">
-              <div className="h-fit py-6 rounded-xl">
-                <h2 className="headlines text-[#171D19]  md:py-4">Cost</h2>
-                <div className=" flex flex-row items-stretch gap-1 mt-4">
-                  <div className="w-full text-center text-balance bg-primary-90 px-1 py-4 bodys lg:titlem">
-                    <p>Room Sharing</p>
-                  </div>
-                  <div className="w-full h-full text-center text-balance bg-primary-90 px-1 py-4 bodys lg:titlem">
-                    <p>Original Price (Per Head)</p>
-                  </div>
-                  <div className="w-full text-center text-balance bg-primary-90 px-1 py-4 bodys lg:titlem">
-                    <p>Limited Price (Per Head)</p>
-                  </div>
-                </div>
-
-                <div className=" flex flex-row items-center gap-1 justify-between">
-                  <div className="w-full text-center text-balance  px-1  py-4 bodys lg:titlem">
-                    <p>Double / Triple</p>
-                  </div>
-                  <div className="w-full text-center text-balance  px-1  py-4 bodys lg:titlem">
-                    <p className="line-through text-neutral-60">
-                      INR {packageData?.originalPrice}/-
-                    </p>
-                  </div>
-                  <div className="w-full text-center text-balance  px-1  py-4 bodys lg:titlem">
-                    <p>INR {packageData?.currentPrice}/-</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </>
-      )}
-
-      {step === 1 && (
-        <section className="flex flex-col md:flex-row gap-4 md:gap-8 w-full">
-          <div className="bg-[#E4EAE3] w-full md:w-1/2 rounded-xl py-6 flex flex-col gap-4">
-            <h2 className="headlines text-start text-[#171D19] px-6 border border-b-2 border-b-[#C0C9C0] md:py-4">
-              Fill in the details
-            </h2>
-            <div className="px-6 flex flex-col justify-between h-full">
-              <div className="space-y-4">
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel htmlFor="name">Name</InputLabel>
-                  <OutlinedInput
-                    id="name"
-                    name="name"
-                    label="Name*"
-                    value={formData.name}
-                    error={!!errors.name}
-                    onChange={handleInputChange}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          disableTouchRipple
-                          onClick={() => handleClear("name")}
-                        >
-                          <CancelOutlinedIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    sx={{
-                      color: "#404942",
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "#404942",
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "#404942",
-                      },
-                      "& .MuiOutlinedInput-input": {
-                        color: "#404942",
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "#404942",
-                        },
-                        "& input": {
-                          color: "#404942",
-                        },
-                      },
-                      "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
-                        {
-                          color: "#404942",
-                        },
-                      "& .MuiOutlinedInput-input:-webkit-autofill": {
-                        WebkitBoxShadow: "0 0 0 1000px #E4EAE3 inset",
-                        WebkitTextFillColor: "#404942",
-                      },
-                    }}
-                  />
-                  {errors.name && (
-                    <p className="text-error bodyl">{errors.name}</p>
-                  )}
-                </FormControl>
-
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel htmlFor="email">Email</InputLabel>
-                  <OutlinedInput
-                    id="email"
-                    name="email"
-                    type="email"
-                    label="Email*"
-                    error={!!errors.email}
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          disableTouchRipple
-                          onClick={() => handleClear("email")}
-                        >
-                          <CancelOutlinedIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    sx={{
-                      color: "#404942",
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "#404942",
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "#404942",
-                      },
-                      "& .MuiOutlinedInput-input": {
-                        color: "#404942",
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "#404942",
-                        },
-                        "& input": {
-                          color: "#404942",
-                        },
-                      },
-                      "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
-                        {
-                          color: "#404942",
-                        },
-                      "& .MuiOutlinedInput-input:-webkit-autofill": {
-                        WebkitBoxShadow: "0 0 0 1000px #E4EAE3 inset",
-                        WebkitTextFillColor: "#404942",
-                      },
-                    }}
-                  />
-                  {errors.email && (
-                    <p className="text-error bodyl">{errors.email}</p>
-                  )}
-                </FormControl>
-
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel htmlFor="phone">Phone</InputLabel>
-                  <OutlinedInput
-                    id="phone"
-                    name="phone"
-                    label="Phone*"
-                    type="number"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    error={!!errors.phone}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          disableTouchRipple
-                          onClick={() => handleClear("phone")}
-                        >
-                          <CancelOutlinedIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    sx={{
-                      color: "#404942",
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "#404942",
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "#404942",
-                      },
-                      "& .MuiOutlinedInput-input": {
-                        color: "#404942",
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "#404942",
-                        },
-                        "& input": {
-                          color: "#404942",
-                        },
-                      },
-                      "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
-                        {
-                          color: "#404942",
-                        },
-                      "& .MuiOutlinedInput-input:-webkit-autofill": {
-                        WebkitBoxShadow: "0 0 0 1000px #E4EAE3 inset",
-                        WebkitTextFillColor: "#404942",
-                      },
-                    }}
-                  />
-                  {errors.phone && (
-                    <p className="text-error bodyl">{errors.phone}</p>
-                  )}
-                </FormControl>
-              </div>
-            </div>
-          </div>
-
-          <div className="w-full md:w-1/2 md:h-[65svh] flex flex-col justify-between gap-4">
-            <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
-              <div className=" flex flex-col gap-2 ">
-                <div className="w-full text-balance  px-4  pt-4 headlines md:headlinem">
-                  <p>{packageData?.title}</p>
-                </div>
-                <div className="pb-6 px-4 bg-[#286A48] rounded-b-xl pt-2 text-secondary-90">
-                  <p className="bodys lg:titlem">{formData.tourDates}</p>
-                  <p className="bodys lg:titlem">
-                    {packageData?.durationn}N{packageData?.durationd}D
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <section className="flex flex-row gap-4 md:gap-8 w-full">
+          <CustomConnectorWrapper activeStep={activeStep} />
         </section>
-      )}
-
-      {step === 2 && (
-        <section className="flex flex-col md:flex-row gap-4 md:gap-8 w-full">
-          <div className="bg-[#E4EAE3] w-full md:w-1/2 rounded-xl py-6 flex flex-col gap-4">
-            <h2 className="headlines  text-[#171D19] px-6 border border-b-2 border-b-[#C0C9C0] md:py-4">
-              Fill in the details
-            </h2>
-            <div className="flex flex-col gap-4 h-full">
-              <div className="px-6 flex flex-row justify-between items-center">
-                <p className="bodys lg:titlem">Adults</p>
-                <div className="flex gap-0.5 justify-between items-center border border-secondary rounded-2xl">
-                  <IconButton
-                    onClick={handleRemoveField}
-                    disableFocusRipple
-                    disableRipple
-                    disableTouchRipple
-                  >
-                    <RemoveIcon className="text-primary" />
-                  </IconButton>
-                  <p className="text-base">{noOfPeople}</p>
-                  <IconButton
-                    onClick={handleAddField}
-                    disableFocusRipple
-                    disableRipple
-                    disableTouchRipple
-                  >
-                    <AddIcon className="text-primary" />
-                  </IconButton>
-                </div>
-              </div>
-
-              {noOfPeople > 1 && (
-                <div className="flex px-6 flex-col gap-4">
-                  <p className="bodys lg:titlem">Co-Traveller&apos;s Name</p>
-                  {formData.coTraveler?.map((coTraveller, index) => {
-                    return (
-                      <div key={index} className="space-y-4">
-                        <FormControl variant="outlined" fullWidth>
-                          <InputLabel htmlFor={`name-${index}`}>
-                            Co-Traveller {index + 1}
-                          </InputLabel>
-                          <OutlinedInput
-                            id={`name-${index}`}
-                            name={`name-${index}`}
-                            label={`Co-Traveller ${index + 1}*`}
-                            value={coTraveller}
-                            error={!!errors.coTraveler?.[index]}
-                            onChange={(e) =>
-                              handlePeopleInputChange(
-                                "coTraveler",
-                                e.target.value,
-                                index
-                              )
-                            }
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <IconButton
-                                  disableTouchRipple
-                                  onClick={() =>
-                                    handleClear("coTraveler", index)
-                                  }
+        {step === 0 && (
+          <>
+            <section className="bg-[#E4EAE3] rounded-xl flex-col gap-4 justify-between items-center">
+              <h2 className="headlines px-6 pt-4 md:pt-6 md:displaym lg:displayl text-black">
+                {packageData?.title}
+              </h2>
+              <p className="bodyl bg-[#286A48] rounded-b-xl text-secondary-90 px-6 py-4 md:pb-6">
+                {packageData?.durationn}N {packageData?.durationd}D
+              </p>
+            </section>
+            <section className="flex flex-col md:flex-row gap-4 md:gap-8">
+              <div className=" w-full md:w-1/2 rounded-xl py-6 flex flex-col gap-4">
+                <h2 className="headlines text-[#171D19] px-6 md:py-4">
+                  Available Dates
+                </h2>
+                <FormControl className="px-4 md:px-6">
+                  <div className="flex overflow-x-scroll hide-scrollbar gap-2 mb-4">
+                    {Object.keys(datesByMonth).map((month, index) => (
+                      <Chip
+                        key={index}
+                        label={month}
+                        clickable
+                        className={cn(
+                          `${selectedMonth === month ? "shadow-cardShadow" : "shadow-none"}`
+                        )}
+                        onClick={() => handleMonthSelect(month)}
+                        variant={
+                          selectedMonth === month ? "filled" : "outlined"
+                        }
+                        sx={{
+                          ...(selectedMonth === month
+                            ? {
+                                backgroundColor: "primary.main",
+                                color: "white",
+                                "& .MuiChip-label": { color: "white" },
+                              }
+                            : {
+                                borderColor: "primary.main",
+                                color: "primary.main",
+                                "& .MuiChip-label": { color: "primary.main" },
+                              }),
+                          "&:hover": {
+                            backgroundColor:
+                              selectedMonth === month
+                                ? "primary.dark"
+                                : "rgba(25, 169, 108, 0.1)",
+                          },
+                        }}
+                      />
+                    ))}
+                  </div>
+                  {selectedMonth && (
+                    <div className="flex overflow-x-scroll hide-scrollbar gap-4 py-3">
+                      {datesByMonth[selectedMonth].map(
+                        (
+                          date: { tourDate: string; spots: string },
+                          index: number
+                        ) => (
+                          <Chip
+                            key={index}
+                            label={
+                              <div className="space-y-2">
+                                <div>{date.tourDate}</div>
+                                <div
+                                  className={cn(
+                                    " rounded-xl p-2",
+                                    `text-${
+                                      formData.tourDates === date.tourDate
+                                        ? "primary"
+                                        : "white"
+                                    } ${
+                                      formData.tourDates === date.tourDate
+                                        ? "bg-secondary-95"
+                                        : "bg-primary"
+                                    }`
+                                  )}
+                                  style={{ fontSize: "0.75rem" }}
                                 >
-                                  <CancelOutlinedIcon />
-                                </IconButton>
-                              </InputAdornment>
+                                  Starting Price: INR{" "}
+                                  {packageData?.currentPrice}/-
+                                </div>
+                              </div>
+                            }
+                            clickable
+                            className={cn(
+                              `py-10 `,
+                              `${
+                                formData.tourDates === date.tourDate
+                                  ? "shadow-cardShadow"
+                                  : "shadow-none"
+                              }`
+                            )}
+                            onClick={() => handleDateSelect(date.tourDate)}
+                            variant={
+                              formData.tourDates === date.tourDate
+                                ? "filled"
+                                : "outlined"
                             }
                             sx={{
-                              color: "#404942",
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                borderColor: "#404942",
-                              },
-                              "& .MuiInputLabel-root": {
-                                color: "#404942",
-                              },
-                              "& .MuiOutlinedInput-input": {
-                                color: "#404942",
-                              },
-                              "& .MuiOutlinedInput-root": {
-                                "& fieldset": {
-                                  borderColor: "#404942",
-                                },
-                                "& input": {
-                                  color: "#404942",
-                                },
-                              },
-                              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
-                                {
-                                  color: "#404942",
-                                },
-                              "& .MuiOutlinedInput-input:-webkit-autofill": {
-                                WebkitBoxShadow: "0 0 0 1000px #E4EAE3 inset",
-                                WebkitTextFillColor: "#404942",
+                              ...(formData.tourDates === date.tourDate
+                                ? {
+                                    backgroundColor: "primary.main",
+                                    color: "white",
+                                    "& .MuiChip-label": { color: "white" },
+                                  }
+                                : {
+                                    borderColor: "primary.main",
+                                    color: "primary.main",
+                                    "& .MuiChip-label": {
+                                      color: "primary.main",
+                                    },
+                                  }),
+                              "&:hover": {
+                                backgroundColor:
+                                  formData.tourDates === date.tourDate
+                                    ? "primary.dark"
+                                    : "rgba(25, 169, 108, 0.1)",
                               },
                             }}
                           />
-                        </FormControl>
-                        {errors.coTraveler?.[index] && (
-                          <p className="text-error bodyl">
-                            {errors.coTraveler[index]}
-                          </p>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </div>
+                        )
+                      )}
+                    </div>
+                  )}
+                  {formData.tourDates && selectedMonth && (
+                  <div className="text-start px-2">
+                    {datesByMonth[selectedMonth]?.find(
+                      (date: { tourDate: string; }) => date.tourDate === formData.tourDates
+                    )?.spots && (
+                      <span className="bodyl text-gray-600">Only{" "}
+                        {
+                          datesByMonth[selectedMonth]?.find(
+                            (date: { tourDate: string; }) => date.tourDate === formData.tourDates
+                          )?.spots
+                        }{" "}
+                        spots left!
+                      </span>
+                    )}
+                  </div>
+                )}
+                </FormControl>
+                
+              </div>
+              <div className=" w-full md:w-1/2  md:h-[65svh] flex flex-col justify-between gap-4">
+                <div className="h-fit py-6 rounded-xl">
+                  <h2 className="headlines text-[#171D19]  md:py-4">Cost</h2>
+                  <div className=" flex flex-row items-stretch gap-1 mt-4">
+                    <div className="w-full text-center text-balance bg-primary-90 px-1 py-4 bodys lg:titlem">
+                      <p>Room Sharing</p>
+                    </div>
+                    <div className="w-full h-full text-center text-balance bg-primary-90 px-1 py-4 bodys lg:titlem">
+                      <p>Original Price (Per Head)</p>
+                    </div>
+                    <div className="w-full text-center text-balance bg-primary-90 px-1 py-4 bodys lg:titlem">
+                      <p>Limited Price (Per Head)</p>
+                    </div>
+                  </div>
 
-          <div className="w-full md:w-1/2 flex flex-col justify-between gap-4">
-            <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
-              <div className=" flex flex-col gap-2 ">
-                <div className="w-full text-balance px-6 pt-4 headlines md:headlinem">
-                  <p>{packageData?.title}</p>
+                  <div className=" flex flex-row items-center gap-1 justify-between">
+                    <div className="w-full text-center text-balance  px-1  py-4 bodys lg:titlem">
+                      <p>Double / Triple</p>
+                    </div>
+                    <div className="w-full text-center text-balance  px-1  py-4 bodys lg:titlem">
+                      <p className="line-through text-neutral-60">
+                        INR {packageData?.originalPrice}/-
+                      </p>
+                    </div>
+                    <div className="w-full text-center text-balance  px-1  py-4 bodys lg:titlem">
+                      <p>INR {packageData?.currentPrice}/-</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="px-6 bg-[#286A48] pb-4 rounded-b-xl pt-2 text-secondary-90">
-                  <p className="bodys  lg:titlem">{formData.tourDates}</p>
-                  <p className="bodys lg:titlem">
-                    {packageData?.durationn}N{packageData?.durationd}D
-                  </p>
+              </div>
+            </section>
+          </>
+        )}
+
+        {step === 1 && (
+          <section className="flex flex-col md:flex-row gap-4 md:gap-8 w-full">
+            <div className="bg-[#E4EAE3] w-full md:w-1/2 rounded-xl py-6 flex flex-col gap-4">
+              <h2 className="headlines text-start text-[#171D19] px-6 border border-b-2 border-b-[#C0C9C0] md:py-4">
+                Fill in the details
+              </h2>
+              <div className="px-6 flex flex-col justify-between h-full">
+                <div className="space-y-4">
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel htmlFor="name">Name</InputLabel>
+                    <OutlinedInput
+                      id="name"
+                      name="name"
+                      label="Name*"
+                      value={formData.name}
+                      error={!!errors.name}
+                      onChange={handleInputChange}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            disableTouchRipple
+                            onClick={() => handleClear("name")}
+                          >
+                            <CancelOutlinedIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      sx={{
+                        color: "#404942",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#404942",
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "#404942",
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          color: "#404942",
+                        },
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "#404942",
+                          },
+                          "& input": {
+                            color: "#404942",
+                          },
+                        },
+                        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
+                          {
+                            color: "#404942",
+                          },
+                        "& .MuiOutlinedInput-input:-webkit-autofill": {
+                          WebkitBoxShadow: "0 0 0 1000px #E4EAE3 inset",
+                          WebkitTextFillColor: "#404942",
+                        },
+                      }}
+                    />
+                    {errors.name && (
+                      <p className="text-error bodyl">{errors.name}</p>
+                    )}
+                  </FormControl>
+
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel htmlFor="email">Email</InputLabel>
+                    <OutlinedInput
+                      id="email"
+                      name="email"
+                      type="email"
+                      label="Email*"
+                      error={!!errors.email}
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            disableTouchRipple
+                            onClick={() => handleClear("email")}
+                          >
+                            <CancelOutlinedIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      sx={{
+                        color: "#404942",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#404942",
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "#404942",
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          color: "#404942",
+                        },
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "#404942",
+                          },
+                          "& input": {
+                            color: "#404942",
+                          },
+                        },
+                        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
+                          {
+                            color: "#404942",
+                          },
+                        "& .MuiOutlinedInput-input:-webkit-autofill": {
+                          WebkitBoxShadow: "0 0 0 1000px #E4EAE3 inset",
+                          WebkitTextFillColor: "#404942",
+                        },
+                      }}
+                    />
+                    {errors.email && (
+                      <p className="text-error bodyl">{errors.email}</p>
+                    )}
+                  </FormControl>
+
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel htmlFor="phone">Phone</InputLabel>
+                    <OutlinedInput
+                      id="phone"
+                      name="phone"
+                      label="Phone*"
+                      type="number"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      error={!!errors.phone}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            disableTouchRipple
+                            onClick={() => handleClear("phone")}
+                          >
+                            <CancelOutlinedIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      sx={{
+                        color: "#404942",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#404942",
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "#404942",
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          color: "#404942",
+                        },
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "#404942",
+                          },
+                          "& input": {
+                            color: "#404942",
+                          },
+                        },
+                        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
+                          {
+                            color: "#404942",
+                          },
+                        "& .MuiOutlinedInput-input:-webkit-autofill": {
+                          WebkitBoxShadow: "0 0 0 1000px #E4EAE3 inset",
+                          WebkitTextFillColor: "#404942",
+                        },
+                      }}
+                    />
+                    {errors.phone && (
+                      <p className="text-error bodyl">{errors.phone}</p>
+                    )}
+                  </FormControl>
                 </div>
               </div>
             </div>
 
-            <div className="h-fit bg-[#E4EAE3] py-6 rounded-xl">
-              <h2 className="headlines text-start px-6 text-[#171D19] border border-b-2 border-b-[#C0C9C0] md:py-4">
-                Payment Details
+            <div className="w-full md:w-1/2 md:h-[65svh] flex flex-col justify-between gap-4">
+              <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
+                <div className=" flex flex-col gap-2 ">
+                  <div className="w-full text-balance  px-4  pt-4 headlines md:headlinem">
+                    <p>{packageData?.title}</p>
+                  </div>
+                  <div className="pb-6 px-4 bg-[#286A48] rounded-b-xl pt-2 text-secondary-90">
+                    <p className="bodys lg:titlem">{formData.tourDates}</p>
+                    <p className="bodys lg:titlem">
+                      {packageData?.durationn}N{packageData?.durationd}D
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {step === 2 && (
+          <section className="flex flex-col md:flex-row gap-4 md:gap-8 w-full">
+            <div className="bg-[#E4EAE3] w-full md:w-1/2 rounded-xl py-6 flex flex-col gap-4">
+              <h2 className="headlines  text-[#171D19] px-6 border border-b-2 border-b-[#C0C9C0] md:py-4">
+                Fill in the details
               </h2>
-              <div className=" flex flex-col gap-2 px-6 bodys py-2 lg:titlem">
-                <div className="w-full flex flex-row justify-between items-center text-balance">
-                  <p>Trip Package</p>
-                  <p>
-                    INR {formatIndian(cost)}/- x {noOfPeople}
-                  </p>
+              <div className="flex flex-col gap-4 h-full">
+                <div className="px-6 flex flex-row justify-between items-center">
+                  <p className="bodys lg:titlem">Adults</p>
+                  <div className="flex gap-0.5 justify-between items-center border border-secondary rounded-2xl">
+                    <IconButton
+                      onClick={handleRemoveField}
+                      disableFocusRipple
+                      disableRipple
+                      disableTouchRipple
+                    >
+                      <RemoveIcon className="text-primary" />
+                    </IconButton>
+                    <p className="text-base">{noOfPeople}</p>
+                    <IconButton
+                      onClick={handleAddField}
+                      disableFocusRipple
+                      disableRipple
+                      disableTouchRipple
+                    >
+                      <AddIcon className="text-primary" />
+                    </IconButton>
+                  </div>
                 </div>
-                <div className="w-full flex flex-row justify-between items-center text-balance">
-                  <p>GST @ 5%</p>
-                  <p>INR {formatIndian(gst)}/-</p>
-                </div>
-                {tcs !== 0 && (
-                  <div className="w-full flex flex-row justify-between items-center text-balance">
-                    <p>TCS @ 5%</p>
-                    <p>INR {formatIndian(tcs)}/-</p>
+
+                {noOfPeople > 1 && (
+                  <div className="flex px-6 flex-col gap-4">
+                    <p className="bodys lg:titlem">Co-Traveller&apos;s Name</p>
+                    {formData.coTraveler?.map((coTraveller, index) => {
+                      return (
+                        <div key={index} className="space-y-4">
+                          <FormControl variant="outlined" fullWidth>
+                            <InputLabel htmlFor={`name-${index}`}>
+                              Co-Traveller {index + 1}
+                            </InputLabel>
+                            <OutlinedInput
+                              id={`name-${index}`}
+                              name={`name-${index}`}
+                              label={`Co-Traveller ${index + 1}*`}
+                              value={coTraveller}
+                              error={!!errors.coTraveler?.[index]}
+                              onChange={(e) =>
+                                handlePeopleInputChange(
+                                  "coTraveler",
+                                  e.target.value,
+                                  index
+                                )
+                              }
+                              endAdornment={
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    disableTouchRipple
+                                    onClick={() =>
+                                      handleClear("coTraveler", index)
+                                    }
+                                  >
+                                    <CancelOutlinedIcon />
+                                  </IconButton>
+                                </InputAdornment>
+                              }
+                              sx={{
+                                color: "#404942",
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#404942",
+                                },
+                                "& .MuiInputLabel-root": {
+                                  color: "#404942",
+                                },
+                                "& .MuiOutlinedInput-input": {
+                                  color: "#404942",
+                                },
+                                "& .MuiOutlinedInput-root": {
+                                  "& fieldset": {
+                                    borderColor: "#404942",
+                                  },
+                                  "& input": {
+                                    color: "#404942",
+                                  },
+                                },
+                                "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
+                                  {
+                                    color: "#404942",
+                                  },
+                                "& .MuiOutlinedInput-input:-webkit-autofill": {
+                                  WebkitBoxShadow: "0 0 0 1000px #E4EAE3 inset",
+                                  WebkitTextFillColor: "#404942",
+                                },
+                              }}
+                            />
+                          </FormControl>
+                          {errors.coTraveler?.[index] && (
+                            <p className="text-error bodyl">
+                              {errors.coTraveler[index]}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
-              <div className="w-full px-6 flex flex-row justify-between items-center border border-t-2 border-t-[#C0C9C0] pt-4 text-balance">
-                <h2 className="headlines text-center md:text-start text-[#171D19]">
-                  Total Cost
-                </h2>
-                <p className="text-secondary-oncontainer text-balance titlel md:headlinem">
-                  INR {formatIndian(finalCost)}/-
-                </p>
-              </div>
             </div>
-          </div>
-        </section>
-      )}
 
-      {step === 3 && (
-        <section className="flex flex-col md:flex-row gap-4 md:gap-8 w-full">
-          <div className="bg-[#E4EAE3] w-full md:w-1/2 rounded-xl py-6 flex flex-col gap-4">
-            <h2 className="headlines text-[#171D19] px-6 border border-b-2 border-b-[#C0C9C0] md:py-4">
-              Booking Details
-            </h2>
-
-            <div className="w-[80%] space-y-2 mx-auto">
-              <h2 className="titlel text-[#171D19] md:py-4">
-                Personal Details
-              </h2>
-              <div className=" border-2 bg-[#E4EAE3] border-[#C0C9C0] pb-2 rounded-xl">
-                <div className=" flex flex-col gap-2 px-3 md:px-6 bodys py-2 lg:titlem">
-                  <div className="w-full flex flex-row  gap-2 items-center text-balance">
-                    <PersonIcon className="text-sm md:text-base" />
-                    <p>{formData.name}</p>
+            <div className="w-full md:w-1/2 flex flex-col justify-between gap-4">
+              <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
+                <div className=" flex flex-col gap-2 ">
+                  <div className="w-full text-balance px-6 pt-4 headlines md:headlinem">
+                    <p>{packageData?.title}</p>
                   </div>
-                  <div className="w-full flex flex-row gap-2 items-center text-balance">
-                    <AlternateEmailIcon className="text-sm md:text-base" />
-                    <p>{formData.email}</p>
-                  </div>
-                  <div className="w-full flex flex-row gap-2 items-center text-balance">
-                    <PhoneIcon className="text-sm md:text-base" />
-                    <p>{formData.phone}</p>
-                  </div>
-                  <div className="w-full flex flex-row gap-2 items-center text-balance">
-                    <GroupIcon className="text-sm md:text-base" />
-                    <p>
-                      {noOfPeople} {noOfPeople > 1 ? "Adults" : "Adult"}
+                  <div className="px-6 bg-[#286A48] pb-4 rounded-b-xl pt-2 text-secondary-90">
+                    <p className="bodys  lg:titlem">{formData.tourDates}</p>
+                    <p className="bodys lg:titlem">
+                      {packageData?.durationn}N{packageData?.durationd}D
                     </p>
                   </div>
-                  {formData.coTraveler && formData.coTraveler.length > 0 && (
-                    <div className="w-full flex flex-row gap-2 items-center text-balance">
-                      <PersonAddIcon className="text-sm md:text-base" />
-                      <p>
-                        {formData.coTraveler
-                          .filter((name) => name) 
-                          .join(", ")}{" "}
-                       
-                      </p>
-                    </div>
-                  )}
                 </div>
               </div>
-            </div>
 
-            <div className="w-[80%] space-y-2 mx-auto">
-              <h2 className="titlel text-[#171D19] md:py-4">Payment Details</h2>
-              <div className=" border-2 bg-[#E4EAE3] border-[#C0C9C0] pb-2 rounded-xl">
-                <div className=" flex flex-col gap-2 px-3 md:px-6 bodys py-2 lg:titlem">
+              <div className="h-fit bg-[#E4EAE3] py-6 rounded-xl">
+                <h2 className="headlines text-start px-6 text-[#171D19] border border-b-2 border-b-[#C0C9C0] md:py-4">
+                  Payment Details
+                </h2>
+                <div className=" flex flex-col gap-2 px-6 bodys py-2 lg:titlem">
                   <div className="w-full flex flex-row justify-between items-center text-balance">
                     <p>Trip Package</p>
                     <p>
@@ -897,77 +884,158 @@ const BookingPage = () => {
                     </div>
                   )}
                 </div>
-                <div className="w-full px-3 md:px-6 flex flex-row justify-between items-center border border-t-2 border-t-[#C0C9C0] pt-2 text-balance">
-                  <h2 className="titlem lg:titlel text-center md:text-start text-[#171D19]">
+                <div className="w-full px-6 flex flex-row justify-between items-center border border-t-2 border-t-[#C0C9C0] pt-4 text-balance">
+                  <h2 className="headlines text-center md:text-start text-[#171D19]">
                     Total Cost
                   </h2>
-                  <p className="text-secondary-oncontainer text-balance font-bold titlem md:titlel lg:headlines">
+                  <p className="text-secondary-oncontainer text-balance titlel md:headlinem">
                     INR {formatIndian(finalCost)}/-
                   </p>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
+        )}
 
-          <div className="w-full md:w-1/2 flex flex-col justify-between gap-4">
-            <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
-              <div className=" flex flex-col gap-2 ">
-                <div className="w-full text-balance px-6   pt-4 headlines md:headlinem">
-                  <p>{packageData?.title}</p>
+        {step === 3 && (
+          <section className="flex flex-col md:flex-row gap-4 md:gap-8 w-full">
+            <div className="bg-[#E4EAE3] w-full md:w-1/2 rounded-xl py-6 flex flex-col gap-4">
+              <h2 className="headlines text-[#171D19] px-6 border border-b-2 border-b-[#C0C9C0] md:py-4">
+                Booking Details
+              </h2>
+
+              <div className="w-[80%] space-y-2 mx-auto">
+                <h2 className="titlel text-[#171D19] md:py-4">
+                  Personal Details
+                </h2>
+                <div className=" border-2 bg-[#E4EAE3] border-[#C0C9C0] pb-2 rounded-xl">
+                  <div className=" flex flex-col gap-2 px-3 md:px-6 bodys py-2 lg:titlem">
+                    <div className="w-full flex flex-row  gap-2 items-center text-balance">
+                      <PersonIcon className="text-sm md:text-base" />
+                      <p>{formData.name}</p>
+                    </div>
+                    <div className="w-full flex flex-row gap-2 items-center text-balance">
+                      <AlternateEmailIcon className="text-sm md:text-base" />
+                      <p>{formData.email}</p>
+                    </div>
+                    <div className="w-full flex flex-row gap-2 items-center text-balance">
+                      <PhoneIcon className="text-sm md:text-base" />
+                      <p>{formData.phone}</p>
+                    </div>
+                    <div className="w-full flex flex-row gap-2 items-center text-balance">
+                      <GroupIcon className="text-sm md:text-base" />
+                      <p>
+                        {noOfPeople} {noOfPeople > 1 ? "Adults" : "Adult"}
+                      </p>
+                    </div>
+                    {formData.coTraveler && formData.coTraveler.length > 0 && (
+                      <div className="w-full flex flex-row gap-2 items-center text-balance">
+                        <PersonAddIcon className="text-sm md:text-base" />
+                        <p>
+                          {formData.coTraveler
+                            .filter((name) => name)
+                            .join(", ")}{" "}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="px-6 bg-[#286A48] pb-4 rounded-b-xl pt-2 text-secondary-90">
-                  <p className="bodys  lg:titlem">{formData.tourDates}</p>
-                  <p className="bodys lg:titlem">
-                    {packageData?.durationn}N{packageData?.durationd}D
-                  </p>
+              </div>
+
+              <div className="w-[80%] space-y-2 mx-auto">
+                <h2 className="titlel text-[#171D19] md:py-4">
+                  Payment Details
+                </h2>
+                <div className=" border-2 bg-[#E4EAE3] border-[#C0C9C0] pb-2 rounded-xl">
+                  <div className=" flex flex-col gap-2 px-3 md:px-6 bodys py-2 lg:titlem">
+                    <div className="w-full flex flex-row justify-between items-center text-balance">
+                      <p>Trip Package</p>
+                      <p>
+                        INR {formatIndian(cost)}/- x {noOfPeople}
+                      </p>
+                    </div>
+                    <div className="w-full flex flex-row justify-between items-center text-balance">
+                      <p>GST @ 5%</p>
+                      <p>INR {formatIndian(gst)}/-</p>
+                    </div>
+                    {tcs !== 0 && (
+                      <div className="w-full flex flex-row justify-between items-center text-balance">
+                        <p>TCS @ 5%</p>
+                        <p>INR {formatIndian(tcs)}/-</p>
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-full px-3 md:px-6 flex flex-row justify-between items-center border border-t-2 border-t-[#C0C9C0] pt-2 text-balance">
+                    <h2 className="titlem lg:titlel text-center md:text-start text-[#171D19]">
+                      Total Cost
+                    </h2>
+                    <p className="text-secondary-oncontainer text-balance font-bold titlem md:titlel lg:headlines">
+                      INR {formatIndian(finalCost)}/-
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="h-fit w-full bg-[#E4EAE3] py-6 space-y-2 rounded-xl">
-              <FormControl component="fieldset" className="px-4 w-full">
-                <RadioGroup
-                  aria-label="payment options"
-                  value={paymentOption}
-                  onChange={(event) => setPaymentOption(event.target.value)}
-                  name="paymentOptions"
-                >
-                  <FormControlLabel
-                    value="full"
-                    control={<Radio />}
-                    className="titlel"
-                    label={`Pay full amount now INR ${formatIndian(finalCost)}/-`}
-                  />
-                  <div className="flex justify-between items-center gap-2 w-full my-2">
-                    <div className="h-0.5 bg-[#C0C9C0] w-full" />
-                    <p className="text-center">or</p>
-                    <div className="h-0.5 bg-[#C0C9C0] w-full" />
+            <div className="w-full md:w-1/2 flex flex-col justify-between gap-4">
+              <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
+                <div className=" flex flex-col gap-2 ">
+                  <div className="w-full text-balance px-6   pt-4 headlines md:headlinem">
+                    <p>{packageData?.title}</p>
                   </div>
-                  <FormControlLabel
-                    value="partial"
-                    control={<Radio />}
-                    label="Pay advance now and remaining amount later"
-                  />
-                  <div className="space-y-2 pt-4 bodys lg:titlem px-2">
-                    <div className="w-full  flex flex-row  justify-between items-center text-balance">
-                      <p>Advance</p>
-                      <p>INR {formatIndian(advance)}/-</p>
-                    </div>
-                    <div className="w-full flex flex-row justify-between items-center text-pretty">
-                      <p className="w-1/2 xl:w-2/3">
-                        Pay due amount 2 days before trip starts
-                      </p>
-                      <p>INR {formatIndian(paymentPartial)}/-</p>
-                    </div>
+                  <div className="px-6 bg-[#286A48] pb-4 rounded-b-xl pt-2 text-secondary-90">
+                    <p className="bodys  lg:titlem">{formData.tourDates}</p>
+                    <p className="bodys lg:titlem">
+                      {packageData?.durationn}N{packageData?.durationd}D
+                    </p>
                   </div>
-                </RadioGroup>
-              </FormControl>
+                </div>
+              </div>
+
+              <div className="h-fit w-full bg-[#E4EAE3] py-6 space-y-2 rounded-xl">
+                <FormControl component="fieldset" className="px-4 w-full">
+                  <RadioGroup
+                    aria-label="payment options"
+                    value={paymentOption}
+                    onChange={(event) => setPaymentOption(event.target.value)}
+                    name="paymentOptions"
+                  >
+                    <FormControlLabel
+                      value="full"
+                      control={<Radio />}
+                      className="titlel"
+                      label={`Pay full amount now INR ${formatIndian(finalCost)}/-`}
+                    />
+                    <div className="flex justify-between items-center gap-2 w-full my-2">
+                      <div className="h-0.5 bg-[#C0C9C0] w-full" />
+                      <p className="text-center">or</p>
+                      <div className="h-0.5 bg-[#C0C9C0] w-full" />
+                    </div>
+                    <FormControlLabel
+                      value="partial"
+                      control={<Radio />}
+                      label="Pay advance now and remaining amount later"
+                    />
+                    <div className="space-y-2 pt-4 bodys lg:titlem px-2">
+                      <div className="w-full  flex flex-row  justify-between items-center text-balance">
+                        <p>Advance</p>
+                        <p>INR {formatIndian(advance)}/-</p>
+                      </div>
+                      <div className="w-full flex flex-row justify-between items-center text-pretty">
+                        <p className="w-1/2 xl:w-2/3">
+                          Pay due amount 2 days before trip starts
+                        </p>
+                        <p>INR {formatIndian(paymentPartial)}/-</p>
+                      </div>
+                    </div>
+                  </RadioGroup>
+                </FormControl>
+              </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )}
       </section>
-     
+
       <section
         className={cn(
           `bg-[#E4EAE3]  shadow-cardShadow border-t-2 sticky flex left-0 bottom-0 w-full rounded-xl p-4 gap-2 md:p-6 text-start`,
@@ -977,13 +1045,16 @@ const BookingPage = () => {
         {activeStep < 2 && (
           <div className="flex flex-col gap-1">
             <h2 className="titles md:titlem font-normal text-[#171D19]">
-              Pay  
-              <span className=" text-balance titlel md:headlines text-primary"> INR {formatIndian(advance)}/-</span> now 
+              Pay
+              <span className=" text-balance titlel md:headlines text-primary">
+                {" "}
+                INR {formatIndian(advance)}/-
+              </span>{" "}
+              now
             </h2>
 
             <h2 className="text-secondary-oncontainer text-balance titlel md:headlines">
-            <span className="titlem font-normal">to confirm your trip</span>
-           
+              <span className="titlem font-normal">to confirm your trip</span>
             </h2>
           </div>
         )}
@@ -1021,4 +1092,3 @@ const PackagePageWrapper: React.FC = () => {
 };
 
 export default PackagePageWrapper;
-
