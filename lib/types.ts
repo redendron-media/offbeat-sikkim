@@ -119,9 +119,15 @@ export interface photoGallery {
     caption: string,
     titleImage: any,
     currentSlug: string,
+    tags:tag[];
     _createdAt:string;
   }
 
+  export interface tag {
+    _id:string;
+    name:string;
+    slug:NamedCurve;
+  }
   export interface BlogPage {
     currentSlug:string;
     title:string;
@@ -136,6 +142,7 @@ export interface photoGallery {
     image2?:any;
     image3?:any;
     image4?:any;
+    tags:tag[];
     _createdAt:string;
   }
 

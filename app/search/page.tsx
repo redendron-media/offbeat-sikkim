@@ -5,6 +5,7 @@ import { client, urlFor } from "@/lib/sanity";
 import Image from "next/image";
 import Link from "next/link";
 import Sliderr from "@/components/Slider";
+import { Chip } from "@mui/material";
 
 interface SearchResults {
   upcomingTrips: CardTrip[];
@@ -47,7 +48,10 @@ const searchQuery = (query: string) => `
       caption,
       titleImage,
       "currentSlug": slug.current,
-      _createdAt
+      _createdAt,
+        tags[]-> {
+      _id,"slug": slug.current ,name
+    }
     }
   }
 `;
@@ -133,6 +137,26 @@ export default async function SearchPage({
                       />
                     </div>
                     <div className="px-4 pt-4 space-y-1 text-[#051E13]">
+                    <div className="flex flex-row gap-3 items-center flex-wrap pb-3">
+                            {blog.tags?.map((tag) => (
+                              <Link href={`/tags/${tag.slug}`} passHref key={tag._id}>
+                                <Chip
+                                  label={tag.name}
+                                  component="a"
+                                  clickable
+                                  sx={{
+                                    backgroundColor: "primary.main",
+                                    "&:hover": {
+                                      backgroundColor: "primary.dark",
+                                    },
+                                    "& .MuiChip-label": { color: "white" },
+                                    fontSize: "0.75rem",
+                                    padding: "6px",
+                                  }}
+                                />
+                              </Link>
+                            ))}
+                          </div>
                       <p className="labels text-[#404942]">
                         {formatDate(
                           new Date(blog._createdAt).toISOString().split("T")[0]

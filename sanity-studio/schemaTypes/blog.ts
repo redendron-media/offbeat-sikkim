@@ -19,6 +19,12 @@ export const blog = defineField ({
             }
         }),
         defineField({
+           name:'tags',
+           title: "Tags", 
+           type: "array",
+           of: [{type: 'reference', to:[{ type: "tag"}]}],
+        }),
+        defineField({
             name: 'titleImage',
             type: 'image',
             title:'Cover Image',
