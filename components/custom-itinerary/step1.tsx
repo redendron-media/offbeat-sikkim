@@ -195,8 +195,8 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, ha
             },
           }}
         >
-       <MenuItem value="Premium">Premium</MenuItem>
-       <MenuItem value="Mid-Range">Mid-Range</MenuItem>
+       <MenuItem value="Premium">Premium (Stay in 4 star and 5 star hotels)</MenuItem>
+       <MenuItem value="Mid-Range">Mid-Range(Stay in premium Homestay and 3 star hotels )</MenuItem>
         </Select>
         {errors.travel_style && <p className="text-error bodyl">{errors.travel_style}</p>}
       </FormControl>

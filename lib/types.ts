@@ -69,6 +69,7 @@ export interface photoGallery {
     destination: string[];
    startDate: string,
    endDate:string,
+   noOfDays?:number,
   }
 
   export interface Step3FormData {

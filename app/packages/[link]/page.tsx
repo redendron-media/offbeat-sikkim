@@ -329,7 +329,7 @@ const PackagePage: React.FC = () => {
               className={`flex flex-col justify-center gap-6 py-9 px-4 relative  md:px-14 md:py-24 md:gap-6 min-h-[50vh] rounded-xl `}
             >
               <div className="absolute  inset-0 w-full z-0">
-                <div className="absolute inset-0 bg-black/10 z-10" />
+                <div className="absolute inset-0 bg-black/30 z-10" />
                 <Image
                   src={urlFor(packageData.image).url()}
                   alt={packageData.title}

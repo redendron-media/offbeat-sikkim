@@ -91,7 +91,7 @@ export default async function DestinationPage({
           className={`relative flex flex-col gap-6 px-4 py-9 min-h-[50vh] md:px-14 md:py-24 md:gap-6 items-center justify-center rounded-xl`}
         >
           <div className="absolute  inset-0 w-full z-0">
-            <div className="absolute inset-0 bg-black/10 z-10" />
+            <div className="absolute inset-0 bg-black/40 z-10" />
             <Image
               src={urlFor(destinationDetails.image).url()}
               alt="Hero Background"

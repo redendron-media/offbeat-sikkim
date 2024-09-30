@@ -70,6 +70,7 @@ const Custom_Form = () => {
     setFormData({ ...formData, [name]: value });
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
+  
 
 
   const handleInputChangeChildren = (index: number, value: string) => {
@@ -101,17 +102,24 @@ const Custom_Form = () => {
     setFormData({ ...formData, [field]: "" });
   };
 
-  const handleDateChange = (
-    date: dayjs.Dayjs | null,
-    field: keyof Step2FormData
-  ) => {
-    setFormData({
+  const handleDateChange = (date: dayjs.Dayjs | null, field: keyof Step2FormData) => {
+    const newFormData = {
       ...formData,
       [field]: date ? date.format("YYYY-MM-DD") : "",
-    });
+    };
+  
+   
+    if (newFormData.startDate && newFormData.endDate) {
+      const start = dayjs(newFormData.startDate);
+      const end = dayjs(newFormData.endDate);
+      const numberOfDays = end.diff(start, "day"); 
+      newFormData.noOfDays = numberOfDays >= 0 ? numberOfDays : 0; 
+    }
+  
+    setFormData(newFormData);
     setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
   };
-
+  
   const handleDestinationToggle = (destination: string) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -216,6 +224,7 @@ const Custom_Form = () => {
         endDate: formData.endDate,
         destinations: formData.destination,
         comments: formData.additionalInformation,
+        no_of_days:formData.noOfDays,
       };
 
       const config = {

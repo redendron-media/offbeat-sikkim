@@ -36,7 +36,7 @@ const HeroHome = () => {
     <div  className="py-24 px-3 relative  md:px-14 lg:py-36 xl:py-44 w-full rounded-lg flex flex-col gap-4 md:gap-6">
       <motion.div 
         className="absolute  inset-0 w-full z-0">
-        <div className="absolute inset-0 bg-black/10 z-10"/>
+        <div className="absolute inset-0 bg-black/20 z-10"/>
         <Image
           src="/images/hero.webp"
           alt="Hero Background"

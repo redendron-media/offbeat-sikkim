@@ -32,19 +32,19 @@ export const team = [
     id: "1",
     image: "team1",
     name: "Rajen Rai",
-    role: "Co-Founder/Marketing Head",
+    role: "Founder/CEO",
   },
   {
     id: "2",
     image: "team2",
     name: "Topden Gurung",
-    role: "Co-Founder/Operations Head",
+    role: "Co-Founder/COO",
   },
   {
     id: "3",
     image: "team3",
     name: "Prabesh Subba",
-    role: "Co-Founder/Accounts Head",
+    role: "Co-Founder/CFO",
   },
 ];
 
