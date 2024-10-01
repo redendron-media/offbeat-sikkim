@@ -63,6 +63,7 @@ export interface photoGallery {
     travel_style: string;
     places:string;
     accommodation: string;
+    address?: string;
   }
   
   export interface Step2FormData {
@@ -107,6 +108,7 @@ export interface photoGallery {
    tourPackage?:string,
    packageName?:string,
    tourDates?:string,
+   address:string,
    source:string,
   }
 

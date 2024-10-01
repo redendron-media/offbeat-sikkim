@@ -1,9 +1,19 @@
 "use client";
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select, TextField, IconButton, InputAdornment, Input, SelectChangeEvent, OutlinedInput } from "@mui/material";
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  IconButton,
+  InputAdornment,
+  Input,
+  SelectChangeEvent,
+  OutlinedInput,
+} from "@mui/material";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { Step1FormData } from "@/lib/types";
-
 
 interface Step1FormProps {
   formData: Step1FormData;
@@ -11,16 +21,24 @@ interface Step1FormProps {
   handleClear: (field: keyof Step1FormData) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectChange: (event: SelectChangeEvent<string>) => void;
- 
 }
 
-const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, handleInputChange, handleSelectChange }) => {
- 
+const Step1Form: React.FC<Step1FormProps> = ({
+  formData,
+  errors,
+  handleClear,
+  handleInputChange,
+  handleSelectChange,
+}) => {
   return (
     <div className="flex flex-col gap-6 md:grid md:grid-cols-2">
       <div className="flex flex-col col-span-2 gap-1 -mt-6 pb-4 text-center">
-        <h2 className="headlines text-primary">Create your customized itinerary in 3..2..1!</h2>
-        <p className="bodys text-[#575F6E]">Fill in the details below to customize your itinerary</p>
+        <h2 className="headlines text-primary">
+          Create your customized itinerary in 3..2..1!
+        </h2>
+        <p className="bodys text-[#575F6E]">
+          Fill in the details below to customize your itinerary
+        </p>
       </div>
 
       <div className="col-span-1 flex items-center">
@@ -28,28 +46,31 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, ha
           <InputLabel htmlFor="name">Name</InputLabel>
           <OutlinedInput
             id="name"
-            name="name" 
+            name="name"
             label="Name*"
             value={formData.name}
             error={!!errors.name}
             onChange={handleInputChange}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton disableTouchRipple onClick={() => handleClear("name")}>
+                <IconButton
+                  disableTouchRipple
+                  onClick={() => handleClear("name")}
+                >
                   <CancelOutlinedIcon />
                 </IconButton>
               </InputAdornment>
             }
             sx={{
               color: "#404942",
-              "& .MuiOutlinedInput-notchedOutline" : {
-                borderColor : "#404942",
-             },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#404942",
+              },
               "& .MuiInputLabel-root": {
                 color: "#404942",
               },
               "& .MuiOutlinedInput-input": {
-                color: '#404942'
+                color: "#404942",
               },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
@@ -79,27 +100,30 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, ha
             id="email"
             name="email"
             type="email"
-            label='Email*'
+            label="Email*"
             error={!!errors.email}
             value={formData.email}
             onChange={handleInputChange}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton disableTouchRipple onClick={() => handleClear("email")}>
+                <IconButton
+                  disableTouchRipple
+                  onClick={() => handleClear("email")}
+                >
                   <CancelOutlinedIcon />
                 </IconButton>
               </InputAdornment>
             }
             sx={{
               color: "#404942",
-              "& .MuiOutlinedInput-notchedOutline" : {
-                borderColor : "#404942",
-             },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#404942",
+              },
               "& .MuiInputLabel-root": {
                 color: "#404942",
               },
               "& .MuiOutlinedInput-input": {
-                color: '#404942'
+                color: "#404942",
               },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
@@ -134,21 +158,24 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, ha
             error={!!errors.phone}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton disableTouchRipple onClick={() => handleClear("phone")}>
+                <IconButton
+                  disableTouchRipple
+                  onClick={() => handleClear("phone")}
+                >
                   <CancelOutlinedIcon />
                 </IconButton>
               </InputAdornment>
             }
             sx={{
               color: "#404942",
-              "& .MuiOutlinedInput-notchedOutline" : {
-                borderColor : "#404942",
-             },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#404942",
+              },
               "& .MuiInputLabel-root": {
                 color: "#404942",
               },
               "& .MuiOutlinedInput-input": {
-                color: '#404942'
+                color: "#404942",
               },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
@@ -170,6 +197,86 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, ha
           {errors.phone && <p className="text-error bodyl">{errors.phone}</p>}
         </FormControl>
       </div>
+
+      <FormControl className="col-span-1">
+        <InputLabel id="address">Address</InputLabel>
+        <Select
+          className="w-full"
+          labelId="address"
+          label="Address"
+          name="address"
+          value={formData.address}
+          onChange={handleSelectChange}
+          required
+          error={!!errors.address}
+          MenuProps={{
+            sx:{
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: '#19A96C',
+                borderRadius: '4px',
+              },
+              '&::-webkit-scrollbar-track': {
+                backgroundColor: '#A5F3C3',
+              },
+            }
+          }}
+          sx={{
+            color: "#404942",
+            "& .MuiInputLabel-root": {
+              color: "#404942",
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#404942",
+            },
+            "& input": {
+              color: "#404942",
+            },
+          
+          }}
+        >
+          <MenuItem value="Andhra Pradesh">Andhra Pradesh</MenuItem>
+          <MenuItem value="Arunachal Pradesh">Arunachal Pradesh</MenuItem>
+          <MenuItem value="Assam">Assam</MenuItem>
+          <MenuItem value="Bihar">Bihar</MenuItem>
+          <MenuItem value="Chhattisgarh">Chhattisgarh</MenuItem>
+          <MenuItem value="Goa">Goa</MenuItem>
+          <MenuItem value="Gujarat">Gujarat</MenuItem>
+          <MenuItem value="Haryana">Haryana</MenuItem>
+          <MenuItem value="Himachal Pradesh">Himachal Pradesh</MenuItem>
+          <MenuItem value="Jharkhand">Jharkhand</MenuItem>
+          <MenuItem value="Karnataka">Karnataka</MenuItem>
+          <MenuItem value="Kerala">Kerala</MenuItem>
+          <MenuItem value="Madhya Pradesh">Madhya Pradesh</MenuItem>
+          <MenuItem value="Maharashtra">Maharashtra</MenuItem>
+          <MenuItem value="Manipur">Manipur</MenuItem>
+          <MenuItem value="Meghalaya">Meghalaya</MenuItem>
+          <MenuItem value="Mizoram">Mizoram</MenuItem>
+          <MenuItem value="Nagaland">Nagaland</MenuItem>
+          <MenuItem value="Odisha">Odisha</MenuItem>
+          <MenuItem value="Punjab">Punjab</MenuItem>
+          <MenuItem value="Rajasthan">Rajasthan</MenuItem>
+          <MenuItem value="Sikkim">Sikkim</MenuItem>
+          <MenuItem value="Tamil Nadu">Tamil Nadu</MenuItem>
+          <MenuItem value="Telangana">Telangana</MenuItem>
+          <MenuItem value="Tripura">Tripura</MenuItem>
+          <MenuItem value="Uttar Pradesh">Uttar Pradesh</MenuItem>
+          <MenuItem value="Uttarakhand">Uttarakhand</MenuItem>
+          <MenuItem value="West Bengal">West Bengal</MenuItem>
+          <MenuItem value="Andaman and Nicobar Islands">
+            Andaman and Nicobar Islands
+          </MenuItem>
+          <MenuItem value="Chandigarh">Chandigarh</MenuItem>
+          <MenuItem className="whitespace-normal" value="Dadra and Nagar Haveli and Daman and Diu">
+            Dadra and Nagar Haveli and Daman and Diu
+          </MenuItem>
+          <MenuItem value="Delhi">Delhi</MenuItem>
+          <MenuItem value="Lakshadweep">Lakshadweep</MenuItem>
+          <MenuItem value="Puducherry">Puducherry</MenuItem>
+        </Select>
+        {errors.address && (
+          <p className="text-error bodyl">{errors.address}</p>
+        )}
+      </FormControl>
 
       <FormControl className="col-span-1">
         <InputLabel id="travel_style">Travel Style</InputLabel>
@@ -195,10 +302,22 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, ha
             },
           }}
         >
-       <MenuItem value="Premium" className="whitespace-nowrap overflow-x-auto">Premium (4 star and 5 star hotels)</MenuItem>
-       <MenuItem value="Mid-Range" className="whitespace-nowrap overflow-x-auto">Mid-Range(Premium Homestay and hotels )</MenuItem>
+          <MenuItem
+            value="Premium"
+            className="whitespace-nowrap overflow-x-auto"
+          >
+            Premium (4 star and 5 star hotels)
+          </MenuItem>
+          <MenuItem
+            value="Mid-Range"
+            className="whitespace-nowrap overflow-x-auto"
+          >
+            Mid-Range(Premium Homestay and hotels )
+          </MenuItem>
         </Select>
-        {errors.travel_style && <p className="text-error bodyl">{errors.travel_style}</p>}
+        {errors.travel_style && (
+          <p className="text-error bodyl">{errors.travel_style}</p>
+        )}
       </FormControl>
 
       <FormControl className="col-span-1">
@@ -259,12 +378,13 @@ const Step1Form: React.FC<Step1FormProps> = ({ formData, errors, handleClear, ha
             },
           }}
         >
-        <MenuItem value="Resort">Resort</MenuItem>
-        <MenuItem value="Hotel">Hotel</MenuItem>
-        <MenuItem value="Homestay">Homestay</MenuItem>
-
+          <MenuItem value="Resort">Resort</MenuItem>
+          <MenuItem value="Hotel">Hotel</MenuItem>
+          <MenuItem value="Homestay">Homestay</MenuItem>
         </Select>
-        {errors.accommodation && <p className="text-error bodyl">{errors.accommodation}</p>}
+        {errors.accommodation && (
+          <p className="text-error bodyl">{errors.accommodation}</p>
+        )}
       </FormControl>
     </div>
   );

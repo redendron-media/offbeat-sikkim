@@ -59,6 +59,7 @@ const Custom_Form = () => {
     noOfAdults: "",
     noOfChildren: [""],
     additionalInformation: "",
+    address: "",
   });
   const [loading, setLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
@@ -159,7 +160,8 @@ const Custom_Form = () => {
       newErrors.places = "Please select your place of interest";
     if (!formData.accommodation)
       newErrors.accommodation = "Please select your accommodation type";
-
+    if (!formData.address)
+      newErrors.address= "Please select your address";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -225,6 +227,7 @@ const Custom_Form = () => {
         destinations: formData.destination,
         comments: formData.additionalInformation,
         no_of_days:formData.noOfDays,
+        address:formData.address,
       };
 
       const config = {
@@ -256,24 +259,6 @@ const Custom_Form = () => {
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      travel_style: "Premium",
-      places: "Sikkim",
-      accommodation: "Resort",
-      email: "",
-      phone: "",
-      startDate: "",
-      endDate: "",
-      destination: [],
-      noOfAdults: "",
-      noOfChildren: [""],
-      additionalInformation: "",
-    });
-    setErrors({});
-    setActiveStep(0);
-  };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));

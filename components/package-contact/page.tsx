@@ -3,15 +3,11 @@ import React, { ChangeEvent, useState } from "react";
 import { PackageForm } from "@/lib/types";
 import {
   FormControl,
-  FormControlLabel,
-  FormLabel,
   IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
   OutlinedInput,
-  Radio,
-  RadioGroup,
   Select,
   SelectChangeEvent,
   Stack,
@@ -86,6 +82,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
     tourPackage: packageTitle || "",
     startDate: "",
     tourDates: "",
+    address: "",
     source: source,
   });
 
@@ -102,12 +99,6 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
   const handleSelectChange = (e: SelectChangeEvent<string>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
-  };
-
-  const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
@@ -185,6 +176,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
       newErrors.startDate = "Please select a start date";
     if (!formData.noOfAdults)
       newErrors.noOfAdults = "Number of adults is required";
+    if (!formData.address) newErrors.address = "Address is required";
     return newErrors;
   };
 
@@ -192,14 +184,12 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
     e.preventDefault();
     setLoading(true);
 
-
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       setLoading(false);
       return;
     }
-
 
     const finalFormData = { ...formData };
     if (isTrek) {
@@ -215,6 +205,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
         name: formData.name,
         phone_number: formData.phone,
         email: formData.email,
+        address: formData.address,
         tourPackage: formData.tourPackage,
         start_Date: formData.startDate,
         no_of_adults: parseInt(formData.noOfAdults, 10) || 0,
@@ -262,23 +253,26 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
         { name: "adults", value: formData.noOfAdults },
         {
           name: "children",
-          value: (formData.age && formData.age.length > 0)
-            ? formData.age.filter((age) => age.trim() !== "").length.toString()
-            : "None"
+          value:
+            formData.age && formData.age.length > 0
+              ? formData.age
+                  .filter((age) => age.trim() !== "")
+                  .length.toString()
+              : "None",
         },
         {
           name: "age",
-          value: Array.isArray(formData.age) && formData.age.some((age) => age.trim() !== "")
-            ? formData.age.filter((age) => age.trim() !== "").join(", ")
-            : "-"
+          value:
+            Array.isArray(formData.age) &&
+            formData.age.some((age) => age.trim() !== "")
+              ? formData.age.filter((age) => age.trim() !== "").join(", ")
+              : "-",
         },
         {
           name: "additional",
-          value: formData.additionalInformation?.trim() || "-"
-        }
+          value: formData.additionalInformation?.trim() || "-",
+        },
       ];
-
-   
 
       try {
         const templateResponse = await fetch("/api/sendTemplateMessage", {
@@ -508,6 +502,88 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
             {errors.phone && <p className="text-error bodyl">{errors.phone}</p>}
           </FormControl>
 
+          <FormControl className="col-span-1" fullWidth>
+            <InputLabel id="address">Address</InputLabel>
+            <Select
+              className="w-full"
+              labelId="address"
+              label="Address"
+              name="address"
+              value={formData.address}
+              onChange={handleSelectChange}
+              required
+              error={!!errors.address}
+              MenuProps={{
+                sx: {
+                  "&::-webkit-scrollbar-thumb": {
+                    backgroundColor: "#19A96C",
+                    borderRadius: "4px",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                    backgroundColor: "#A5F3C3",
+                  },
+                },
+              }}
+              sx={{
+                color: "#404942",
+                "& .MuiInputLabel-root": {
+                  color: "#404942",
+                },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#404942",
+                },
+                "& input": {
+                  color: "#404942",
+                },
+              }}
+            >
+              <MenuItem value="Andhra Pradesh">Andhra Pradesh</MenuItem>
+              <MenuItem value="Arunachal Pradesh">Arunachal Pradesh</MenuItem>
+              <MenuItem value="Assam">Assam</MenuItem>
+              <MenuItem value="Bihar">Bihar</MenuItem>
+              <MenuItem value="Chhattisgarh">Chhattisgarh</MenuItem>
+              <MenuItem value="Goa">Goa</MenuItem>
+              <MenuItem value="Gujarat">Gujarat</MenuItem>
+              <MenuItem value="Haryana">Haryana</MenuItem>
+              <MenuItem value="Himachal Pradesh">Himachal Pradesh</MenuItem>
+              <MenuItem value="Jharkhand">Jharkhand</MenuItem>
+              <MenuItem value="Karnataka">Karnataka</MenuItem>
+              <MenuItem value="Kerala">Kerala</MenuItem>
+              <MenuItem value="Madhya Pradesh">Madhya Pradesh</MenuItem>
+              <MenuItem value="Maharashtra">Maharashtra</MenuItem>
+              <MenuItem value="Manipur">Manipur</MenuItem>
+              <MenuItem value="Meghalaya">Meghalaya</MenuItem>
+              <MenuItem value="Mizoram">Mizoram</MenuItem>
+              <MenuItem value="Nagaland">Nagaland</MenuItem>
+              <MenuItem value="Odisha">Odisha</MenuItem>
+              <MenuItem value="Punjab">Punjab</MenuItem>
+              <MenuItem value="Rajasthan">Rajasthan</MenuItem>
+              <MenuItem value="Sikkim">Sikkim</MenuItem>
+              <MenuItem value="Tamil Nadu">Tamil Nadu</MenuItem>
+              <MenuItem value="Telangana">Telangana</MenuItem>
+              <MenuItem value="Tripura">Tripura</MenuItem>
+              <MenuItem value="Uttar Pradesh">Uttar Pradesh</MenuItem>
+              <MenuItem value="Uttarakhand">Uttarakhand</MenuItem>
+              <MenuItem value="West Bengal">West Bengal</MenuItem>
+              <MenuItem value="Andaman and Nicobar Islands">
+                Andaman and Nicobar Islands
+              </MenuItem>
+              <MenuItem value="Chandigarh">Chandigarh</MenuItem>
+              <MenuItem
+                className="whitespace-normal"
+                value="Dadra and Nagar Haveli and Daman and Diu"
+              >
+                Dadra and Nagar Haveli and Daman and Diu
+              </MenuItem>
+              <MenuItem value="Delhi">Delhi</MenuItem>
+              <MenuItem value="Lakshadweep">Lakshadweep</MenuItem>
+              <MenuItem value="Puducherry">Puducherry</MenuItem>
+            </Select>
+            {errors.address && (
+              <p className="text-error bodyl">{errors.address}</p>
+            )}
+          </FormControl>
+
           {(isDefault || isCurated) && (
             <>
               <FormControl className="col-span-1 w-full">
@@ -533,8 +609,18 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
                     },
                   }}
                 >
-               <MenuItem value="Premium" className="whitespace-nowrap overflow-x-auto">Premium (4 star and 5 star hotels)</MenuItem>
-               <MenuItem value="Mid-Range" className="whitespace-nowrap overflow-x-auto">Mid-Range(Premium Homestay and hotels )</MenuItem>
+                  <MenuItem
+                    value="Premium"
+                    className="whitespace-nowrap overflow-x-auto"
+                  >
+                    Premium (4 star and 5 star hotels)
+                  </MenuItem>
+                  <MenuItem
+                    value="Mid-Range"
+                    className="whitespace-nowrap overflow-x-auto"
+                  >
+                    Mid-Range(Premium Homestay and hotels )
+                  </MenuItem>
                 </Select>
                 {errors.travelstyle && (
                   <p className="text-error bodyl">{errors.travelstyle}</p>
