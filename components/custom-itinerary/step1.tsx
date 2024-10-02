@@ -345,6 +345,7 @@ const Step1Form: React.FC<Step1FormProps> = ({
           }}
         >
           <MenuItem value="Sikkim">Sikkim</MenuItem>
+          <MenuItem value="Sikkim Darjeeling">Sikkim and Darjeeling</MenuItem>
           <MenuItem value="North Bengal">North Bengal</MenuItem>
           <MenuItem value="Arunachal Pradesh">Arunachal Pradesh</MenuItem>
           <MenuItem value="Nagaland">Nagaland</MenuItem>
@@ -353,7 +354,7 @@ const Step1Form: React.FC<Step1FormProps> = ({
         </Select>
         {errors.places && <p className="text-error bodyl">{errors.places}</p>}
       </FormControl>
-
+{/* 
       <FormControl className="col-span-1">
         <InputLabel id="accommodation">Accommodation Type</InputLabel>
         <Select
@@ -385,7 +386,7 @@ const Step1Form: React.FC<Step1FormProps> = ({
         {errors.accommodation && (
           <p className="text-error bodyl">{errors.accommodation}</p>
         )}
-      </FormControl>
+      </FormControl> */}
     </div>
   );
 };

@@ -158,8 +158,8 @@ const Custom_Form = () => {
       newErrors.travel_style = "Please select your travel style";
     if (!formData.places)
       newErrors.places = "Please select your place of interest";
-    if (!formData.accommodation)
-      newErrors.accommodation = "Please select your accommodation type";
+    // if (!formData.accommodation)
+    //   newErrors.accommodation = "Please select your accommodation type";
     if (!formData.address)
       newErrors.address= "Please select your address";
     setErrors(newErrors);
@@ -222,7 +222,7 @@ const Custom_Form = () => {
         .map(age => ({ age: parseInt(age, 10) })),
         travel_style: formData.travel_style,
         destination: formData.places,
-        accommodation: formData.accommodation,
+        // accommodation: formData.accommodation,
         endDate: formData.endDate,
         destinations: formData.destination,
         comments: formData.additionalInformation,

@@ -170,8 +170,8 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
       newErrors.tourPackage = "Please select a tour package";
     if ((isDefault || isCurated) && !formData.travelstyle)
       newErrors.travelstyle = "Travel Style is required";
-    if ((isDefault || isCurated) && !formData.accommodation)
-      newErrors.accommodation = "Accommodation is required";
+    // if ((isDefault || isCurated) && !formData.accommodation)
+    //   newErrors.accommodation = "Accommodation is required";
     if ((isTrek || isDefault || isCurated) && !formData.startDate)
       newErrors.startDate = "Please select a start date";
     if (!formData.noOfAdults)
@@ -215,7 +215,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
           (age) => age.trim() !== ""
         ),
         travel_style: formData.travelstyle,
-        accommodation: formData.accommodation,
+        // accommodation: formData.accommodation,
         comments: formData.additionalInformation,
       };
 
@@ -249,7 +249,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
         { name: "mobile", value: formData.phone },
         { name: "start_date", value: formData.startDate },
         { name: "travel_style", value: formData.travelstyle || "" },
-        { name: "accommodation", value: formData.accommodation || "" },
+        // { name: "accommodation", value: formData.accommodation || "" },
         { name: "adults", value: formData.noOfAdults },
         {
           name: "children",
@@ -627,7 +627,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
                 )}
               </FormControl>
 
-              <FormControl className="col-span-1 w-full">
+              {/* <FormControl className="col-span-1 w-full">
                 <InputLabel id="accommodation">Accommodation Type</InputLabel>
                 <Select
                   className="w-full"
@@ -657,7 +657,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
                 {errors.accommodation && (
                   <p className="text-error bodyl">{errors.accommodation}</p>
                 )}
-              </FormControl>
+              </FormControl> */}
             </>
           )}
 
