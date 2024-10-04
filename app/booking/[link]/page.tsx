@@ -388,14 +388,14 @@ const BookingPage = () => {
                   Available Dates
                 </h2>
                 <FormControl className="px-4 md:px-6">
-                  <div className="flex overflow-x-scroll gap-2 mb-4">
+                  <div className="flex overflow-x-scroll xl:overflow-x-clip custom-scrollbar gap-2 mb-4">
                     {Object.keys(datesByMonth).map((month, index) => (
                       <Chip
                         key={index}
                         label={month}
                         clickable
                         className={cn(
-                          `${selectedMonth === month ? "shadow-cardShadow" : "shadow-none"}`
+                          `${selectedMonth === month ? "shadow-cardShadow" : "shadow-none"}`,
                         )}
                         onClick={() => handleMonthSelect(month)}
                         variant={
@@ -424,7 +424,7 @@ const BookingPage = () => {
                     ))}
                   </div>
                   {selectedMonth && (
-                    <div className="flex overflow-x-scroll gap-4 py-3">
+                    <div className="flex overflow-x-scroll custom-scrollbar gap-4 py-3">
                       {datesByMonth[selectedMonth].map(
                         (
                           date: { tourDate: string; spots: string },
