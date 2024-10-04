@@ -12,14 +12,17 @@ import React, { ChangeEvent, useRef, useState } from "react";
 import Image from "next/image";
 import StarIcon from "@mui/icons-material/Star";
 import Link from "next/link";
-import { useScroll, useTransform,motion } from "framer-motion";
+import { useScroll, useTransform, motion } from "framer-motion";
+import RotatingLogo from "@/components/animated-logo/page";
+import ScrollToSection from "@/components/ScrollToSection/page";
 const CustomOutlinedInput = styled(OutlinedInput)({
   "& .MuiOutlinedInput-input::placeholder": {
     color: "#2C322D",
   },
 });
 
-const HeroHome = () => {
+
+const HeroHome= () => {
   const [searchValue, setSearchValue] = useState<String>("");
   const [searchURL, setSearchURL] = useState("");
   const handleInputChange = (
@@ -31,17 +34,15 @@ const HeroHome = () => {
     setSearchURL(encodedSearch ? `/search?query=${encodedSearch}` : "");
   };
 
-
   return (
-    <div  className="py-24 px-3 relative  md:px-14 lg:py-36 xl:py-44 w-full rounded-lg flex flex-col gap-4 md:gap-6">
-      <motion.div 
-        className="absolute  inset-0 w-full z-0">
-        <div className="absolute inset-0 bg-black/20 z-10"/>
+    <div className="relative h-screen w-full rounded-lg flex items-start justify-center px-4 md:px-14 flex-col gap-4 md:gap-6">
+      <motion.div className="absolute  inset-0 w-full z-0">
+        <div className="absolute inset-0 bg-black/20 z-10" />
         <Image
           src="/images/hero.webp"
           alt="Hero Background"
           fill
-          className="rounded-lg object-cover"
+          className="object-cover"
           priority
         />
       </motion.div>
@@ -73,7 +74,12 @@ const HeroHome = () => {
         />
       </FormControl>
 
-      <Stack className="z-10" direction={"row"} gap={{ xs: 2, sm: 3 }}>
+      <Stack
+        className="z-10 flex flex-wrap gap-2"
+       
+        direction={"row"}
+        gap={{ xs: 2, sm: 3 }}
+      >
         <Link href={"https://g.co/kgs/ycR2zwv"} target="_blank">
           <Stack
             direction={"row"}
@@ -88,9 +94,9 @@ const HeroHome = () => {
             />
 
             <Stack direction={"row"} alignItems={"center"}>
-            {[...Array(5)].map((_, index) => (
-            <StarIcon key={index} className="text-[#e7c262] text-lg" />
-          ))}
+              {[...Array(5)].map((_, index) => (
+                <StarIcon key={index} className="text-[#e7c262] text-lg" />
+              ))}
             </Stack>
           </Stack>
         </Link>
@@ -112,13 +118,18 @@ const HeroHome = () => {
               alt="Google"
             />
             <Stack direction={"row"} alignItems={"center"}>
-            {[...Array(5)].map((_, index) => (
-            <StarIcon key={index} className="text-[#e7c262] text-lg" />
-          ))}
+              {[...Array(5)].map((_, index) => (
+                <StarIcon key={index} className="text-[#e7c262] text-lg" />
+              ))}
             </Stack>
           </Stack>
         </Link>
       </Stack>
+      <div className="z-10 h-auto flex absolute bottom-8 left-1/2 transform -translate-x-1/2 justify-center">
+      <ScrollToSection targetId="next-section">
+          <RotatingLogo />
+        </ScrollToSection>
+      </div>
     </div>
   );
 };

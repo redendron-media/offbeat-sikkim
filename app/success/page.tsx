@@ -15,7 +15,7 @@ const Success = () => {
   }
 
   return (
-    <main className="px-4 md:px-6 bg-[#F6FBF4] py-12 md:py-56 lg:py-52 max-w-screen-2xl mx-auto">
+    <main className="px-4 md:px-6 bg-[#F6FBF4] pt-20 md:pt-32 py-12 md:py-56 lg:py-52 max-w-screen-2xl mx-auto">
       <section className="flex flex-col gap-4 items-center text-center">
         <h1 className="headlinem md:displaym text-primary">
           Thank you, your trip package has been booked!

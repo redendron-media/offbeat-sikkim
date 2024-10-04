@@ -85,7 +85,7 @@ export default async function DestinationPage({
   }
 
   return (
-    <main className="px-4 bg-[#F6FBF4] md:px-6 flex flex-col">
+    <main className="px-4 bg-[#F6FBF4] md:px-6 pt-20 md:pt-32 flex flex-col">
       {
         <section
           className={`relative flex flex-col gap-6 px-4 py-9 min-h-[50vh] md:px-14 md:py-24 md:gap-6 items-center justify-center rounded-xl`}

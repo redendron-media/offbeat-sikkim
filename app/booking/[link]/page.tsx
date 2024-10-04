@@ -367,7 +367,7 @@ const BookingPage = () => {
   };
 
   return (
-    <main className="flex min-h-screen justify-between bg-[#F6FBF4] flex-col py-6 px-4 md:px-6 max-w-screen-2xl gap-4 mx-auto">
+    <main className="flex min-h-screen justify-between bg-[#F6FBF4] flex-col py-6 px-4 md:px-6 max-w-screen-2xl gap-4 mx-auto pt-20 md:pt-32">
       <section>
         <section className="flex flex-row gap-4 md:gap-8 w-full">
           <CustomConnectorWrapper activeStep={activeStep} />
@@ -388,7 +388,7 @@ const BookingPage = () => {
                   Available Dates
                 </h2>
                 <FormControl className="px-4 md:px-6">
-                  <div className="flex overflow-x-scroll hide-scrollbar gap-2 mb-4">
+                  <div className="flex overflow-x-scroll gap-2 mb-4">
                     {Object.keys(datesByMonth).map((month, index) => (
                       <Chip
                         key={index}
@@ -424,7 +424,7 @@ const BookingPage = () => {
                     ))}
                   </div>
                   {selectedMonth && (
-                    <div className="flex overflow-x-scroll hide-scrollbar gap-4 py-3">
+                    <div className="flex overflow-x-scroll gap-4 py-3">
                       {datesByMonth[selectedMonth].map(
                         (
                           date: { tourDate: string; spots: string },

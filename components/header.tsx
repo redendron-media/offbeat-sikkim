@@ -82,6 +82,7 @@ function Header() {
       boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
       paddingTop: isSmallScreen ? "1.25rem" : "0.75rem",
       paddingBottom: isSmallScreen ? "1.25rem" : "0.5rem", 
+      backgroundColor: "#F6FBF4",
       transition: {
         duration: 0.7,
         ease: [0.33, 1, 0.68, 1],
@@ -102,6 +103,7 @@ function Header() {
       paddingBottom:"1.5rem",
       y: 0,
       opacity: 1,
+      backgroundColor: "transparent",
       transition: {
         duration: 0.3, 
         ease: [0.33, 1, 0.68, 1],
@@ -133,10 +135,10 @@ function Header() {
       animate={isScrolling ? "animate" : "backToTop"}
       exit="exit"
       variants={NavAnimations}
-      className="fixed top-0 bg-[#F6FBF4] z-30 flex flex-row w-full justify-between px-4 md:px-6 py-6 md:py-9">
+      className="fixed top-0 z-30 flex flex-row w-full justify-between px-4 md:px-6 py-6 md:py-9">
         <Link href={"/"}>
           <Image
-            className="md:w-28 md:h-9 lg:w-40 lg:h-11"
+            className="md:w-28  md:h-9 lg:w-40 lg:h-11"
             src={"/logo.svg"}
             width={96}
             height={28}
@@ -153,8 +155,12 @@ function Header() {
               <Link
                 className={cn(
                   "space-y-6 hover:text-primary duration-700 transition-colors",
-                  isCurrentPath(item.link) ? "text-primary" : "text-black"
-                )}
+                  isCurrentPath(item.link)
+                  ? "text-primary"
+                  : isScrolled
+                  ? "text-black" 
+                  : "text-white"  
+              )}
                 href={item.link}
               >
                 <p className="bodyl xl:titlel">{item.name}</p>
@@ -164,7 +170,7 @@ function Header() {
           <ContactDialog link="" title="Enquire Now" />
         </Stack>
         <IconButton className="lg:hidden rounded-none p-0" onClick={toggleMenu}>
-          <MenuIcon />
+          <MenuIcon className={cn(isScrolled?'text-black':'text-white')}/>
         </IconButton>
       </motion.nav>
     );

@@ -62,7 +62,7 @@ export default function RootLayout({
         `}
       </Script>
       </head>
-      <body className={`${roboto.className} bg-[#F6FBF4] pt-20 md:pt-32`}>
+      <body className={`${roboto.className} bg-[#F6FBF4]`}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Loader />

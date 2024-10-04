@@ -6,7 +6,7 @@ import ContactForm from "@/components/contact-form/page";
 import Link from "next/link";
 function Contact() {
   return (
-    <main className="px-4 md:px-6 bg-[#F6FBF4] py-12  lg:py-20 max-w-screen-2xl mx-auto">
+    <main className="px-4 md:px-6 bg-[#F6FBF4] py-12 pt-20 md:pt-32 lg:py-20 max-w-screen-2xl mx-auto">
       <div className="flex flex-col items-center justify-between md:flex-row gap-10 bg-[url('../public/images/featured-articles.jpg')] bg-cover bg-center bg-no-repeat py-[52px] px-4 rounded-lg">
         <Stack direction={"column"} gap={3}>
           <h1 className="text-white headlines md:displays lg:displaym">

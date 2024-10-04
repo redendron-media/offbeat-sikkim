@@ -14,7 +14,7 @@ import React from "react";
 
 function about() {
   return (
-    <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto">
+    <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto pt-20 md:pt-32">
       <section className="py-[52px] flex flex-col gap-4">
         <h1 className="text-secondary-oncontainer headlines md:displays lg:displaym">
           Our Mission

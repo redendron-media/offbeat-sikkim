@@ -22,7 +22,7 @@ const query = `
   const destinations = data.destinations || [];
   
   return (
-   <main className='pl-4 bg-[#F6FBF4] md:pl-6 flex flex-col'>
+   <main className='pl-4 bg-[#F6FBF4] md:pl-6 pt-20 md:pt-32 flex flex-col'>
         <section className='flex flex-col py-12 md:py-[76px] gap-4 md:gap-9'>
             <h2 className='text-secondary-oncontainer headlines md:displays lg:displaym'>Destinations</h2>
             <Slider items={destinations}/>

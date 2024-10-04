@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const Faq = () => {
   return (
-    <main className="bg-[#F6FBF4] p-6 max-w-screen-2xl mx-auto space-y-8">
+    <main className="bg-[#F6FBF4] p-6 pt-20 md:pt-32 max-w-screen-2xl mx-auto space-y-8">
       <h2 className="text-secondary-oncontainer headlines md:displays text-pretty lg:displaym text-center">
         Frequently Asked Questions
       </h2>

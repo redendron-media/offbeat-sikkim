@@ -4,7 +4,7 @@ import React from "react";
 
 const PrivacyPolicy = () => {
   return (
-    <main className="px-4 md:px-6 bg-[#F6FBF4] py-12  lg:py-20 max-w-screen-2xl mx-auto flex flex-col gap-4">
+    <main className="px-4 md:px-6 bg-[#F6FBF4] py-12 pt-20 md:pt-32 lg:py-20 max-w-screen-2xl mx-auto flex flex-col gap-4">
       <h1 className="text-secondary-oncontainer headlines md:displays lg:displaym">
         Privacy Policy
       </h1>

@@ -52,7 +52,7 @@ async function BlogArticle({ params }: BlogArticleProps) {
   let currentPageLink =
     process.env.NEXT_PUBLIC_BASE_URL + "/blog/" + params.slug;
   return (
-    <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto py-12 md:py-[76px] flex flex-col gap-6 md:gap-9">
+    <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto py-12 md:py-[76px] pt-20 md:pt-32 flex flex-col gap-6 md:gap-9">
       <Stack gap={1} className="md:px-28 lg:px-52 text-start">
         <div className="flex flex-col md:flex-row gap-4 md:justify-between md:items-center">
           <h1 className="headlines md:displaym lg:displayl text-[#171D19]">

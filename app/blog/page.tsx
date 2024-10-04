@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 async function getData() {
   const query = `*[_type == 'blog' ] | order(_createdAt desc) {
@@ -35,7 +35,6 @@ function formatDate(dateString: string) {
 
 async function blog() {
   const data: blogCard[] = await getData();
-  console.log(data);
 
   const groupPosts = chunkPosts(data, 3);
 
@@ -48,7 +47,7 @@ async function blog() {
   }
 
   return (
-    <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto">
+    <main className="px-4 md:px-6 bg-[#F6FBF4] pt-20 md:pt-32 max-w-screen-2xl mx-auto">
       {data.length != 0 && (
         <>
           <section className="flex flex-col gap-4">

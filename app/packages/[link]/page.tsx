@@ -321,7 +321,7 @@ const PackagePage: React.FC = () => {
 
   const pdfUrl =`${packageData?.pdfItinerary ?? ""}?dl=Itinerary.pdf`;
   return (
-    <main className=" relative bg-[#F6FBF4]  max-w-screen-2xl mx-auto">
+    <main className=" relative bg-[#F6FBF4] pt-20 md:pt-32 max-w-screen-2xl mx-auto">
       {packageData && (
         <>
           <div className="flex flex-col px-4 md:px-6">

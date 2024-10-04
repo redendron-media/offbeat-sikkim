@@ -73,7 +73,7 @@ export default async function SearchPage({
   }
 
   return (
-    <main className="px-4 md:px-6 bg-[#F6FBF4] py-12 min-h-96 md:min-h-[400px] lg:min-h-96 lg:py-20 max-w-screen-2xl mx-auto">
+    <main className="px-4 md:px-6 bg-[#F6FBF4] pt-20 md:pt-32 py-12 min-h-96 md:min-h-[400px] lg:min-h-96 lg:py-20 max-w-screen-2xl mx-auto">
       <section className="flex flex-col gap-8  ">
         <h2 className="text-secondary-oncontainer headlines md:displays lg:displaym">
           {upcomingTrips.length > 0 ||
