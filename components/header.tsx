@@ -19,6 +19,7 @@ function Header() {
   const [navbar, setNavbar] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const isHomepage = pathname === '/';
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 768;
   const toggleMenu = () => {
     setNavbar((prevOpen) => !prevOpen);
@@ -156,11 +157,13 @@ function Header() {
                 className={cn(
                   "space-y-6 hover:text-primary duration-700 transition-colors",
                   isCurrentPath(item.link)
-                  ? "text-primary"
-                  : isScrolled
-                  ? "text-black" 
-                  : "text-white"  
-              )}
+                  ? "text-primary" 
+              : isHomepage
+              ? isScrolled
+                ? "text-black" 
+                : "text-white" 
+              : "text-black"
+          )}
                 href={item.link}
               >
                 <p className="bodyl xl:titlel">{item.name}</p>
