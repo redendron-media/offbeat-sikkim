@@ -125,7 +125,7 @@ const HeroHome= () => {
           </Stack>
         </Link>
       </Stack>
-      <div className="z-10 h-auto flex absolute bottom-8 left-1/2 transform -translate-x-1/2 justify-center">
+      <div className="z-10 h-auto flex absolute  bottom-12  md:bottom-8 left-1/2 transform -translate-x-1/2 justify-center">
       <ScrollToSection targetId="next-section">
           <RotatingLogo />
         </ScrollToSection>
