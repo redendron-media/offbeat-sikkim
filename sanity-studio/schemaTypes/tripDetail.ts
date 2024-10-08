@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity';
+import {defineField, defineType} from 'sanity'
 
 const tripDetailFields = [
   defineField({
@@ -149,7 +149,7 @@ const tripDetailFields = [
             name: 'activities',
             type: 'array',
             title: 'Activities',
-            of: [{ type: 'string' }],
+            of: [{type: 'string'}],
           },
         ],
       },
@@ -159,29 +159,29 @@ const tripDetailFields = [
     name: 'inclusions',
     title: 'Inclusions',
     type: 'array',
-    of: [{ type: 'string' }],
+    of: [{type: 'string'}],
   }),
   defineField({
     name: 'exclusions',
     title: 'Exclusions',
     type: 'array',
-    of: [{ type: 'string' }],
+    of: [{type: 'string'}],
   }),
   defineField({
     name: 'bookingProcess',
     title: 'Booking Process',
     type: 'array',
-    of: [{ type: 'string' }],
+    of: [{type: 'string'}],
   }),
   defineField({
     name: 'thingsToCarry',
     title: 'Things to Carry',
     type: 'array',
-    of: [{ type: 'string' }],
+    of: [{type: 'string'}],
   }),
   defineField({
     name: 'thingsToCarryTrek',
-    title:"Things to Carry Trek",
+    title: 'Things to Carry Trek',
     type: 'array',
     of: [
       {
@@ -196,7 +196,7 @@ const tripDetailFields = [
             name: 'list',
             type: 'array',
             title: 'List',
-            of: [{ type: 'string' }],
+            of: [{type: 'string'}],
           },
         ],
       },
@@ -206,7 +206,7 @@ const tripDetailFields = [
     name: 'personalMedicalKit',
     title: 'Personal Medical Kit',
     type: 'array',
-    of: [{ type: 'string' }],
+    of: [{type: 'string'}],
   }),
   defineField({
     name: 'mandatoryDocuments',
@@ -225,7 +225,7 @@ const tripDetailFields = [
             name: 'desc',
             type: 'array',
             title: 'Description',
-            of: [{ type: 'string' }],
+            of: [{type: 'string'}],
           },
         ],
       },
@@ -235,7 +235,7 @@ const tripDetailFields = [
     name: 'knowBeforeYouGo',
     title: 'Know Before You Go',
     type: 'array',
-    of: [{ type: 'string' }],
+    of: [{type: 'string'}],
   }),
   defineField({
     name: 'destination',
@@ -289,32 +289,119 @@ const destinationFields = [
       hotspot: true,
     },
   }),
- 
+  defineField({
+    name: 'faq',
+    title: 'Faq',
+    type: 'array',
+    of: [
+      {
+        type: 'object',
+        fields: [
+          {
+            name: 'question',
+            type: 'string',
+            title: 'Question',
+          },
+          {
+            name: 'answer',
+            type: 'string',
+            title: 'Answer',
+          },
+        ],
+      },
+    ],
+  }),
+  defineField({
+    name: 'bestTime',
+    title: 'Best time to visit',
+    type: 'array',
+    
+    of: [
+      {
+        type: 'block',
+      },
+    ],
+  }),
+  defineField({
+    name: 'thingsToDo',
+    title: 'Things to do',
+    type: 'array',
+    
+    of: [
+      {
+        type: 'block',
+      },
+    ],
+  }),
+  defineField({
+    name: 'reach',
+    title: 'How to reach',
+    type: 'array',
+    
+    of: [
+      {
+        type: 'block',
+      },
+    ],
+  }),
+  defineField({
+    name: 'festivals',
+    title: 'Major festivals',
+    type: 'array',
+    
+    of: [
+      {
+        type: 'block',
+      },
+    ],
+  }),
+  defineField({
+    name: 'topten',
+    title: 'Top ten places to visit',
+    type: 'array',
+    
+    of: [
+      {
+        type: 'block',
+      },
+    ],
+  }),
+  defineField({
+    name: 'permit',
+    title: 'Permit',
+    type: 'array',
+    
+    of: [
+      {
+        type: 'block',
+      },
+    ],
+  }),
 ]
 export const upcomingTripDetail = defineType({
   name: 'upcomingTripDetail',
   title: 'Upcoming Trip Detail',
   type: 'document',
   fields: tripDetailFields,
-});
+})
 
 export const curatedTripDetail = defineType({
   name: 'curatedTripDetail',
   title: 'Curated Trip Detail',
   type: 'document',
   fields: tripDetailFields,
-});
+})
 
 export const trekTripDetail = defineType({
   name: 'trekTripDetail',
   title: 'Trek Trip Detail',
   type: 'document',
   fields: tripDetailFields,
-});
+})
 
 export const destinations = defineType({
-  name:'destination',
-  title:'Destination',
-  type:'document',
+  name: 'destination',
+  title: 'Destination',
+  type: 'document',
   fields: destinationFields,
 })

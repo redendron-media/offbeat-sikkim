@@ -3,16 +3,26 @@ import Custom_Form from "@/components/custom-itinerary/custom-itinerary-form";
 import Testimonials from "@/components/pages/Testimonials/page";
 import Sliderr from "@/components/Slider";
 import React from "react";
-import { Stack } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Chip,
+  Stack,
+} from "@mui/material";
 import { client, urlFor } from "@/lib/sanity";
 import Image from "next/image";
 import { blog } from "@/schemaTypes/blog";
 import { blogCard } from "@/lib/types";
 import Link from "next/link";
-
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { PortableText, PortableTextComponents } from "next-sanity";
+import ViewMore from "@/components/viewmore-box/page";
 interface DestinationPageProps {
   params: { link: string };
 }
+
+export const revalidate =60;
 
 const query = (link: string) => `
 {
@@ -52,7 +62,14 @@ const query = (link: string) => `
     title,
     image,
     desc,
-    "link": destination
+    "link": destination,
+     faq,
+      bestTime,
+      thingsToDo,
+      reach,
+      festivals,
+      topten,
+      permit
   },
    "blogs": *[_type == "blog" && (title match "${link}" || caption match "${link}")] {
       title,
@@ -68,7 +85,6 @@ export default async function DestinationPage({
   params,
 }: DestinationPageProps) {
   const { link } = params;
-  console.log(link);
 
   const data = await client.fetch(query(link));
 
@@ -78,7 +94,6 @@ export default async function DestinationPage({
   const destinationDetails = data.destinationDetails[0] || {};
   const blogs = data.blogs || [];
 
-  
   function formatDate(dateString: string) {
     const dateParts = dateString.split("-");
     return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
@@ -135,50 +150,157 @@ export default async function DestinationPage({
           <Sliderr items={treks} />
         </section>
       )}
+      <Custom_Form />
 
       {blogs.length > 0 && (
         <section className="flex flex-col py-12 md:py-[76px] gap-4 md:gap-9">
           <h2 className="text-secondary-oncontainer headlines md:displays lg:displaym">
-           Related  Blogs
+            Related Blogs
           </h2>
           <div className="flex w-full flex-row flex-wrap  gap-8">
-              {blogs.map((blog: blogCard, index:number) => (
-                <Link
-                  key={index}
-                  href={`/blog/${blog.currentSlug}`}
-                  className="w-full lg:w-[45%]"
+            {blogs.map((blog: blogCard, index: number) => (
+              <Link
+                key={index}
+                href={`/blog/${blog.currentSlug}`}
+                className="w-full lg:w-[45%]"
+              >
+                <div
+                  key={blog.title}
+                  className="h-full w-full rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-cardShadow pb-4"
                 >
-                  <div key={blog.title} className="h-full w-full rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-cardShadow pb-4">
-                    <div className="w-full h-[240px] md:h-[600px] relative">
-                      <Image
-                        src={urlFor(blog.titleImage).url()}
-                        fill
-                        loading="lazy"
-                        alt={blog.title}
-                        className="rounded-lg object-cover lg:rounded-[10px]"
-                      />
-                    </div>
-                    <div className="px-4 pt-4 space-y-1 text-[#051E13]">
-                      <p className="labels text-[#404942]">
-                        {formatDate(
-                          new Date(blog._createdAt).toISOString().split("T")[0]
-                        )}
-                      </p>
-                      <h2 className="titles line-clamp-2 md:titlel font-bold">
-                        {blog.title}
-                      </h2>
-                      <p className="labell line-clamp-2 overflow-ellipsis select-none">
-                        {blog.caption}
-                      </p>
-                    </div>
+                  <div className="w-full h-[240px] md:h-[600px] relative">
+                    <Image
+                      src={urlFor(blog.titleImage).url()}
+                      fill
+                      loading="lazy"
+                      alt={blog.title}
+                      className="rounded-lg object-cover lg:rounded-[10px]"
+                    />
                   </div>
-                </Link>
-              ))}
-            </div>
+                  <div className="px-4 pt-4 space-y-1 text-[#051E13]">
+                    <div className="flex flex-row gap-3 flex-wrap pb-3">
+                      {blog.tags?.map((tag) => (
+                        <Link href={`/tags/${tag.slug}`} passHref key={tag._id}>
+                          <Chip
+                            component="a"
+                            label={tag.name}
+                            clickable
+                            sx={{
+                              backgroundColor: "primary.main",
+                              "&:hover": {
+                                backgroundColor: "primary.dark",
+                              },
+                              "& .MuiChip-label": {
+                                color: "white",
+                              },
+
+                              fontSize: "0.75rem",
+                              padding: "6px",
+                            }}
+                          />
+                        </Link>
+                      ))}
+                    </div>
+                    <p className="labels text-[#404942]">
+                      {formatDate(
+                        new Date(blog._createdAt).toISOString().split("T")[0]
+                      )}
+                    </p>
+                    <h2 className="titles line-clamp-2 md:titlel font-bold">
+                      {blog.title}
+                    </h2>
+                    <p className="labell line-clamp-2 overflow-ellipsis select-none">
+                      {blog.caption}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </section>
       )}
 
-      <Custom_Form />
+      {}
+
+      {destinationDetails.faq && (
+        <section className="flex flex-col py-12 md:py-[76px] gap-4 md:gap-9">
+          <h2 className="text-secondary-oncontainer headlines md:displays lg:displaym">
+            Frequently Asked Questions
+          </h2>
+          <section className="bg-[#E4EAE3] py-6 space-y-6 rounded-xl px-4 md:px-6">
+            {destinationDetails.faq.map(
+              (faq: { question: string; answer: string }, key: number) => (
+                <Accordion
+                  key={`${key}`}
+                  className="bg-transparent border-none shadow-none"
+                >
+                  <AccordionSummary
+                    className="px-2"
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`panel1-content`}
+                    id={`panel1-header`}
+                  >
+                    <p className="titlem md:titlel font-semibold text-balance text-[#171D19]">
+                      {faq.question}
+                    </p>
+                  </AccordionSummary>
+                  <AccordionDetails className="bodym md:bodyl px-2 text-pretty text-[#171D19]">
+                    <p>{faq.answer}</p>
+                  </AccordionDetails>
+                </Accordion>
+              )
+            )}
+          </section>
+        </section>
+      )}
+
+      <div className="flex flex-col gap-6">
+        {destinationDetails.bestTime && (
+          <ViewMore
+            text="Best time to visit"
+            title={destinationDetails.title}
+            content={destinationDetails.bestTime}
+          />
+        )}
+        {destinationDetails.thingsToDo && (
+          <ViewMore
+            text="Things to do in"
+            title={destinationDetails.title}
+            content={destinationDetails.thingsToDo}
+          />
+        )}
+        {destinationDetails.reach && (
+          <ViewMore
+            text="How to reach"
+            title={destinationDetails.title}
+            content={destinationDetails.reach}
+          />
+        )}
+        {destinationDetails.festivals && (
+          <ViewMore
+            text="Major festivals of"
+            title={destinationDetails.title}
+            content={destinationDetails.festivals}
+          />
+        )}
+        {destinationDetails.topten && (
+          <ViewMore
+            text="Top ten places to visit in"
+            title={destinationDetails.title}
+            content={destinationDetails.topten}
+          />
+        )}
+        {
+          destinationDetails.permit && (
+            <ViewMore
+            text="Would you need any permit/permission when you travel to"
+            title={destinationDetails.title}
+            content={destinationDetails.permit}
+          />
+          )
+        }
+      </div>
+
       <Testimonials />
       <section className="pr-4 md:pr-6 flex flex-col justify-center items-center w-full gap-6 py-[60px] md:py-[88px]">
         <h2 className="headlines md:headlinem lg:headlinel text-secondary-oncontainer text-center">
