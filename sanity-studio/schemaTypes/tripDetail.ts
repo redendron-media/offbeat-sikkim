@@ -314,69 +314,249 @@ const destinationFields = [
   defineField({
     name: 'bestTime',
     title: 'Best time to visit',
-    type: 'array',
-    
-    of: [
+    type: 'object',
+    fields: [
       {
-        type: 'block',
+        name: 'intro',
+        title: 'Introduction',
+        type: 'string',
+      },
+      {
+        name: 'steps',
+        title: 'Best Time Periods',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'step',
+                title: 'Period',
+                type: 'string',
+              },
+              {
+                name: 'substeps',
+                title: 'Details',
+                type: 'array',
+                of: [{ type: 'string' }],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'conclusion',
+        title: 'Conclusion',
+        type: 'string',
       },
     ],
   }),
+
   defineField({
     name: 'thingsToDo',
     title: 'Things to do',
-    type: 'array',
-    
-    of: [
+    type: 'object',
+    fields: [
       {
-        type: 'block',
+        name: 'intro',
+        title: 'Introduction',
+        type: 'string',
+      },
+      {
+        name: 'steps',
+        title: 'Activities',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'step',
+                title: 'Activity',
+                type: 'string',
+              },
+              {
+                name: 'substeps',
+                title: 'Details',
+                type: 'array',
+                of: [{ type: 'string' }],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'conclusion',
+        title: 'Conclusion',
+        type: 'string',
       },
     ],
   }),
+
   defineField({
     name: 'reach',
     title: 'How to reach',
-    type: 'array',
-    
-    of: [
+    type: 'object',
+    fields: [
       {
-        type: 'block',
+        name: 'intro',
+        title: 'Introduction',
+        type: 'string',
+      },
+      {
+        name: 'steps',
+        title: 'Directions',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'step',
+                title: 'Direction',
+                type: 'string',
+              },
+              {
+                name: 'substeps',
+                title: 'Details',
+                type: 'array',
+                of: [{ type: 'string' }],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'conclusion',
+        title: 'Conclusion',
+        type: 'string',
       },
     ],
   }),
+
   defineField({
     name: 'festivals',
     title: 'Major festivals',
-    type: 'array',
-    
-    of: [
+    type: 'object',
+    fields: [
       {
-        type: 'block',
+        name: 'intro',
+        title: 'Introduction',
+        type: 'string',
+      },
+      {
+        name: 'steps',
+        title: 'Festivals',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'step',
+                title: 'Festival',
+                type: 'string',
+              },
+              {
+                name: 'substeps',
+                title: 'Details',
+                type: 'array',
+                of: [{ type: 'string' }],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'conclusion',
+        title: 'Conclusion',
+        type: 'string',
       },
     ],
   }),
+
   defineField({
     name: 'topten',
     title: 'Top ten places to visit',
-    type: 'array',
-    
-    of: [
+    type: 'object',
+    fields: [
       {
-        type: 'block',
+        name: 'intro',
+        title: 'Introduction',
+        type: 'string',
+      },
+      {
+        name: 'steps',
+        title: 'Places',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'step',
+                title: 'Place',
+                type: 'string',
+              },
+              {
+                name: 'substeps',
+                title: 'Details',
+                type: 'array',
+                of: [{ type: 'string' }],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'conclusion',
+        title: 'Conclusion',
+        type: 'string',
       },
     ],
   }),
+
   defineField({
     name: 'permit',
     title: 'Permit',
-    type: 'array',
-    
-    of: [
+    type: 'object',
+    fields: [
       {
-        type: 'block',
+        name: 'intro',
+        title: 'Introduction',
+        type: 'string',
+      },
+      {
+        name: 'steps',
+        title: 'Permit Types',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'step',
+                title: 'Permit Type',
+                type: 'string',
+              },
+              {
+                name: 'substeps',
+                title: 'Details',
+                type: 'array',
+                of: [{ type: 'string' }],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'conclusion',
+        title: 'Conclusion',
+        type: 'string',
       },
     ],
   }),
+ 
 ]
 export const upcomingTripDetail = defineType({
   name: 'upcomingTripDetail',

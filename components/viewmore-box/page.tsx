@@ -1,27 +1,17 @@
 "use client";
-import { PortableText, PortableTextComponents } from "next-sanity";
-import React, { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
+import React, {  useLayoutEffect, useRef, useState } from "react";
 
 interface DestinationDetailsProps {
   title: string;
   text: string;
-  content: any;
+  content: {
+    intro?: string;
+    steps?: { step: string; substeps?: string[] }[];
+    conclusion?: string;
+  };
 }
 
-const serializers: PortableTextComponents = {
-  list: {
-    number: ({ children }) => (
-      <ol className="list-decimal pl-5 space-y-2">{children}</ol>
-    ),
-    bullet: ({ children }) => (
-      <ul className="list-disc pl-5 space-y-2">{children}</ul>
-    ),
-  },
-  listItem: {
-    bullet: ({ children }) => <li className="space-y-2 list-inside">{children}</li>,
-    number: ({ children }) => <li className="space-y-1">{children}</li>,
-  },
-};
 
 const ViewMore: React.FC<DestinationDetailsProps> = ({
   title,
@@ -29,24 +19,18 @@ const ViewMore: React.FC<DestinationDetailsProps> = ({
   text,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [needsToggle, setNeedsToggle] = useState(false); // State to check if we need a toggle
-  const contentRef = useRef<HTMLParagraphElement>(null); 
-
-  const charLimit = 300;
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null); 
+ 
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (contentRef.current) {
-      const current = contentRef.current;
-      const maxHeight = parseFloat(getComputedStyle(current).lineHeight) * 5; // Maximum height for 5 lines
-      if (current.scrollHeight > maxHeight) {
-        setNeedsToggle(true); // Show "View More" button if content exceeds 5 lines
-      } else {
-        setNeedsToggle(false); // No button if content fits within 5 lines
-      }
+      const isContentOverflowing = contentRef.current.scrollHeight > contentRef.current.clientHeight;
+      setIsOverflowing(isContentOverflowing);
     }
   }, [content]);
 
@@ -58,14 +42,44 @@ const ViewMore: React.FC<DestinationDetailsProps> = ({
             {text} {title}
           </h2>
 
-          <p
+          <div
            ref={contentRef}
-            className={`bodys md:bodym lg:bodyl overflow-hidden ${isExpanded ? "" : "line-clamp-5"}`}
-          >
-            <PortableText value={content} components={serializers} />
-          </p>
+            className={cn(
+              "bodys md:bodym lg:bodyl flex flex-col gap-4",
+              !isExpanded && "line-clamp-5"
+            )}>
+            {
+              content.intro && (
+                <h4 className="titles md:titlel text-[#171D19]">{content.intro}</h4>
+              )
+            }
+            {
+              content.steps && (
+                <ol className="list-decimal space-y-2 px-6  py-2">
+                  {content.steps.map((step,index) => (
+                    <li className="titles md:titlel text-balance text-[#171D19]" key={index}>
+                      {step.step}
+                      {step.substeps && (
+                        <ul className="space-y-2 py-1 list-disc pl-4">
+                          {step.substeps.map((substep,idx)=>(
+                            <li className="bodys md:bodyl text-balance" key={idx}>{substep}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              )
+            }
+            {
+              content.conclusion && (
+                <p>{content.conclusion}</p>
+              )
+            }
+          </div>
 
-          {needsToggle && (
+          
+          {isOverflowing && (
             <button
               className="bodys md:bodym lg:bodyl self-center text-[#0010ee] font-medium cursor-pointer"
               onClick={toggleExpand}
