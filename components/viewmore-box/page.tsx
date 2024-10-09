@@ -73,7 +73,7 @@ const ViewMore: React.FC<DestinationDetailsProps> = ({
             }
             {
               content.conclusion && (
-                <p>{content.conclusion}</p>
+                <p className="titles md:titlel text-[#171D19]">{content.conclusion}</p>
               )
             }
           </div>
