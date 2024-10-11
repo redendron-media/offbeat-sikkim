@@ -13,7 +13,7 @@ type TourCardProps = {
 
 const Cards = ({ card }: TourCardProps) => {
   if (!card || !card.link) {
-    console.error("Card or link is undefined", card); // Debugging in case link is undefined
+    console.error("Card or link is undefined", card); 
     return null;
   }
 

@@ -23,37 +23,40 @@ const CustomOutlinedInput = styled(OutlinedInput)({
   "& .MuiOutlinedInput-input::placeholder": {
     color: "#2C322D",
   },
+  "& .MuiOutlinedInput-input:-webkit-autofill": {
+    WebkitBoxShadow: "0 0 0 1000px #F6FBF4 inset",
+    WebkitTextFillColor: "#404942",
+  },
 });
 
-
-const HeroHome= () => {
+const HeroHome = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [selectedMonth, setSelectedMonth] = useState<string>("");
   const [searchURL, setSearchURL] = useState("");
   const router = useRouter();
-  
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     const newValue = event.target.value;
     setSearchValue(newValue);
   };
-
 
   const handleMonthChange = (event: SelectChangeEvent<string>): void => {
     const newMonth = event.target.value;
     setSelectedMonth(newMonth);
   };
 
-
   const getSearchURL = (input: string, month: string): string => {
     const encodedSearch = encodeURIComponent(input.trim());
     const encodedMonth = encodeURIComponent(month.trim());
-    return encodedSearch || encodedMonth 
-      ? `/search?query=${encodedSearch}&month=${encodedMonth}` 
+    return encodedSearch || encodedMonth
+      ? `/search?query=${encodedSearch}&month=${encodedMonth}`
       : "";
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && searchValue.trim()) {
+    if (event.key === "Enter" && searchValue.trim()) {
       const searchURL = getSearchURL(searchValue, selectedMonth);
       if (searchURL) {
         router.push(searchURL); // Trigger the search by navigating to the search URL
@@ -78,42 +81,47 @@ const HeroHome= () => {
         <h1 className="displays md:displayl text-white">Where to next?</h1>
       </Stack>
 
-      <FormControl className="bg-[#F6FBF4] rounded-lg w-full md:w-[96%] lg:w-3/4 flex flex-row">
-      <Select
-        value={selectedMonth}
-        onChange={handleMonthChange}
-        displayEmpty
-        className=" px-4 py-2 w-2/5 md:w-1/4 rounded-none"
-        renderValue={(selected) => selected || 'Select Month'}
-      >
-        <MenuItem value="">
-          <em>Select Month</em>
-        </MenuItem>
-        <MenuItem value="January">January</MenuItem>
-        <MenuItem value="February">February</MenuItem>
-        <MenuItem value="March">March</MenuItem>
-        <MenuItem value="April">April</MenuItem>
-        <MenuItem value="May">May</MenuItem>
-        <MenuItem value="June">June</MenuItem>
-        <MenuItem value="July">July</MenuItem>
-        <MenuItem value="August">August</MenuItem>
-        <MenuItem value="September">September</MenuItem>
-        <MenuItem value="October">October</MenuItem>
-        <MenuItem value="November">November</MenuItem>
-        <MenuItem value="December">December</MenuItem>
-      </Select>
+      <div className=" w-full md:w-[96%] lg:w-3/4 flex flex-row ">
+        <FormControl className="w-[90%] md:w-1/4 bg-[#F6FBF4] border-none rounded-s-lg rounded-e-none">
+          <Select
+            value={selectedMonth}
+            onChange={handleMonthChange}
+            displayEmpty
+            className="px-4 py-2 rounded-s-lg rounded-e-none  border-none"
+            renderValue={(selected) => selected || "Select Month"}
+          >
+            <MenuItem value="">
+              <em>Month</em>
+            </MenuItem>
+            <MenuItem value="January">January</MenuItem>
+            <MenuItem value="February">February</MenuItem>
+            <MenuItem value="March">March</MenuItem>
+            <MenuItem value="April">April</MenuItem>
+            <MenuItem value="May">May</MenuItem>
+            <MenuItem value="June">June</MenuItem>
+            <MenuItem value="July">July</MenuItem>
+            <MenuItem value="August">August</MenuItem>
+            <MenuItem value="September">September</MenuItem>
+            <MenuItem value="October">October</MenuItem>
+            <MenuItem value="November">November</MenuItem>
+            <MenuItem value="December">December</MenuItem>
+          </Select>
+        </FormControl>
 
         <CustomOutlinedInput
           id="search"
-          className="w-full rounded-none"
+          className="w-full rounded-e-lg rounded-s-none bg-[#F6FBF4]"
           value={searchValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           endAdornment={
-            <InputAdornment position="end">
-              <Link   href={getSearchURL(searchValue, selectedMonth)} passHref>
+            <InputAdornment position="end" className="pr-2">
+              <Link href={getSearchURL(searchValue, selectedMonth)} passHref>
                 <IconButton
                   aria-label="Search"
+                  disableFocusRipple
+                  disableRipple
+                  disableTouchRipple
                   disabled={!searchValue.trim()}
                   edge="end"
                 >
@@ -124,11 +132,10 @@ const HeroHome= () => {
           }
           placeholder="Search Destinations, Packages, etc."
         />
-      </FormControl>
+      </div>
 
       <Stack
         className="z-10 flex flex-wrap gap-2"
-       
         direction={"row"}
         gap={{ xs: 2, sm: 3 }}
       >
@@ -178,7 +185,7 @@ const HeroHome= () => {
         </Link>
       </Stack>
       <div className="z-10 h-auto flex absolute  bottom-12  md:bottom-8 left-1/2 transform -translate-x-1/2 justify-center">
-      <ScrollToSection targetId="next-section">
+        <ScrollToSection targetId="next-section">
           <RotatingLogo />
         </ScrollToSection>
       </div>
