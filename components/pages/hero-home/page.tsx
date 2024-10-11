@@ -88,7 +88,9 @@ const HeroHome = () => {
             onChange={handleMonthChange}
             displayEmpty
             className="px-4 py-2 rounded-s-lg rounded-e-none  border-none"
-            renderValue={(selected) => selected || "Select Month"}
+            renderValue={(selected) => (
+              <span className="labell md:bodyl text-[#2C322D]">{selected || "Select Month"}</span>
+            )}
           >
             <MenuItem value="">
               <em>Month</em>
@@ -110,10 +112,11 @@ const HeroHome = () => {
 
         <CustomOutlinedInput
           id="search"
-          className="w-full rounded-e-lg rounded-s-none bg-[#F6FBF4]"
+          className="w-full rounded-e-lg rounded-s-none bg-[#F6FBF4] labell md:bodyl"
           value={searchValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
+         
           endAdornment={
             <InputAdornment position="end" className="pr-2">
               <Link href={getSearchURL(searchValue, selectedMonth)} passHref>
