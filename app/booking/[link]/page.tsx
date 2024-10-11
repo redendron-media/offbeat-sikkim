@@ -35,7 +35,7 @@ interface CustomConnectorWrapperProps {
 }
 interface Tour {
   tourDate: string;
-  spots?: string; // spots can be optional
+  spots?: string;
 }
 
 const CustomConnectorWrapper = ({
@@ -69,16 +69,25 @@ const fetchPackageData = async (link: string) => {
       durationd,
       currentPrice,
       originalPrice,
-       tourDates[] {
-      tourDate,
-      spots
-    },
-      coTraveler,
+      "tourDates": tourDates[],
       tripType
     }
   `;
   const data = await client.fetch(query);
   return data;
+};
+
+
+const generateDatesByMonth = (tourDates: string[] | undefined) => {
+  return (
+    tourDates?.reduce((acc: { [key: string]: Tour[] }, tourString: string) => {
+      const [tourDate, spots] = tourString.split(" | ");
+      const month = tourDate.split(" ")[1];
+      if (!acc[month]) acc[month] = [];
+      acc[month].push({ tourDate, spots });
+      return acc;
+    }, {}) || {}
+  );
 };
 
 const BookingPage = () => {
@@ -95,23 +104,7 @@ const BookingPage = () => {
     enabled: !!link,
   });
 
-  const datesByMonth =
-    packageData?.tourDates?.reduce(
-      (acc: { [key: string]: Tour[] }, tour: Tour) => {
-        if (!tour || !tour.tourDate) {
-          return acc;
-        }
-
-        const month = tour.tourDate.split(" ")[1];
-        if (!acc[month]) {
-          acc[month] = [];
-        }
-        acc[month].push(tour);
-        return acc;
-      },
-      {} as { [key: string]: { tourDate: string; spots: string }[] }
-    ) || {};
-
+  const datesByMonth = React.useMemo(() => generateDatesByMonth(packageData?.tourDates), [packageData?.tourDates]);
   const initialMonth = Object.keys(datesByMonth)[0] || null;
   const initialDate = initialMonth ? datesByMonth[initialMonth][0] : null;
 
@@ -122,6 +115,7 @@ const BookingPage = () => {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(
     initialMonth
   );
+
   const [formData, setFormData] = useState<UpcomingForm>({
     packageName: packageData?.title,
     name: "",
@@ -138,31 +132,44 @@ const BookingPage = () => {
   const cost = Number(packageData?.currentPrice?.replace(/,/g, ""));
 
   useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      noOfAdults: noOfPeople.toString(),
-    }));
-    if (initialDate) {
-      setFormData((prevData) => ({
-        ...prevData,
-        tourDates: initialDate,
-      }));
+    if (packageData) {
+      const newTourDate = initialDate?.tourDate || packageData?.tourDates?.[0]?.tourDate || "";
+      
+      // Only update formData if necessary
+      if (
+        formData.packageName !== packageData.title ||
+        formData.tourDates !== newTourDate ||
+        formData.noOfAdults !== noOfPeople.toString()
+      ) {
+        setFormData((prevData) => ({
+          ...prevData,
+          packageName: packageData.title,
+          tourDates: newTourDate,
+          noOfAdults: noOfPeople.toString(),
+        }));
+        setSelectedMonth(initialMonth);
+      }
     }
-  }, [noOfPeople, formData.noOfAdults, initialDate, setFormData]);
+  }, [packageData, noOfPeople, initialDate]);
 
   const handleMonthSelect = (month: string) => {
     setSelectedMonth(month);
-    setFormData((prevData) => ({
-      ...prevData,
-      tourDates: datesByMonth[month]?.[0]?.tourDate ?? "",
-    }));
+    const firstDate = datesByMonth[month]?.[0]?.tourDate ?? "";
+    if (formData.tourDates !== firstDate) {
+      setFormData((prevData) => ({
+        ...prevData,
+        tourDates: firstDate,
+      }));
+    }
   };
 
   const handleDateSelect = (date: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      tourDates: date,
-    }));
+    if (formData.tourDates !== date) {
+      setFormData((prevData) => ({
+        ...prevData,
+        tourDates: date,
+      }));
+    }
   };
   const handlePeopleInputChange = (
     field: keyof UpcomingForm,
@@ -249,7 +256,6 @@ const BookingPage = () => {
       </Box>
     );
   }
-
   const totalCost = cost * noOfPeople;
   const gst = Math.round(totalCost * 0.05);
   let tcs;
@@ -389,131 +395,133 @@ const BookingPage = () => {
                 </h2>
                 <FormControl className="px-4 md:px-6">
                   <div className="flex overflow-x-scroll xl:overflow-x-clip custom-scrollbar gap-2 mb-4">
-                    {Object.keys(datesByMonth).map((month, index) => (
-                      <Chip
-                        key={index}
-                        label={month}
-                        clickable
-                        className={cn(
-                          `${selectedMonth === month ? "shadow-cardShadow" : "shadow-none"}`,
-                        )}
-                        onClick={() => handleMonthSelect(month)}
-                        variant={
-                          selectedMonth === month ? "filled" : "outlined"
-                        }
-                        sx={{
-                          ...(selectedMonth === month
-                            ? {
-                                backgroundColor: "primary.main",
-                                color: "white",
-                                "& .MuiChip-label": { color: "white" },
-                              }
-                            : {
-                                borderColor: "primary.main",
-                                color: "primary.main",
-                                "& .MuiChip-label": { color: "primary.main" },
-                              }),
-                          "&:hover": {
-                            backgroundColor:
-                              selectedMonth === month
-                                ? "primary.dark"
-                                : "rgba(25, 169, 108, 0.1)",
-                          },
-                        }}
-                      />
-                    ))}
+                    {Object.entries(datesByMonth).map(
+                      ([month, tours], index) => (
+                        <Chip
+                          key={index}
+                          label={month}
+                          clickable
+                          className={cn(
+                            `${selectedMonth === month ? "shadow-cardShadow" : "shadow-none"}`
+                          )}
+                          onClick={() => handleMonthSelect(month)}
+                          variant={
+                            selectedMonth === month ? "filled" : "outlined"
+                          }
+                          sx={{
+                            ...(selectedMonth === month
+                              ? {
+                                  backgroundColor: "primary.main",
+                                  color: "white",
+                                  "& .MuiChip-label": { color: "white" },
+                                }
+                              : {
+                                  borderColor: "primary.main",
+                                  color: "primary.main",
+                                  "& .MuiChip-label": { color: "primary.main" },
+                                }),
+                            "&:hover": {
+                              backgroundColor:
+                                selectedMonth === month
+                                  ? "primary.dark"
+                                  : "rgba(25, 169, 108, 0.1)",
+                            },
+                          }}
+                        />
+                      )
+                    )}
                   </div>
                   {selectedMonth && (
                     <div className="flex overflow-x-scroll custom-scrollbar gap-4 py-3">
-                      {datesByMonth[selectedMonth].map(
-                        (
-                          date: { tourDate: string; spots: string },
-                          index: number
-                        ) => (
-                          <Chip
-                            key={index}
-                            label={
-                              <div className="space-y-2">
-                                <div>{date.tourDate}</div>
-                                <div
-                                  className={cn(
-                                    " rounded-xl p-2",
-                                    `text-${
-                                      formData.tourDates === date.tourDate
-                                        ? "primary"
-                                        : "white"
-                                    } ${
-                                      formData.tourDates === date.tourDate
-                                        ? "bg-secondary-95"
-                                        : "bg-primary"
-                                    }`
-                                  )}
-                                  style={{ fontSize: "0.75rem" }}
-                                >
-                                  Starting Price: INR{" "}
-                                  {packageData?.currentPrice}/-
-                                </div>
+                      {datesByMonth[selectedMonth].map((dateObj, index) => (
+                        <Chip
+                          key={index}
+                          label={
+                            <div className="space-y-2">
+                              <div>{dateObj.tourDate || ""}</div>
+                              <div
+                                className={cn(
+                                  " rounded-xl p-2",
+                                  `text-${
+                                    formData.tourDates === dateObj.tourDate
+                                      ? "primary"
+                                      : "white"
+                                  } ${
+                                    formData.tourDates === dateObj.tourDate
+                                      ? "bg-secondary-95"
+                                      : "bg-primary"
+                                  }`
+                                )}
+                                style={{ fontSize: "0.75rem" }}
+                              >
+                                Starting Price: INR {packageData?.currentPrice}
+                                /-
                               </div>
-                            }
-                            clickable
-                            className={cn(
-                              `py-10 `,
-                              `${
-                                formData.tourDates === date.tourDate
-                                  ? "shadow-cardShadow"
-                                  : "shadow-none"
-                              }`
-                            )}
-                            onClick={() => handleDateSelect(date.tourDate)}
-                            variant={
-                              formData.tourDates === date.tourDate
-                                ? "filled"
-                                : "outlined"
-                            }
-                            sx={{
-                              ...(formData.tourDates === date.tourDate
-                                ? {
-                                    backgroundColor: "primary.main",
-                                    color: "white",
-                                    "& .MuiChip-label": { color: "white" },
-                                  }
-                                : {
-                                    borderColor: "primary.main",
+                            </div>
+                          }
+                          clickable
+                          className={cn(
+                            `py-10 `,
+                            `${
+                              formData.tourDates === dateObj.tourDate
+                                ? "shadow-cardShadow"
+                                : "shadow-none"
+                            }`
+                          )}
+                          onClick={() => {
+                            console.log("Clicked date: ", dateObj.tourDate); // Debugging
+                            handleDateSelect(dateObj.tourDate);
+                          }}
+                          variant={
+                            formData.tourDates === dateObj.tourDate
+                              ? "filled"
+                              : "outlined"
+                          }
+                          sx={{
+                            ...(formData.tourDates === dateObj.tourDate
+                              ? {
+                                  backgroundColor: "primary.main",
+                                  color: "white",
+                                  "& .MuiChip-label": { color: "white" },
+                                }
+                              : {
+                                  borderColor: "primary.main",
+                                  color: "primary.main",
+                                  "& .MuiChip-label": {
                                     color: "primary.main",
-                                    "& .MuiChip-label": {
-                                      color: "primary.main",
-                                    },
-                                  }),
-                              "&:hover": {
-                                backgroundColor:
-                                  formData.tourDates === date.tourDate
-                                    ? "primary.dark"
-                                    : "rgba(25, 169, 108, 0.1)",
-                              },
-                            }}
-                          />
-                        )
-                      )}
+                                  },
+                                }),
+                            "&:hover": {
+                              backgroundColor:
+                                formData.tourDates === dateObj.tourDate
+                                  ? "primary.dark"
+                                  : "rgba(25, 169, 108, 0.1)",
+                            },
+                          }}
+                        />
+                      ))}
                     </div>
                   )}
                   {formData.tourDates && selectedMonth && (
-                  <div className="text-start px-2">
-                    {datesByMonth[selectedMonth]?.find(
-                      (date: { tourDate: string; }) => date.tourDate === formData.tourDates
-                    )?.spots && (
-                      <span className="bodyl text-error">Only{" "}
-                        {
-                          datesByMonth[selectedMonth]?.find(
-                            (date: { tourDate: string; }) => date.tourDate === formData.tourDates
-                          )?.spots
-                        }{" "}
-                        spots left!
-                      </span>
-                    )}
-                  </div>
-                )}
+                    <div className="text-start p-2">
+                      {selectedMonth &&
+                       
+                        (() => {
+                          const selectedDateObj = datesByMonth[
+                            selectedMonth
+                          ]?.find(
+                            (dateObj: { tourDate: string }) =>
+                              dateObj.tourDate === formData.tourDates
+                          );
+                          return selectedDateObj?.spots ? (
+                            <span className="bodyl text-error">
+                              Only {selectedDateObj.spots} spots left!
+                            </span>
+                          ) : null;
+                        })()}
+                    </div>
+                  )}
                 </FormControl>
-                
               </div>
               <div className=" w-full md:w-1/2  md:h-[65svh] flex flex-col justify-between gap-4">
                 <div className="h-fit py-6 rounded-xl">
@@ -783,7 +791,7 @@ const BookingPage = () => {
                               id={`name-${index}`}
                               name={`name-${index}`}
                               label={`Co-Traveller ${index + 1}*`}
-                              value={coTraveller}
+                              value={coTraveller || ""}
                               error={!!errors.coTraveler?.[index]}
                               onChange={(e) =>
                                 handlePeopleInputChange(

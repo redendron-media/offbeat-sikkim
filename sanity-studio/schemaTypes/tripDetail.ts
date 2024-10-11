@@ -104,24 +104,9 @@ const tripDetailFields = [
     name: 'tourDates',
     title: 'Tour Dates',
     type: 'array',
-    of: [
-      {
-        type: 'object',
-        fields: [
-          {
-            name: 'tourDate',
-            type: 'string',
-            title: 'Tour Date',
-          },
-          {
-            name: 'spots',
-            type: 'string',
-            title: 'Spots Remaining',
-          },
-        ],
-      },
-    ],
+    of: [{ type: 'string', title: 'Tour Date and Spots' }], 
   }),
+  
   defineField({
     name: 'link',
     title: 'Link',

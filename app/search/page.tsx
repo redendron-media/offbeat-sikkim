@@ -59,11 +59,10 @@ const searchQuery = (query: string) => `
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { query: string };
+  searchParams: { query?: string; month?: string };
 }) {
-  const query = searchParams.query
-    ? decodeURIComponent(searchParams.query)
-    : "";
+  const query = searchParams.query ? decodeURIComponent(searchParams.query) : "";
+  const month = searchParams.month ? decodeURIComponent(searchParams.month) : "";
   const data = await client.fetch<SearchResults>(searchQuery(query));
   const { upcomingTrips, curatedTrips, trekTrips, blogs } = data;
 
