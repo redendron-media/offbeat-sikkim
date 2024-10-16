@@ -34,19 +34,23 @@ export default function RootLayout({
       <head>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-6FEZLY447N"
-          strategy="afterInteractive"
+            strategy="lazyOnload"
+          crossOrigin="anonymous"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
+        <Script id="google-analytics" strategy="afterInteractive" crossOrigin="anonymous">
+        {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-6FEZLY447N');
+            gtag('config', 'G-6FEZLY447N', {
+              'cookie_flags': 'max-age=7200;secure;samesite=none'
+            });
           `}
         </Script>
         <Script
         id="facebook-pixel"
         strategy="afterInteractive"
+          crossOrigin="anonymous"
       >
         {`
           !function(f,b,e,v,n,t,s)
