@@ -10,6 +10,8 @@ import Script from "next/script";
 import WhatsAppButton from "@/components/WhatappButton/page";
 import Loader from "@/components/loader/page";
 import Image from "next/image";
+import {GoogleAnalytics } from '@next/third-parties/google';
+
 const roboto = Roboto({
   weight: ["100", "300", "400", "700"],
   style: ["normal", "italic"],
@@ -32,21 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-6FEZLY447N"
-            strategy="lazyOnload"
-          crossOrigin="anonymous"
-        />
-        <Script id="google-analytics" strategy="afterInteractive" crossOrigin="anonymous">
-        {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-6FEZLY447N', {
-              'cookie_flags': 'max-age=7200;secure;samesite=none'
-            });
-          `}
-        </Script>
+        <GoogleAnalytics gaId="G-6FEZLY447N"/>
         <Script
         id="facebook-pixel"
         strategy="afterInteractive"

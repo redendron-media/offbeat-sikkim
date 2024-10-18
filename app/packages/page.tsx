@@ -6,6 +6,8 @@ import Testimonials from '@/components/pages/Testimonials/page';
 import { client } from '@/lib/sanity'
 import React from 'react'
 
+export const revalidate = 600;
+
 const query = `
  {
   "curatedTrips": *[_type == "curatedTripDetail"] | order(id asc) {
