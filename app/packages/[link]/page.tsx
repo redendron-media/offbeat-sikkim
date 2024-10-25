@@ -431,8 +431,8 @@ const PackagePage: React.FC = () => {
                   <Table aria-label="Private trip table">
                     <TableHead>
                       <TableRow >
-                        <TableCell  align="center"><span className="titlem ">People</span></TableCell>
-                        <TableCell  align="center"><span className="titlem">Price</span> </TableCell>
+                        <TableCell  align="left"><span className="titlem  font-semibold">People</span></TableCell>
+                        <TableCell  align="left"><span className="titlem font-semibold">Price</span> </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>

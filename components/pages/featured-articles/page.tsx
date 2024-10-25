@@ -17,8 +17,8 @@ const FeaturedArticles = () => {
           </div>
         <h2 className='headlines md:displaym text-white z-10'>Featured Articles</h2>
         <p className='bodyl z-10 text-[#F3FCF2]'>Check out Offbeat Sikkim’s Blog for tips, stories and expert advice on himalayan adventures</p>
-        <Link href={'/blog'}>
-       <Button className='w-fit z-10'>Explore Articles</Button>
+        <Link className='z-10' href={'/blog'}>
+       <Button className='w-fit'>Explore Articles</Button>
         </Link>
     </section>
   )
