@@ -26,6 +26,7 @@ export interface CardProps {
     photoGalleries?:photoGallery[],
     tourDates?:string[], 
     link?:string,
+    privateTrip?:privateTrip[];
     pdfItinerary?:string,
     detailedItinerary?: ItineraryDay[],
     inclusions?: string[],
@@ -37,6 +38,11 @@ export interface CardProps {
     mandatoryDocuments?: MandatoryDocs[],
     knowBeforeYouGo?: string[],
     destination?:string,
+  }
+
+  interface privateTrip {
+    pax:string,
+    price:string,
   }
   export interface ThingsToCarry{
     title:string,

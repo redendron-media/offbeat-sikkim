@@ -11,6 +11,13 @@ import {
   Tab,
   Tabs,
   CircularProgress,
+  TableContainer,
+  Paper,
+  Table,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableBody,
 } from "@mui/material";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 import Accordion from "@mui/material/Accordion";
@@ -70,6 +77,7 @@ const fetchPackageData = async (packageType: string, link: string) => {
         bookingProcess,
         mandatoryDocuments,
         knowBeforeYouGo,
+        privateTrip,
         photoGalleries,
         tourDates,
         "pdfItinerary": pdfItinerary.asset->url
@@ -319,7 +327,7 @@ const PackagePage: React.FC = () => {
     }
   };
 
-  const pdfUrl =`${packageData?.pdfItinerary ?? ""}?dl=Itinerary.pdf`;
+  const pdfUrl = `${packageData?.pdfItinerary ?? ""}?dl=Itinerary.pdf`;
   return (
     <main className=" relative bg-[#F6FBF4] pt-20 md:pt-32 max-w-screen-2xl mx-auto">
       {packageData && (
@@ -385,9 +393,8 @@ const PackagePage: React.FC = () => {
                   </p>
                 </Stack>
               </Stack>
-              {isUpcoming
-                && (
-                  <Stack
+              {isUpcoming && (
+                <Stack
                   direction={"row"}
                   gap={1}
                   className="bg-primary-98 shadow-cardShadow w-fit rounded-xl px-3 py-3"
@@ -409,10 +416,48 @@ const PackagePage: React.FC = () => {
                     per head
                   </p>
                 </Stack>
-                )
-              }
-             
+              )}
             </section>
+            {packageData.privateTrip && (
+              <section className="py-6 bg-[#E4EAE3] rounded-xl px-4 md:px-6 flex flex-col gap-4 w-fit">
+                <h2 className="headlines text-[#171D19]">
+                  Private Trip Pricing:
+                </h2>
+            
+                <TableContainer
+                  component={Paper}
+                  className="bg-[#E4EAE3] border-0 shadow-none"
+                >
+                  <Table aria-label="Private trip table">
+                    <TableHead>
+                      <TableRow >
+                        <TableCell  align="center"><span className="titlem ">People</span></TableCell>
+                        <TableCell  align="center"><span className="titlem">Price</span> </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {packageData.privateTrip.map((item, index) => (
+                        <TableRow
+                          key={index}
+                          className="bodym "
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell align="center" sx={{ border: "none" }}>
+                            <span className="bodys md:bodym lg:bodyl">{item.pax}</span>
+                          </TableCell>
+                          <TableCell align="right" sx={{ border: "none" }}>
+                           <span className="bodys md:bodym lg:bodyl">INR {item.price} per person</span>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </section>
+            )}
+
             <section className="flex flex-row">
               <div className=" w-full flex flex-col lg:w-2/3">
                 <section className="bg-primary-container titlem md:titlel items-center 2xl:justify-center whitespace-nowrap shadow-cardShadow hide-scrollbar sticky top-16 md:top-14 lg:top-16 z-10 overflow-x-scroll pt-6 rounded-xl my-6  px-6 flex gap-4 md:gap-6 xl:gap-8 2xl:gap-10">
@@ -847,7 +892,6 @@ const PackagePage: React.FC = () => {
                     link={linkString}
                     packageTitle={packageData.title}
                     title="Enquire Now"
-                 
                   />
                 )}
                 {isUpcoming && (
@@ -911,7 +955,6 @@ const PackagePage: React.FC = () => {
                 link={linkString}
                 packageTitle={packageData.title}
                 title="Enquire Now"
-             
               />
             )}
           </div>

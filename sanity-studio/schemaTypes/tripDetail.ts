@@ -66,6 +66,28 @@ const tripDetailFields = [
     title: 'Triple Sharing',
   }),
   defineField({
+    name: 'privateTrip',
+    title: 'Private Trip Cost',
+    type: 'array',
+    of: [
+      {
+        type: 'object',
+        fields: [
+          {
+            name: 'pax',
+            type: 'string',
+            title: 'No of person',
+          },
+          {
+            name: 'price',
+            type: 'string',
+            title: 'Price',
+          },
+        ],
+      },
+    ],
+  }),
+  defineField({
     name: 'originalPrice',
     type: 'string',
     title: 'Original Price',

@@ -10,7 +10,8 @@ import Script from "next/script";
 import WhatsAppButton from "@/components/WhatappButton/page";
 import Loader from "@/components/loader/page";
 import Image from "next/image";
-import {GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { ReactLenis } from "@/lib/lenis";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "700"],
@@ -34,13 +35,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <GoogleAnalytics gaId="G-6FEZLY447N"/>
+        <GoogleAnalytics gaId="G-6FEZLY447N" />
         <Script
-        id="facebook-pixel"
-        strategy="afterInteractive"
+          id="facebook-pixel"
+          strategy="afterInteractive"
           crossOrigin="anonymous"
-      >
-        {`
+        >
+          {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
           n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -52,30 +53,33 @@ export default function RootLayout({
           fbq('init','870665934694594');
           fbq('track', 'PageView');
         `}
-      </Script>
+        </Script>
       </head>
-      <body className={`${roboto.className} bg-[#F6FBF4]`}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Loader />
-          <Header />
-  
-          {children}
-          <WhatsAppButton/>
-          <Footer />
-        </ThemeProvider>   
-
     
-      <noscript>
-        <Image
-          alt="Facebook"
-          height="1"
-          width="1"
-          style={{ display: "none" }}
-          src={"https://www.facebook.com/tr?id=870665934694594&ev=PageView&noscript=1"}
-        />
-      </noscript>
-      </body>
+        <body className={`${roboto.className} bg-[#F6FBF4]`}>
+        <ReactLenis root>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Loader />
+            <Header />
+            {children}
+            <WhatsAppButton />
+            <Footer />
+          </ThemeProvider>
+          </ReactLenis>
+          <noscript>
+            <Image
+              alt="Facebook"
+              height="1"
+              width="1"
+              style={{ display: "none" }}
+              src={
+                "https://www.facebook.com/tr?id=870665934694594&ev=PageView&noscript=1"
+              }
+            />
+          </noscript>
+        </body>
+     
     </html>
   );
 }
