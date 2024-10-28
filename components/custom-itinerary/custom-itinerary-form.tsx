@@ -49,7 +49,7 @@ const Custom_Form = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     travel_style: "Premium",
-    places: "Sikkim",
+    places: "",
     accommodation: "Resort",
     email: "",
     phone: "",
