@@ -113,7 +113,7 @@ const Custom_Form = () => {
     if (newFormData.startDate && newFormData.endDate) {
       const start = dayjs(newFormData.startDate);
       const end = dayjs(newFormData.endDate);
-      const numberOfDays = end.diff(start, "day"); 
+      const numberOfDays = end.diff(start, "day") + 1; 
       newFormData.noOfDays = numberOfDays >= 0 ? numberOfDays : 0; 
     }
   
