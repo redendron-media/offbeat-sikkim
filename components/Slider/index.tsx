@@ -40,9 +40,9 @@ const Sliderr: FC<SliderProps> = ({ items }) => {
     return item.destination === filter;
   });
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="relative w-full">
        {isUpcoming && upcomingTypes.length > 1 && (
-        <div className="flex pl-3 gap-4 mb-6">
+        <div className="flex pl-3 gap-2 md:gap-4 mb-6 overflow-scroll">
           <Chip
             className="text-primary px-2 py-1 labell"
             label="All"
@@ -123,7 +123,7 @@ const Sliderr: FC<SliderProps> = ({ items }) => {
       )}
 
       {isCurated && sortedDestinations.length > 1 &&  (
-        <div className="flex pl-3 gap-4 mb-6">
+        <div className="flex pl-3 gap-2 md:gap-4 mb-6 overflow-scroll hide-scrollbar">
           <Chip
             className="text-primary px-2 py-1 labell"
             label="All"
