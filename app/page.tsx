@@ -17,6 +17,7 @@ const query = `
     durationn,
     durationd,
     tripType,
+    destination
   },
   
   "trekTrips": *[_type == "trekTripDetail"] | order(id asc) {

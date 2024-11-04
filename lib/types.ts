@@ -195,4 +195,5 @@ export interface photoGallery {
     tripType?:string;
     originalPrice?: number;
     currentPrice?: number;
+    destination?:string;
   }

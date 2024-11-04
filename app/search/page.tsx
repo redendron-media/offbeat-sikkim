@@ -14,10 +14,9 @@ interface SearchResults {
   trekTrips: CardTrip[];
   blogs: blogCard[];
 }
-
 const searchQuery = (query: string, month: string) => `
       {
-    "upcomingTrips": *[_type == "upcomingTripDetail" && (title match "${query}" || desc match "${query}" || destination match "${query}") && tourDates[] match "${month}"] {
+    "upcomingTrips": *[_type == "upcomingTripDetail" && (title match "${query}" || desc match "${query}" || destination match "${query}") ${month ? `&& tourDates[] match "${month}"` : ""}] {
       title,
       cover,
       durationn,
@@ -28,7 +27,7 @@ const searchQuery = (query: string, month: string) => `
       image,
       tripType
     },
-      "relatedTrips": *[_type == "upcomingTripDetail" && !(tourDates[] match "${month}") && (title match "${query}" || desc match "${query}" || destination match "${query}")] {
+      "relatedTrips": *[_type == "upcomingTripDetail" ${month ? `&& !(tourDates[] match "${month}")` : ""} && (title match "${query}" || desc match "${query}" || destination match "${query}")] {
       title,
       cover,
       durationn,
@@ -118,7 +117,11 @@ export default async function SearchPage({
         {upcomingTrips.length > 0 && (
           <div className="flex flex-col py-12 md:py-[76px] gap-4 md:gap-9">
             <h3 className="text-secondary-oncontainer headlines md:displays lg:displaym">
-              Upcoming Trips for {month}
+              Upcoming Trips {
+                month && (
+                  <>for {month}</>
+                )
+              } 
             </h3>
             <div className="flex w-full flex-wrap flex-row gap-8">
               <Sliderr items={upcomingTrips} />
