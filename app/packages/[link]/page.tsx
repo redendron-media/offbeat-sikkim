@@ -423,16 +423,20 @@ const PackagePage: React.FC = () => {
                 <h2 className="headlines text-[#171D19]">
                   Private Trip Pricing:
                 </h2>
-            
+
                 <TableContainer
                   component={Paper}
                   className="bg-[#E4EAE3] border-0 shadow-none"
                 >
                   <Table aria-label="Private trip table">
                     <TableHead>
-                      <TableRow >
-                        <TableCell  align="left"><span className="titlem  font-semibold">People</span></TableCell>
-                        <TableCell  align="left"><span className="titlem font-semibold">Price</span> </TableCell>
+                      <TableRow>
+                        <TableCell align="left">
+                          <span className="titlem  font-semibold">People</span>
+                        </TableCell>
+                        <TableCell align="left">
+                          <span className="titlem font-semibold">Price</span>{" "}
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -445,10 +449,14 @@ const PackagePage: React.FC = () => {
                           }}
                         >
                           <TableCell align="center" sx={{ border: "none" }}>
-                            <span className="bodys md:bodym lg:bodyl">{item.pax}</span>
+                            <span className="bodys md:bodym lg:bodyl">
+                              {item.pax}
+                            </span>
                           </TableCell>
                           <TableCell align="right" sx={{ border: "none" }}>
-                           <span className="bodys md:bodym lg:bodyl">INR {item.price} per person</span>
+                            <span className="bodys md:bodym lg:bodyl">
+                              INR {item.price} per person
+                            </span>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -599,27 +607,75 @@ const PackagePage: React.FC = () => {
                   </h2>
                   <PhotoGallery items={packageData.photoGalleries ?? []} />
                 </section>
-
-                <section className=" flex flex-col scroll-mt-56 md:gap-4">
-                  <div
-                    ref={(el) => {
-                      sectionRefs.current["inclusions-mobile"] = el;
-                    }}
-                    id="inclusions-mobile"
-                    className="bg-[#E4EAE3] w-full rounded-xl scroll-mt-56  flex flex-col lg:hidden gap-4"
-                  >
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      textColor="primary"
-                      indicatorColor="primary"
-                      variant="fullWidth"
+                {(packageData.inclusions || packageData.exclusions) && (
+                  <section className=" flex flex-col scroll-mt-56 md:gap-4">
+                    <div
+                      ref={(el) => {
+                        sectionRefs.current["inclusions-mobile"] = el;
+                      }}
+                      id="inclusions-mobile"
+                      className="bg-[#E4EAE3] w-full rounded-xl scroll-mt-56  flex flex-col lg:hidden gap-4"
                     >
-                      <Tab label="Inclusions" {...allyProps(0)} />
-                      <Tab label="Exclusions" {...allyProps(1)} />
-                    </Tabs>
-                    <CustomTabPanel value={value} index={0}>
-                      <>
+                      <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        textColor="primary"
+                        indicatorColor="primary"
+                        variant="fullWidth"
+                      >
+                        <Tab label="Inclusions" {...allyProps(0)} />
+                        <Tab label="Exclusions" {...allyProps(1)} />
+                      </Tabs>
+                      <CustomTabPanel value={value} index={0}>
+                        <>
+                          {packageData.inclusions?.map((item, index) => (
+                            <Stack
+                              id={`${index}`}
+                              direction={"row"}
+                              gap={2}
+                              key={index}
+                              className="border border-b-2 border-b-[#C0C9C0] py-2"
+                            >
+                              <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
+                              <p className="text-[#171D19] bodyl">{item}</p>
+                            </Stack>
+                          ))}
+                        </>
+                      </CustomTabPanel>
+                      <CustomTabPanel value={value} index={1}>
+                        <div
+                          ref={(el) => {
+                            sectionRefs.current["exclusions-mobile"] = el;
+                          }}
+                          id="exclusions-mobile"
+                          className="scroll-mt-56"
+                        >
+                          {packageData.exclusions?.map((item, index) => (
+                            <Stack
+                              id={`${index}`}
+                              direction={"row"}
+                              gap={2}
+                              key={index}
+                              className="border border-b-2  border-b-[#C0C9C0] py-2 "
+                            >
+                              <ClearIcon className="text-[#002111] bg-primary-container rounded-full" />
+                              <p className="text-[#171D19] w-full text-balance bodyl">
+                                {item}
+                              </p>
+                            </Stack>
+                          ))}
+                        </div>
+                      </CustomTabPanel>
+                    </div>
+                    {packageData.inclusions && (
+                      <div
+                        ref={(el) => {
+                          sectionRefs.current["inclusions"] = el;
+                        }}
+                        id="inclusions"
+                        className="bg-[#E4EAE3] w-full scroll-mt-56 rounded-xl p-6 hidden lg:flex flex-col gap-4"
+                      >
+                        <h2 className="headlines text-[#171D19]">Inclusions</h2>
                         {packageData.inclusions?.map((item, index) => (
                           <Stack
                             id={`${index}`}
@@ -632,78 +688,34 @@ const PackagePage: React.FC = () => {
                             <p className="text-[#171D19] bodyl">{item}</p>
                           </Stack>
                         ))}
-                      </>
-                    </CustomTabPanel>
-                    <CustomTabPanel value={value} index={1}>
+                      </div>
+                    )}
+
+                    {packageData.exclusions && (
                       <div
                         ref={(el) => {
-                          sectionRefs.current["exclusions-mobile"] = el;
+                          sectionRefs.current["exclusions"] = el;
                         }}
-                        id="exclusions-mobile"
-                        className="scroll-mt-56"
+                        id="exclusions"
+                        className="bg-[#E4EAE3] scroll-mt-56 w-full rounded-xl p-6 hidden lg:flex  flex-col gap-4"
                       >
+                        <h2 className="headlines text-[#171D19]">Exclusions</h2>
                         {packageData.exclusions?.map((item, index) => (
                           <Stack
                             id={`${index}`}
                             direction={"row"}
                             gap={2}
                             key={index}
-                            className="border border-b-2  border-b-[#C0C9C0] py-2 "
+                            className="border border-b-2 border-b-[#C0C9C0] py-2"
                           >
-                            <ClearIcon className="text-[#002111] bg-primary-container rounded-full" />
-                            <p className="text-[#171D19] w-full text-balance bodyl">
-                              {item}
-                            </p>
+                            <ClearIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
+                            <p className="text-[#171D19] bodyl">{item}</p>
                           </Stack>
                         ))}
                       </div>
-                    </CustomTabPanel>
-                  </div>
-
-                  <div
-                    ref={(el) => {
-                      sectionRefs.current["inclusions"] = el;
-                    }}
-                    id="inclusions"
-                    className="bg-[#E4EAE3] w-full scroll-mt-56 rounded-xl p-6 hidden lg:flex flex-col gap-4"
-                  >
-                    <h2 className="headlines text-[#171D19]">Inclusions</h2>
-                    {packageData.inclusions?.map((item, index) => (
-                      <Stack
-                        id={`${index}`}
-                        direction={"row"}
-                        gap={2}
-                        key={index}
-                        className="border border-b-2 border-b-[#C0C9C0] py-2"
-                      >
-                        <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
-                        <p className="text-[#171D19] bodyl">{item}</p>
-                      </Stack>
-                    ))}
-                  </div>
-
-                  <div
-                    ref={(el) => {
-                      sectionRefs.current["exclusions"] = el;
-                    }}
-                    id="exclusions"
-                    className="bg-[#E4EAE3] scroll-mt-56 w-full rounded-xl p-6 hidden lg:flex  flex-col gap-4"
-                  >
-                    <h2 className="headlines text-[#171D19]">Exclusions</h2>
-                    {packageData.exclusions?.map((item, index) => (
-                      <Stack
-                        id={`${index}`}
-                        direction={"row"}
-                        gap={2}
-                        key={index}
-                        className="border border-b-2 border-b-[#C0C9C0] py-2"
-                      >
-                        <ClearIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
-                        <p className="text-[#171D19] bodyl">{item}</p>
-                      </Stack>
-                    ))}
-                  </div>
-                </section>
+                    )}
+                  </section>
+                )}
 
                 <section className="my-12  flex flex-col gap-12 md:gap-4">
                   {(packageData.thingsToCarry ||
