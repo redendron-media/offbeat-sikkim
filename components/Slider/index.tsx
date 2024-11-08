@@ -42,7 +42,7 @@ const Sliderr: FC<SliderProps> = ({ items }) => {
   return (
     <div className="relative w-full">
        {isUpcoming && upcomingTypes.length > 1 && (
-        <div className="flex pl-3 gap-2 md:gap-4 mb-6 overflow-scroll">
+        <div className="flex pl-3 gap-2 md:gap-4 mb-6">
           <Chip
             className="text-primary px-2 py-1 labell"
             label="All"

@@ -63,6 +63,7 @@ const HeroHome = () => {
       }
     }
   };
+  const text = "Where to next?";
 
   return (
     <div className="relative h-screen w-full rounded-lg flex items-start justify-center px-4 md:px-14 flex-col gap-4 md:gap-6">
@@ -78,10 +79,37 @@ const HeroHome = () => {
       </motion.div>
 
       <Stack className="z-10" direction={"column"} gap={1}>
-        <h1 className="displays md:displayl text-white">Where to next?</h1>
+        <h1 className="displays md:displayl text-white">
+          {text.split("").map((letter, index) => (
+            <motion.span
+              key={index}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 3,
+                delay: index * 0.15,
+              }}
+            >
+              {letter}
+            </motion.span>
+          ))}
+        </h1>
       </Stack>
-
-      <div className=" w-full md:w-[96%] lg:w-3/4 flex flex-row ">
+        
+      <div className="w-full md:w-[96%] lg:w-3/4 flex flex-col items-center gap-2 z-10">
+        <motion.div
+       className="flex flex-row w-full flex-grow overflow-hidden"
+        initial={{
+          opacity: 0,
+        }}
+        animate={{
+          opacity: 1,
+        }}
+        transition={{
+          duration: 3,
+          ease: "easeInOut",
+        }}
+      >
         <FormControl className="w-[90%] md:w-1/4 bg-[#F6FBF4] border-none rounded-s-lg rounded-e-none">
           <Select
             value={selectedMonth}
@@ -89,7 +117,9 @@ const HeroHome = () => {
             displayEmpty
             className="px-4 py-2 rounded-s-lg rounded-e-none  border-none"
             renderValue={(selected) => (
-              <span className="labell md:bodyl text-[#2C322D]">{selected || "Select Month"}</span>
+              <span className="labell md:bodyl text-[#2C322D]">
+                {selected || "Select Month"}
+              </span>
             )}
           >
             <MenuItem value="">
@@ -116,7 +146,6 @@ const HeroHome = () => {
           value={searchValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-         
           endAdornment={
             <InputAdornment position="end" className="pr-2">
               <Link href={getSearchURL(searchValue, selectedMonth)} passHref>
@@ -135,63 +164,94 @@ const HeroHome = () => {
           }
           placeholder="Search Destinations, Packages, etc."
         />
+      </motion.div>
       </div>
+    
 
-      <Stack
-        className="z-10 flex flex-wrap gap-2"
-        direction={"row"}
-        gap={{ xs: 2, sm: 3 }}
+      <motion.div
+        initial={{
+          opacity:0,
+        }}
+        animate={{
+          opacity: 1,
+        }}
+        transition={{
+          duration: 3,
+          ease: "easeInOut",
+        }}
+        className="z-10"
       >
-        <Link href={"https://g.co/kgs/ycR2zwv"} target="_blank">
-          <Stack
-            direction={"row"}
-            gap={1}
-            className="rounded-[5px] bg-[#FEFEEC] pl-1 pr-2 py-2"
-          >
-            <Image
-              src={"/icons/google.svg"}
-              width={40}
-              height={31}
-              alt="Google"
-            />
-
-            <Stack direction={"row"} alignItems={"center"}>
-              {[...Array(5)].map((_, index) => (
-                <StarIcon key={index} className="text-[#e7c262] text-lg" />
-              ))}
-            </Stack>
-          </Stack>
-        </Link>
-        <Link
-          target="_blank"
-          href={
-            "https://www.tripadvisor.in/Attraction_Review-g659796-d26790117-Reviews-Offbeatsikkim-Gangtok_East_Sikkim_Sikkim.html"
-          }
+        <Stack
+          className=" flex flex-wrap gap-2"
+          direction={"row"}
+          gap={{ xs: 2, sm: 3 }}
         >
-          <Stack
-            direction={"row"}
-            gap={1}
-            className="rounded-[5px] bg-[#FEFEEC] pl-1 pr-2 py-2"
-          >
-            <Image
-              src={"/icons/tripadvisor.svg"}
-              width={40}
-              height={31}
-              alt="Google"
-            />
-            <Stack direction={"row"} alignItems={"center"}>
-              {[...Array(5)].map((_, index) => (
-                <StarIcon key={index} className="text-[#e7c262] text-lg" />
-              ))}
+          <Link href={"https://g.co/kgs/ycR2zwv"} target="_blank">
+            <Stack
+              direction={"row"}
+              gap={1}
+              className="rounded-[5px] bg-[#FEFEEC] pl-1 pr-2 py-2"
+            >
+              <Image
+                src={"/icons/google.svg"}
+                width={40}
+                height={31}
+                alt="Google"
+              />
+
+              <Stack direction={"row"} alignItems={"center"}>
+                {[...Array(5)].map((_, index) => (
+                  <StarIcon key={index} className="text-[#e7c262] text-lg" />
+                ))}
+              </Stack>
             </Stack>
-          </Stack>
-        </Link>
-      </Stack>
-      <div className="z-10 h-auto flex absolute  bottom-12  md:bottom-8 left-1/2 transform -translate-x-1/2 justify-center">
+          </Link>
+          <Link
+            target="_blank"
+            href={
+              "https://www.tripadvisor.in/Attraction_Review-g659796-d26790117-Reviews-Offbeatsikkim-Gangtok_East_Sikkim_Sikkim.html"
+            }
+          >
+            <Stack
+              direction={"row"}
+              gap={1}
+              className="rounded-[5px] bg-[#FEFEEC] pl-1 pr-2 py-2"
+            >
+              <Image
+                src={"/icons/tripadvisor.svg"}
+                width={40}
+                height={31}
+                alt="Google"
+              />
+              <Stack direction={"row"} alignItems={"center"}>
+                {[...Array(5)].map((_, index) => (
+                  <StarIcon key={index} className="text-[#e7c262] text-lg" />
+                ))}
+              </Stack>
+            </Stack>
+          </Link>
+        </Stack>
+      </motion.div>
+
+      <motion.div 
+      className="z-10 h-auto flex absolute  bottom-12  md:bottom-8 left-1/2 transform -translate-x-1/2 justify-center"
+      initial= {{
+        opacity:0,
+        y:"40vh"
+      }}
+      animate={{
+        opacity:1,
+        y:0,
+      }}
+      transition={{
+        duration:3,
+        ease:"easeIn"
+      }}
+      >
         <ScrollToSection targetId="next-section">
           <RotatingLogo />
         </ScrollToSection>
-      </div>
+      </motion.div>
     </div>
   );
 };

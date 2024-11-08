@@ -350,7 +350,7 @@ const PackagePage: React.FC = () => {
                 <h2 className="headlines md:displaym lg:displayl text-white">
                   {packageData.title}
                 </h2>
-                <p className="bodys md:bodym lg:bodyl text-white">
+                <p className="bodys md:bodym lg:bodyl lg:pr-32 text-white">
                   {packageData.desc}
                 </p>
               </Stack>
