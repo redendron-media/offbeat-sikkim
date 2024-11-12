@@ -221,7 +221,7 @@ const HeroHome = () => {
       </motion.div>
 
       <motion.div 
-      className="z-10 h-auto flex absolute  bottom-12  md:bottom-8 left-1/2 transform -translate-x-1/2 justify-center"
+      className="z-10 h-auto flex absolute items-center bottom-24 md:bottom-8 transform justify-center left-1/2 -translate-x-1/2 right-1/2"
       initial= {{
         opacity:0,
         y:"40vh"
