@@ -106,4 +106,13 @@ html.lenis body {
   .custom-scrollbar:hover::-webkit-scrollbar {
     display: block; /* Show scrollbar when hovered */
   }
+
+  input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 }

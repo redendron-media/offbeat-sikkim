@@ -115,6 +115,15 @@ const HeroHome = () => {
               type="number"
               placeholder="Duration(days)"
               className="w-full bg-[#F6FBF4] labell md:bodyl rounded-s-lg rounded-e-none"
+              sx={{
+                "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button": {
+                  "-webkit-appearance": "none",
+                  margin: 0,
+                },
+                "& input[type=number]": {
+                  "-moz-appearance": "textfield", // Firefox
+                },
+              }}
             />
         </FormControl>
 
