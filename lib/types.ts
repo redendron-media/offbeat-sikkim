@@ -192,6 +192,7 @@ export interface photoGallery {
     durationn?: number;
     durationd?: string;
     link:string;
+    type?:string;
     tripType?:string;
     originalPrice?: number;
     currentPrice?: number;

@@ -31,8 +31,7 @@ const CustomOutlinedInput = styled(OutlinedInput)({
 
 const HeroHome = () => {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [selectedMonth, setSelectedMonth] = useState<string>("");
-  const [searchURL, setSearchURL] = useState("");
+  const [daysValue, setDaysValue] = useState<string>("");
   const router = useRouter();
 
   const handleInputChange = (
@@ -42,24 +41,23 @@ const HeroHome = () => {
     setSearchValue(newValue);
   };
 
-  const handleMonthChange = (event: SelectChangeEvent<string>): void => {
-    const newMonth = event.target.value;
-    setSelectedMonth(newMonth);
+  const handleDaysChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setDaysValue(event.target.value);
   };
 
-  const getSearchURL = (input: string, month: string): string => {
+  const getSearchURL = (input: string, days: string): string => {
     const encodedSearch = encodeURIComponent(input.trim());
-    const encodedMonth = encodeURIComponent(month.trim());
-    return encodedSearch || encodedMonth
-      ? `/search?query=${encodedSearch}&month=${encodedMonth}`
+    const encodedDays = encodeURIComponent(days.trim());
+    return encodedSearch || encodedDays
+      ? `/search?query=${encodedSearch}&days=${encodedDays}`
       : "";
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && searchValue.trim()) {
-      const searchURL = getSearchURL(searchValue, selectedMonth);
+      const searchURL = getSearchURL(searchValue, daysValue);
       if (searchURL) {
-        router.push(searchURL); // Trigger the search by navigating to the search URL
+        router.push(searchURL);
       }
     }
   };
@@ -110,34 +108,14 @@ const HeroHome = () => {
           ease: "easeInOut",
         }}
       >
-        <FormControl className="w-[90%] md:w-1/4 bg-[#F6FBF4] border-none rounded-s-lg rounded-e-none">
-          <Select
-            value={selectedMonth}
-            onChange={handleMonthChange}
-            displayEmpty
-            className="px-4 py-2 rounded-s-lg rounded-e-none  border-none"
-            renderValue={(selected) => (
-              <span className="labell md:bodyl text-[#2C322D]">
-                {selected || "Select Month"}
-              </span>
-            )}
-          >
-            <MenuItem value="">
-              <em>Month</em>
-            </MenuItem>
-            <MenuItem value="January">January</MenuItem>
-            <MenuItem value="February">February</MenuItem>
-            <MenuItem value="March">March</MenuItem>
-            <MenuItem value="April">April</MenuItem>
-            <MenuItem value="May">May</MenuItem>
-            <MenuItem value="June">June</MenuItem>
-            <MenuItem value="July">July</MenuItem>
-            <MenuItem value="August">August</MenuItem>
-            <MenuItem value="September">September</MenuItem>
-            <MenuItem value="October">October</MenuItem>
-            <MenuItem value="November">November</MenuItem>
-            <MenuItem value="December">December</MenuItem>
-          </Select>
+        <FormControl className="w-[45%] md:w-1/4 bg-[#F6FBF4] border-none rounded-s-lg rounded-e-none">
+        <CustomOutlinedInput
+              value={daysValue}
+              onChange={handleDaysChange}
+              type="number"
+              placeholder="Duration(days)"
+              className="w-full bg-[#F6FBF4] labell md:bodyl rounded-s-lg rounded-e-none"
+            />
         </FormControl>
 
         <CustomOutlinedInput
@@ -148,7 +126,7 @@ const HeroHome = () => {
           onKeyDown={handleKeyDown}
           endAdornment={
             <InputAdornment position="end" className="pr-2">
-              <Link href={getSearchURL(searchValue, selectedMonth)} passHref>
+              <Link href={getSearchURL(searchValue, daysValue)} passHref>
                 <IconButton
                   aria-label="Search"
                   disableFocusRipple

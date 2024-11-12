@@ -281,6 +281,30 @@ const destinationFields = [
     title: 'Description',
   }),
   defineField({
+    name: 'type',
+    title: 'Destination Type',
+    type: 'string',
+    options: {
+      list: [
+        {title: 'Domestic', value: 'domestic'},
+        {title: 'International', value: 'international'},
+      ],
+      layout: 'radio',
+    },
+  }),
+  defineField({
+    name: 'tripType',
+    type: 'string',
+    title: 'Trip Type',
+    options: {
+      list: [
+        {title: 'Destination', value: 'destination'},
+      ],
+      layout: 'radio',
+    },
+  }),
+
+  defineField({
     name: 'image',
     type: 'image',
     title: 'Cover Image for page ',
