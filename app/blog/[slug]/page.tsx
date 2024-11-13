@@ -36,6 +36,23 @@ async function getData(slug: string) {
   return data;
 }
 
+async function incrementViewCount(slug:string): Promise<number> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/incrementView`, {
+    method: 'Post',
+    headers: {
+      'Content-Type': 'applicaiton/json',
+    },
+    body:JSON.stringify({slug}),
+  });
+
+  if (!res.ok){
+    throw new Error('Failed to increment view count');
+  }
+
+  const {views} = await res.json();
+  return views;
+}
+
 function formatDate(dateString: string) {
   const dateParts = dateString.split("-");
   return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
@@ -51,6 +68,8 @@ async function BlogArticle({ params }: BlogArticleProps) {
   const formattedDate = formatDate(originalDate);
   let currentPageLink =
     process.env.NEXT_PUBLIC_BASE_URL + "/blog/" + params.slug;
+
+  const views = await incrementViewCount(params.slug);  
   return (
     <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto py-12 md:py-[76px] pt-20 md:pt-32 flex flex-col gap-6 md:gap-9">
       <Stack gap={1} className="md:px-28 lg:px-52 text-start">
@@ -58,6 +77,7 @@ async function BlogArticle({ params }: BlogArticleProps) {
           <h1 className="headlines md:displaym lg:displayl text-[#171D19]">
             {data.title}
           </h1>
+          <p>{views} Views</p>
           <ShareButton currentPageLink={currentPageLink} />
         </div>
         <div className="flex flex-row gap-3 flex-wrap pt-2 pb-3">
