@@ -9,10 +9,13 @@ interface SliderProps {
 }
 type FilterType = string;
 
-const formatDestination = (destination:string):string => {
-  const formatted = destination.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/arunachalpradesh/i, "Arunachal Pradesh").replace(/\b\w/g, (char) => char.toUpperCase());
+const formatDestination = (destination: string): string => {
+  const formatted = destination
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/arunachalpradesh/i, "Arunachal Pradesh")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
   return formatted;
-}
+};
 const Sliderr: FC<SliderProps> = ({ items }) => {
   const [filter, setFilter] = useState<FilterType>("all");
 
@@ -21,18 +24,29 @@ const Sliderr: FC<SliderProps> = ({ items }) => {
   const isDestination = items.some((item) => item.tripType === "destination");
 
   const uniqueDestinations = Array.from(
-    new Set(items.map((item) => item.destination).filter((dest): dest is string => !!dest))
-  )
+    new Set(
+      items
+        .map((item) => item.destination)
+        .filter((dest): dest is string => !!dest)
+    )
+  );
 
   const priorityDestinations = ["bhutan", "meghalaya", "sikkim"];
 
   const sortedDestinations = [
     ...priorityDestinations.filter((dest) => uniqueDestinations.includes(dest)),
-    ...uniqueDestinations.filter((dest) => !priorityDestinations.includes(dest)).sort(),
+    ...uniqueDestinations
+      .filter((dest) => !priorityDestinations.includes(dest))
+      .sort(),
   ];
 
-  const upcomingTypes = Array.from(new Set(items.filter((item) => item.tripType === "upcoming").map((item) => item.link?.endsWith("trek") ? "trek" : "tour")));
-
+  const upcomingTypes = Array.from(
+    new Set(
+      items
+        .filter((item) => item.tripType === "upcoming")
+        .map((item) => (item.link?.endsWith("trek") ? "trek" : "tour"))
+    )
+  );
 
   const filteredItems = items.filter((item) => {
     if (!isUpcoming && !isCurated && !isDestination) return true;
@@ -45,7 +59,7 @@ const Sliderr: FC<SliderProps> = ({ items }) => {
   });
   return (
     <div className="relative w-full">
-       {isUpcoming && upcomingTypes.length > 1 && (
+      {isUpcoming && upcomingTypes.length > 1 && (
         <div className="flex pl-3 gap-2 md:gap-4 mb-6">
           <Chip
             className="text-primary px-2 py-1 labell"
@@ -126,7 +140,7 @@ const Sliderr: FC<SliderProps> = ({ items }) => {
         </div>
       )}
 
-      {isCurated && sortedDestinations.length > 1 &&  (
+      {isCurated && sortedDestinations.length > 1 && (
         <div className="flex pl-3 gap-2 md:gap-4 mb-6 overflow-scroll hide-scrollbar">
           <Chip
             className="text-primary px-2 py-1 labell"
@@ -183,9 +197,9 @@ const Sliderr: FC<SliderProps> = ({ items }) => {
           ))}
         </div>
       )}
-        {isDestination && (
+      {isDestination && (
         <div className="flex pl-3 gap-2 md:gap-4 mb-6">
-            <Chip
+          <Chip
             className="text-primary px-2 py-1 labell"
             label="All"
             clickable
@@ -205,9 +219,7 @@ const Sliderr: FC<SliderProps> = ({ items }) => {
                   }),
               "&:hover": {
                 backgroundColor:
-                  filter === "all"
-                    ? "primary.dark"
-                    : "rgba(25, 169, 108, 0.1)",
+                  filter === "all" ? "primary.dark" : "rgba(25, 169, 108, 0.1)",
               },
             }}
           />
@@ -267,11 +279,19 @@ const Sliderr: FC<SliderProps> = ({ items }) => {
       )}
       <Carousel>
         <CarouselContent className="flex ml-0">
-          {filteredItems.map((tour, index) => (
-            <CarouselItem key={index} className="basis-auto px-4 py-2">
-              <Cards card={tour} />
-            </CarouselItem>
-          ))}
+          {filteredItems.map((tour, index) => {
+            // Construct the link based on tripType
+            const link =
+              tour.tripType === "destination" && tour.link
+                ? `/destinations/${tour.link}`
+                : tour.link;
+
+            return (
+              <CarouselItem key={index} className="basis-auto px-4 py-2">
+                <Cards card={{ ...tour, link }} />
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
       </Carousel>
     </div>
