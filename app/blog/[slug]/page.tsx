@@ -10,7 +10,7 @@ import React from "react";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Link from "next/link";
 export const revalidate = 60;
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
 async function getData(slug: string) {
   const query = `
     *[_type == "blog" && slug.current =='${slug}']{
@@ -37,19 +37,23 @@ async function getData(slug: string) {
 }
 
 async function incrementViewCount(slug:string): Promise<number> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/incrementView`, {
-    method: 'Post',
+  const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`
+  console.log("Base URL:", baseUrl);
+  const res = await fetch(`${baseUrl}/api/incrementView`, {
+    method: 'POST',
     headers: {
-      'Content-Type': 'applicaiton/json',
+      'Content-Type': 'application/json',
     },
     body:JSON.stringify({slug}),
   });
-
+  console.log("Response Status:", res.status);
   if (!res.ok){
+    console.log("Failed to increment view count, Response Text:", await res.text());
     throw new Error('Failed to increment view count');
   }
 
   const {views} = await res.json();
+  console.log("View count received:", views); 
   return views;
 }
 
@@ -77,7 +81,7 @@ async function BlogArticle({ params }: BlogArticleProps) {
           <h1 className="headlines md:displaym lg:displayl text-[#171D19]">
             {data.title}
           </h1>
-          <p>{views} Views</p>
+         
           <ShareButton currentPageLink={currentPageLink} />
         </div>
         <div className="flex flex-row gap-3 flex-wrap pt-2 pb-3">
@@ -104,6 +108,11 @@ async function BlogArticle({ params }: BlogArticleProps) {
           ))}
         </div>
         <p className="bodym text-[#404942]">{formattedDate}</p>
+        <Stack direction={"row"} alignItems={"center"} gap={1}>
+          <VisibilityIcon className="text-neutral-40 text-xl"/>
+        <p className="text-black bodym md:bodyl">{views}</p>
+          </Stack>
+       
       </Stack>
       <Image
         src={urlFor(data.titleImage).url()}

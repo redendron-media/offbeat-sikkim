@@ -1,11 +1,13 @@
 import { client, urlFor } from "@/lib/sanity";
 import { blogCard } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Chip } from "@mui/material";
+import { Chip, Stack } from "@mui/material";
 import Image from "next/image";
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import React from "react";
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
 export const revalidate = 300;
 
 async function getData() {
@@ -17,7 +19,16 @@ async function getData() {
     }
 }`;
   const data = await client.fetch(query);
-  return data;
+  const dataWithViews = await Promise.all(
+    data.map(async (post: blogCard) => {
+      const postRef = doc(db, "posts", post.currentSlug);
+      const postSnap = await getDoc(postRef);
+      const views = postSnap.exists() ? postSnap.data().views : 0;
+      return { ...post, views }; // Add views to the post data
+    })
+  );
+
+  return dataWithViews;
 }
 
 const chunkPosts = (posts: blogCard[], size: number): blogCard[][] => {
@@ -35,7 +46,6 @@ function formatDate(dateString: string) {
 
 async function blog() {
   const data: blogCard[] = await getData();
-
   const groupPosts = chunkPosts(data, 3);
 
   if (data.length === 0) {
@@ -59,6 +69,7 @@ async function blog() {
               advice on himalayan adventures
             </p>
           </section>
+
           <section className="hidden md:flex flex-wrap">
             {groupPosts.map((group, idx) => (
               <div
@@ -111,6 +122,7 @@ async function blog() {
                             ))}
                           </div>
 
+                          <Stack direction={"row"} justifyContent={"space-between"}>
                           <p className="labels text-[#404942]">
                             {formatDate(
                               new Date(group[0]._createdAt)
@@ -118,6 +130,12 @@ async function blog() {
                                 .split("T")[0]
                             )}
                           </p>
+                          <Stack direction={"row"} gap={0.5} alignItems={"center"}>
+                            <VisibilityIcon className="text-sm text-neutral-40"/>
+                            <p className="labell text-[#404942]">{group[0].views}</p>
+                          </Stack>
+                          </Stack>
+                        
                           <h2 className="titles line-clamp-2 md:titlel font-bold">
                             {group[0].title}
                           </h2>
@@ -180,6 +198,7 @@ async function blog() {
                               </Link>
                             ))}
                           </div>
+                          <Stack direction={"row"} justifyContent={"space-between"}>
                           <p className="labels text-[#404942]">
                             {formatDate(
                               new Date(post._createdAt)
@@ -187,6 +206,11 @@ async function blog() {
                                 .split("T")[0]
                             )}
                           </p>
+                          <Stack direction={"row"} gap={0.5} alignItems={"center"}>
+                            <VisibilityIcon className="text-sm text-neutral-40"/>
+                            <p className="labell text-[#404942]">{post.views}</p>
+                          </Stack>
+                          </Stack>
                           <h2 className="titles line-clamp-2 md:titlel font-bold">
                             {post.title}
                           </h2>
@@ -240,11 +264,19 @@ async function blog() {
                         </Link>
                       ))}
                     </div>
-                    <p className="labels text-[#404942]">
-                      {formatDate(
-                        new Date(post._createdAt).toISOString().split("T")[0]
-                      )}
-                    </p>
+                    <Stack direction={"row"} justifyContent={"space-between"}>
+                          <p className="labels text-[#404942]">
+                            {formatDate(
+                              new Date(post._createdAt)
+                                .toISOString()
+                                .split("T")[0]
+                            )}
+                          </p>
+                          <Stack direction={"row"} gap={0.5} alignItems={"center"}>
+                            <VisibilityIcon className="text-sm text-neutral-40"/>
+                            <p className="labell text-[#404942]">{post.views}</p>
+                          </Stack>
+                          </Stack>
                     <h2 className="titles line-clamp-2 md:titlel font-bold">
                       {post.title}
                     </h2>

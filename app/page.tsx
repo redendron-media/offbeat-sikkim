@@ -49,7 +49,7 @@ const query = `
     tripType,
     type,
     cover,
-     "link": destination
+    "link": destination,
 },
 }
   `;

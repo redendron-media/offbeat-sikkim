@@ -129,6 +129,7 @@ export interface photoGallery {
     titleImage: any,
     currentSlug: string,
     tags:tag[];
+    views?: number;
     _createdAt:string;
   }
 
