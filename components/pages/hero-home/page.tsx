@@ -224,11 +224,9 @@ const HeroHome = () => {
       className="z-10 h-auto flex absolute items-center bottom-24 md:bottom-8 transform justify-center left-1/2 -translate-x-1/2 right-1/2"
       initial= {{
         opacity:0,
-        y:"40vh"
       }}
       animate={{
-        opacity:1,
-        y:0,
+        opacity:1, 
       }}
       transition={{
         duration:3,
