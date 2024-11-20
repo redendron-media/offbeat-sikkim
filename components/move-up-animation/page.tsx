@@ -1,6 +1,6 @@
 'use client';
 import React, { ReactNode } from 'react';
-import { motion, Variants } from 'framer-motion';
+import { motion, Variants, } from 'framer-motion';
 
 interface MoveUpProps {
     children: ReactNode;
@@ -8,15 +8,16 @@ interface MoveUpProps {
 
 const MoveUp: React.FC<MoveUpProps> = ({ children }) => {
     const moveUpVariants: Variants = {
-        hidden: { opacity: 0, y: 100 },
+        initial: { opacity: 0, y: "10%" },
         visible: { opacity: 1, y: 0 },
+        
       };
   return (
     <motion.div
-        className= "transition-all duration-1000"
-        initial="hidden"
+        initial="initial"
         whileInView={"visible"}
-        viewport={{once: true, amount: 0.2}}
+        transition={{ ease: "easeInOut", duration: 1.5 }}
+        viewport={{once: true}}
         variants={moveUpVariants}
     >
         {children}

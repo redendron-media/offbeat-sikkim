@@ -75,41 +75,63 @@ export default async function Home() {
         id="next-section"
         className="flex flex-col px-4 md:px-6 pl-4 md:pl-6 max-w-screen-2xl mx-auto"
       >
-        <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
-          <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
-            Upcoming Community Trips
-          </h2>
-          <Slider items={upcomingTrips} />
-        </section>
+        <MoveUp>
+          <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
+            <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
+              Upcoming Community Trips
+            </h2>
+            <Slider items={upcomingTrips} />
+          </section>
+        </MoveUp>
 
-        <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
-          <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
-            Curated Packages for the Explorer in You
-          </h2>
-          <Slider items={curatedTrips} />
-        </section>
+        <MoveUp>
+          <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
+            <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
+              Curated Packages for the Explorer in You
+            </h2>
+            <Slider items={curatedTrips} />
+          </section>
+        </MoveUp>
 
-        <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
-          <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
-            Destinations
-          </h2>
-          <Slider items={destinations} />
-        </section>
+        <MoveUp>
+          <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
+            <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
+              Destinations
+            </h2>
+            <Slider items={destinations} />
+          </section>
+        </MoveUp>
+        <MoveUp>
         <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
           <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
             Trek Expeditions
           </h2>
           <Slider items={trekTrips} />
         </section>
+        </MoveUp>
+      
+        <MoveUp>
         <section
           id="create-your-itinerary"
           className="scroll-m-20 lg:scroll-m-10"
         >
           <Custom_Form />
         </section>
+        </MoveUp>
+
+        <MoveUp>
         <Testimonials />
-        <FeaturedArticles />
-        <Credibility />
+        </MoveUp>
+       
+       <MoveUp>
+       <FeaturedArticles />
+       </MoveUp>
+       
+       <MoveUp>
+       <Credibility />
+       </MoveUp>
+
+        <MoveUp>
         <section className="flex flex-col justify-center items-center w-full gap-6 py-[60px] md:py-[88px]">
           <h2 className="headlines md:headlinem lg:headlinel text-secondary-oncontainer text-center">
             Have a Question?
@@ -120,6 +142,8 @@ export default async function Home() {
 
           <ContactDialog link="" title="Contact Us" />
         </section>
+        </MoveUp>
+       
       </section>
     </main>
   );
