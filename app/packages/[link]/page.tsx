@@ -50,6 +50,7 @@ import { client, urlFor } from "@/lib/sanity";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import Image from "next/image";
 import { CardTrip, TripDetail } from "@/lib/types";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -142,7 +143,8 @@ const PackagePage: React.FC = () => {
   const isUpcoming = decodedLink.startsWith("upcoming");
   const isTrek = decodedLink.endsWith("trek");
   const isCurated = decodedLink.startsWith("curated");
-
+  const { scrollY } = useScroll();
+  const scale = useTransform(scrollY, [0, 1000], [1, 1.2]);
   const packageType = isUpcoming
     ? "upcomingTripDetail"
     : isTrek
@@ -327,6 +329,8 @@ const PackagePage: React.FC = () => {
     }
   };
 
+  
+
   const pdfUrl = `${packageData?.pdfItinerary ?? ""}?dl=Itinerary.pdf`;
   return (
     <main className=" relative bg-[#F6FBF4] pt-20 md:pt-32 max-w-screen-2xl mx-auto">
@@ -334,9 +338,9 @@ const PackagePage: React.FC = () => {
         <>
           <div className="flex flex-col px-4 md:px-6">
             <section
-              className={`flex flex-col justify-center gap-6 py-9 px-4 relative  md:px-14 md:py-24 md:gap-6 min-h-[50vh] rounded-xl `}
+              className={`flex flex-col justify-center gap-6 py-9 px-4 relative  md:px-14 md:py-24 md:gap-6 min-h-[50vh] rounded-xl overflow-hidden`}
             >
-              <div className="absolute  inset-0 w-full z-0">
+              <motion.div className="absolute  inset-0 w-full z-0" style={{scale}}>
                 <div className="absolute inset-0 bg-black/30 z-10" />
                 <Image
                   src={urlFor(packageData.image).url()}
@@ -345,7 +349,7 @@ const PackagePage: React.FC = () => {
                   className="rounded-lg object-cover"
                   priority
                 />
-              </div>
+              </motion.div>
               <Stack className="z-10" direction={"column"} gap={1}>
                 <h2 className="headlines md:displaym lg:displayl text-white">
                   {packageData.title}

@@ -63,10 +63,13 @@ const HeroHome = () => {
   };
   const text = "Where to next?";
 
+  const { scrollY } = useScroll();
+  const scale = useTransform(scrollY, [0, 1000], [1, 1.2]);
   return (
     <div className="relative h-screen w-full rounded-lg flex items-start justify-center px-4 md:px-14 flex-col gap-4 md:gap-6">
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
       <motion.div className="absolute  inset-0 w-full z-0">
-        <div className="absolute inset-0 bg-black/20 z-10" />
+        <div className="absolute inset-0 bg-black/20 z-10 " />
         <Image
           src="/images/hero.webp"
           alt="Hero Background"
@@ -75,6 +78,8 @@ const HeroHome = () => {
           priority
         />
       </motion.div>
+      </div>
+     
 
       <Stack className="z-10" direction={"column"} gap={1}>
         <h1 className="displays md:displayl text-white">
