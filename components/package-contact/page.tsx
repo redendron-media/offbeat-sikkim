@@ -2,6 +2,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { PackageForm } from "@/lib/types";
 import {
+  CircularProgress,
   FormControl,
   IconButton,
   InputAdornment,
@@ -905,7 +906,11 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
             />
           </div>
           <Button type="submit" className="w-fit self-start col-span-2">
-            Get in Touch
+            {isLoading ? (
+                <CircularProgress className="text-white" size={24} />
+              ) : (
+                "Get in Touch"
+              )} 
           </Button>
         </>
       )}
