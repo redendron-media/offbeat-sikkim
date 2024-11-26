@@ -906,7 +906,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
             />
           </div>
           <Button type="submit" className="w-fit self-start col-span-2">
-            {isLoading ? (
+            {loading ? (
                 <CircularProgress className="text-white" size={24} />
               ) : (
                 "Get in Touch"
