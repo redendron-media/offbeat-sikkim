@@ -27,4 +27,6 @@ return (
   )
 })
 
+ListItem.displayName = 'ListItem';
+
 export default ListItem;
