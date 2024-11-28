@@ -343,7 +343,7 @@ function Header() {
                           <div className="w-full py-4 flex flex-col gap-2 px-1">
                             {destinations.map((destination) => (
                               <Link
-                              id={destination.id}
+                              key={destination.id}
                                 href={destination.link}
                                 onClick={toggleMenu}
                                 className={cn(
