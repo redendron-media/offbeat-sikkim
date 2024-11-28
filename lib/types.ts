@@ -192,6 +192,7 @@ export interface photoGallery {
     cover: Cover;
     durationn?: number;
     durationd?: string;
+    bestseller: boolean;
     link:string;
     type?:string;
     tripType?:string;

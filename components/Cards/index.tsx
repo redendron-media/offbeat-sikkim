@@ -36,6 +36,11 @@ const Cards = ({ card }: TourCardProps) => {
               <div className="absolute top-0 left-0 bg-[#FFFF00] rounded-br-xl text-black labell py-1.5 px-4">Customized</div>
             )
           }
+          {
+            card.bestseller === true && (
+              <div className="absolute top-0 left-0 bg-[#FFFF00] rounded-br-xl text-black labell py-1.5 px-4">Bestseller</div>
+            )
+          }
         </div>
         <div className="px-2 py-5 text-[#051E13] flex justify-between items-end">
           <div className="flex flex-col  space-y-1">

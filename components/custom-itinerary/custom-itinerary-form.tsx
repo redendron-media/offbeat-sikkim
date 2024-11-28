@@ -48,7 +48,7 @@ const Custom_Form = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     name: "",
-    travel_style: "Premium",
+    travel_style: "",
     places: "",
     accommodation: "Resort",
     email: "",

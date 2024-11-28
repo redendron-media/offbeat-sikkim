@@ -279,7 +279,7 @@ const Step1Form: React.FC<Step1FormProps> = ({
       </FormControl>
 
       <FormControl className="col-span-1">
-        <InputLabel id="travel_style">Travel Style</InputLabel>
+        <InputLabel id="travel_style">Accomodation</InputLabel>
         <Select
           className="w-full"
           labelId="travel_style"
@@ -313,6 +313,12 @@ const Step1Form: React.FC<Step1FormProps> = ({
             className="whitespace-nowrap overflow-x-auto"
           >
             Mid-Range(Premium Homestay and hotels )
+          </MenuItem>
+          <MenuItem
+            value="Mid-Range"
+            className="whitespace-nowrap overflow-x-auto"
+          >
+            Both options
           </MenuItem>
         </Select>
         {errors.travel_style && (

@@ -88,6 +88,15 @@ const tripDetailFields = [
     ],
   }),
   defineField({
+    name: 'bestseller',
+    title: 'Is bestseller?',
+    type: 'boolean',
+    options: {
+      layout: 'checkbox',
+    },
+    initialValue: false, 
+  }),
+  defineField({
     name: 'originalPrice',
     type: 'string',
     title: 'Original Price',

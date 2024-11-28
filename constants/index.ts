@@ -27,6 +27,40 @@ export const navlinks = [
   },
 ];
 
+
+export const destinations = [
+  {
+    id: '1',
+    name: "Sikkim",
+    link: "/packages/destinations/sikkim",
+  },
+  {
+    id: '2',
+    name: "Bhutan",
+    link: "/packages/destinations/bhutan",
+  },
+  {
+    id: '3',
+    name: "Meghalaya",
+    link: "/packages/destinations/meghalaya",
+  },
+  {
+    id: '4',
+    name: "North Bengal",
+    link: "/packages/destinations/northbengal",
+  },
+  {
+    id: '5',
+    name: "Arunachal Pradesh",
+    link: "/packages/destinations/arunachalpradesh",
+  },
+  {
+    id: '6',
+    name: "Nagaland",
+    link: "/packages/destinations/nagaland",
+  }
+]
+
 export const team = [
   {
     id: "1",

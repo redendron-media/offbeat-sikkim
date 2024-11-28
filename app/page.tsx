@@ -39,6 +39,7 @@ const query = `
     durationn,
     durationd,
     originalPrice,
+    bestseller,
     currentPrice,
     tripType,
   },
