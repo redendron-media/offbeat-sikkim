@@ -171,7 +171,7 @@ function Header() {
             <Link
               className={cn(
                 "space-y-6 hover:text-primary duration-700 transition-colors",
-                pathname === "/packages" ? "text-primary"
+                isExactPath("/packages") ?  "text-primary"
                   : isHomepage
                     ? isScrolled
                       ? "text-black"
@@ -188,7 +188,7 @@ function Header() {
             <NavigationMenu
               className={cn(
                 "space-y-6 hover:text-primary duration-700 transition-colors cursor-pointert",
-                isCurrentPath("/packages")
+                isSubPath("/packages") 
                   ? "text-primary"
                   : isHomepage
                     ? isScrolled
@@ -222,7 +222,7 @@ function Header() {
             <Link
               className={cn(
                 "space-y-6 hover:text-primary duration-700 transition-colors",
-                isCurrentPath("/blog")
+                isExactPath("/blog")
                   ? "text-primary"
                   : isHomepage
                     ? isScrolled
@@ -239,7 +239,7 @@ function Header() {
             <Link
               className={cn(
                 "space-y-6 hover:text-primary duration-700 transition-colors",
-                isCurrentPath("/About")
+                isExactPath("/About")
                   ? "text-primary"
                   : isHomepage
                     ? isScrolled
@@ -256,7 +256,7 @@ function Header() {
             <Link
               className={cn(
                 "space-y-6 hover:text-primary duration-700 transition-colors",
-                isCurrentPath("/Contact")
+                isExactPath("/Contact")
                   ? "text-primary"
                   : isHomepage
                     ? isScrolled
@@ -278,7 +278,9 @@ function Header() {
       </motion.nav>
     );
   };
-  const isCurrentPath = (path: string) => pathname.startsWith(path);
+  const isExactPath = (path: string) => pathname === path;
+  const isSubPath = (path: string) => pathname.startsWith(path) && pathname !== path;
+  
   return (
     <>
       <AnimatePresence>
@@ -315,9 +317,7 @@ function Header() {
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        pathname === "/packages" 
-                          ? "text-primary"
-                          : "text-black"
+                  isExactPath("/packages") ? "text-primary" : "text-black"
                       )}
                       href={"/packages"}
                     >
@@ -332,9 +332,7 @@ function Header() {
                         <AccordionTrigger
                           className={cn(
                             "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                            isCurrentPath("/packages")
-                              ? "text-primary"
-                              : "text-black"
+                            isSubPath("/packages") ? "text-primary" : "text-black"
                           )}
                         >
                           Destinations
@@ -348,9 +346,7 @@ function Header() {
                                 onClick={toggleMenu}
                                 className={cn(
                                   "space-y-6 titlel hover:text-primary duration-700 transition-colors",
-                                  isCurrentPath(destination.link)
-                                    ? "text-primary"
-                                    : "text-black"
+                                  isExactPath(destination.link) ? "text-primary" : "text-black"
                                 )}
                               >
                                 <div className="flex flex-row gap-3">
@@ -370,7 +366,7 @@ function Header() {
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        isCurrentPath("/blog")
+                        isExactPath("/blog")
                           ? "text-primary"
                           : "text-black"
                       )}
@@ -385,7 +381,7 @@ function Header() {
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        isCurrentPath("/About")
+                        isExactPath("/About")
                           ? "text-primary"
                           : "text-black"
                       )}
@@ -400,7 +396,7 @@ function Header() {
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        isCurrentPath("/Contact")
+                        isExactPath("/Contact")
                           ? "text-primary"
                           : "text-black"
                       )}
