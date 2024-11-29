@@ -122,7 +122,7 @@ const BookingPage = () => {
     email: "",
     phone: "",
     noOfAdults: noOfPeople.toString(),
-    tourDates: packageData?.tourDates?.[0]?.tourDate ?? "",
+    tourDates: "",
     source: "upcoming",
     coTraveler: [],
   });
@@ -134,18 +134,18 @@ const BookingPage = () => {
   useEffect(() => {
     if (packageData) {
       const newTourDate = initialDate?.tourDate || packageData?.tourDates?.[0]?.tourDate || "";
-      
+  
       // Only update formData if necessary
       if (
         formData.packageName !== packageData.title ||
-        formData.tourDates !== newTourDate ||
         formData.noOfAdults !== noOfPeople.toString()
       ) {
+        // Update formData but only set tourDates if it's empty
         setFormData((prevData) => ({
           ...prevData,
           packageName: packageData.title,
-          tourDates: newTourDate,
           noOfAdults: noOfPeople.toString(),
+          tourDates: prevData.tourDates || newTourDate, // Only set tourDates if it is empty
         }));
         setSelectedMonth(initialMonth);
       }
@@ -158,16 +158,16 @@ const BookingPage = () => {
     if (formData.tourDates !== firstDate) {
       setFormData((prevData) => ({
         ...prevData,
-        tourDates: firstDate,
+        tourDates: firstDate, // Set the first date for the selected month
       }));
     }
   };
-
+  
   const handleDateSelect = (date: string) => {
     if (formData.tourDates !== date) {
       setFormData((prevData) => ({
         ...prevData,
-        tourDates: date,
+        tourDates: date, // Update tour date only
       }));
     }
   };
@@ -177,16 +177,22 @@ const BookingPage = () => {
     index?: number
   ) => {
     if (field === "coTraveler" && typeof index === "number") {
-      const updatedCoTravellers = [...(formData.coTraveler || [])];
-      updatedCoTravellers[index] = value;
-      setFormData({
-        ...formData,
-        coTraveler: updatedCoTravellers,
+      setFormData((prevFormData) => {
+        const updatedCoTraveler = [...(prevFormData.coTraveler || [])];
+        updatedCoTraveler[index] = value;
+  
+        return {
+          ...prevFormData,
+          coTraveler: updatedCoTraveler,
+
+        };
       });
     } else {
-      setFormData({ ...formData, [field]: value });
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [field]: value,
+      }));
     }
-    setErrors({ ...errors, [field]: "" });
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -209,22 +215,21 @@ const BookingPage = () => {
   };
 
   const handleAddField = () => {
-    setNoOfPeople(noOfPeople + 1);
-    setFormData({
-      ...formData,
+    setNoOfPeople(noOfPeople + 1); // Increase the count first
+    setFormData((prevData) => ({
+      ...prevData,
       noOfAdults: (noOfPeople + 1).toString(),
-      coTraveler: [...(formData.coTraveler || []), ""],
-    });
+      coTraveler: [...(prevData.coTraveler || []), ""], // Add an empty co-traveler slot
+    }));
   };
-
   const handleRemoveField = () => {
     if (noOfPeople > 1) {
-      setNoOfPeople(noOfPeople - 1);
-      setFormData({
-        ...formData,
+      setNoOfPeople(noOfPeople - 1); // Decrease the count first
+      setFormData((prevData) => ({
+        ...prevData,
         noOfAdults: (noOfPeople - 1).toString(),
-        coTraveler: (formData.coTraveler || []).slice(0, -1),
-      });
+        coTraveler: (prevData.coTraveler || []).slice(0, -1), // Remove the last co-traveler slot
+      }));
     }
   };
 

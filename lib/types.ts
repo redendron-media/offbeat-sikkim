@@ -160,7 +160,7 @@ export interface photoGallery {
     name:string,
     email:string,
     phone:string,
-    tourDates:string,
+    tourDates?:string,
     packageName:string,
     noOfAdults:string,
     source:string,
