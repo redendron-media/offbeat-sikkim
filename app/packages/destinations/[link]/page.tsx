@@ -19,8 +19,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { PortableText, PortableTextComponents } from "next-sanity";
 import ViewMore from "@/components/viewmore-box/page";
 interface DestinationPageProps {
-  params: { link: string };
+  params: Promise<{ link: string }>;
 }
+
 
 export const revalidate =60;
 
@@ -84,7 +85,7 @@ const query = (link: string) => `
 export default async function DestinationPage({
   params,
 }: DestinationPageProps) {
-  const { link } = params;
+  const { link } = await params;
 
   const data = await client.fetch(query(link));
 
