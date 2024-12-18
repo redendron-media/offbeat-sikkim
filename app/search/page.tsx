@@ -6,6 +6,13 @@ import Link from "next/link";
 import Sliderr from "@/components/Slider";
 import { Chip } from "@mui/material";
 
+interface SearchPageProps {
+  searchParams: Promise<{
+    query?: string;
+    days?: string;
+  }>;
+}
+
 interface SearchResults {
   upcomingTrips: CardTrip[];
   relatedTrips: CardTrip[];
@@ -74,17 +81,15 @@ const searchQuery = (query: string, days: string) => `
 `;
 
 
-export default async function SearchPage({
-  searchParams,
-}: {
-  searchParams: {  query?: string; days?: string };
-}) {
-  const query = searchParams.query
-    ? decodeURIComponent(searchParams.query)
-    : "";
-  const days = searchParams.days
-    ? decodeURIComponent(searchParams.days)
-    : "";
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const query = resolvedSearchParams.query
+  ? decodeURIComponent(resolvedSearchParams.query)
+  : "";
+const days = resolvedSearchParams.days
+  ? decodeURIComponent(resolvedSearchParams.days)
+  : "";
+
   const data = await client.fetch<SearchResults>(searchQuery(query, days));
   const { upcomingTrips, relatedTrips, curatedTrips, trekTrips, blogs } = data;
 

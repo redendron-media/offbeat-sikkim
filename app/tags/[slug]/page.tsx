@@ -8,11 +8,11 @@ import { Chip } from "@mui/material";
 import { cn } from "@/lib/utils";
 
 interface TagPageProps {
-    params: {
-      slug: string;
-    };
-  }
-  
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
 const fetchPostsByTag = async (slug: string) => {
     const query = `*[_type == 'blog' && $slug in tags[]->slug.current] {
         title, caption, titleImage, "currentSlug": slug.current, _createdAt, tags[]-> { _id, name, "slug": slug.current }
@@ -40,7 +40,8 @@ function formatDate(dateString: string) {
   }
 
 async function TagPage({ params }: TagPageProps) {
-    const slug = params.slug;
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
   
   const slugValue = Array.isArray(slug) ? slug[0] : slug;
   const { posts, tagName } = await fetchPostsByTag(slugValue);
@@ -63,7 +64,7 @@ async function TagPage({ params }: TagPageProps) {
   }
 
   return (
-     <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto">
+     <main className="px-4 md:px-6 bg-[#F6FBF4] pt-20 md:pt-32 max-w-screen-2xl mx-auto">
       {posts.length !== 0 && (
         <>
           {/* Intro Section */}

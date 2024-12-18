@@ -29,6 +29,7 @@ import { payment } from "@/action/ServerActions";
 import { cn } from "@/lib/utils";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { client } from "@/lib/sanity";
+import Razorpay from "razorpay";
 
 interface CustomConnectorWrapperProps {
   activeStep: number;
@@ -300,38 +301,136 @@ const BookingPage = () => {
     return newErrors;
   };
 
-  const makePayment = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    setLoading(true);
-    const payload = {
-      name: formData.name,
-      phone: formData.phone,
-      email: formData.email,
-      tourPackage: packageData.title,
-      noOfAdults: parseInt(formData.noOfAdults, 10) || 0,
-      tourDates: formData.tourDates,
-      modeOfPayment: paymentOption,
-      amountPaid: formatIndian(gatewayCost / 100),
-      amountRemaining: formatIndian(paylater),
-      source: formData.source,
-      coTraveler: formData.coTraveler?.filter((name) => name).join(", "),
-    };
+  // const makePayment = async (
+  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  // ) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   const payload = {
+  //     name: formData.name,
+  //     phone: formData.phone,
+  //     email: formData.email,
+  //     tourPackage: packageData.title,
+  //     noOfAdults: parseInt(formData.noOfAdults, 10) || 0,
+  //     tourDates: formData.tourDates,
+  //     modeOfPayment: paymentOption,
+  //     amountPaid: formatIndian(gatewayCost / 100),
+  //     amountRemaining: formatIndian(paylater),
+  //     source: formData.source,
+  //     coTraveler: formData.coTraveler?.filter((name) => name).join(", "),
+  //   };
 
-    const redirect = await payment(formData.phone, gatewayCost);
-    const transactionId = redirect.transactionid;
+  //   const redirect = await payment(formData.phone, gatewayCost);
+  //   const transactionId = redirect.transactionid;
 
-    const response = await fetch("/api/store-formdata", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ transactionId, formData: payload }),
-    });
-    console.log("redirect >>", redirect.url);
-    router.push(redirect.url);
+  //   const response = await fetch("/api/store-formdata", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ transactionId, formData: payload }),
+  //   });
+  //   console.log("redirect >>", redirect.url);
+  //   router.push(redirect.url);
+  // };
+
+  const makePayment =async (
+       e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+     ) => {
+       e.preventDefault();
+    try {
+      setLoading(true);
+  
+      // Fetch the order ID from the backend
+      const response = await fetch("/api/create-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ gatewayCost }), // Pass gatewayCost here
+      });
+      const { orderId } = await response.json();
+  
+      if (!orderId) {
+        throw new Error("Failed to create order");
+      }
+  
+      // Load the Razorpay script dynamically
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+  
+      script.onload = () => {
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Public Razorpay Key
+          amount: gatewayCost, // Amount in paise (₹100.00)
+          currency: "INR",
+          order_id: orderId,
+          name: "Offbeat Sikkim",
+          description: "Tour Booking Payment",
+          handler: async (response: any) => {
+            console.log("Payment successful:", response);
+
+            const postPaymentResponse = await fetch("/api/post-payment-actions", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+              }),
+            });
+  
+            const payload = {
+              transactionId: response.razorpay_payment_id,
+              formData: {
+                name: formData.name,
+                phone: formData.phone,
+                email: formData.email,
+                tourPackage: packageData.title,
+                noOfAdults: parseInt(formData.noOfAdults, 10) || 0,
+                tourDates: formData.tourDates,
+                modeOfPayment: paymentOption,
+                amountPaid: formatIndian(gatewayCost / 100),
+                amountRemaining: formatIndian(paylater),
+                source: formData.source,
+                coTraveler: formData.coTraveler?.filter((name) => name).join(", "),
+              },
+            };
+  
+            const storeResponse = await fetch("/api/store-formdata", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+  
+            if (storeResponse.ok) {
+              router.push(`/success?transactionId=${response.razorpay_payment_id}&amount=${gatewayCost}`);
+            } else {
+              throw new Error("Failed to store transaction data");
+            }
+          },
+          theme: { color: "#3399cc" },
+        };
+  
+        const razorpay = new (window as any).Razorpay(options);
+        razorpay.open();
+      };
+  
+      script.onerror = () => {
+        console.error("Failed to load Razorpay script");
+        alert("Payment failed. Please try again.");
+      };
+  
+      document.body.appendChild(script);
+    } catch (error) {
+      console.error("Payment failed:", error);
+      alert("Payment failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   const validateCoTravellers = (): (string | undefined)[] => {
     return (formData.coTraveler || []).map((coTraveller, index) => {
