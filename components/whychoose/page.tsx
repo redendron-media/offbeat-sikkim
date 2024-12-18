@@ -12,7 +12,7 @@ const WhyChoose = () => {
     <section className="relative px-4 md:px-6 py-16 md:py-24 rounded-lg flex flex-col gap-4 md:gap-6">
     <div className="absolute inset-0 w-full z-0">
        <Image
-         src={'/images/featured-articles.webp'}
+         src={'/images/nagaland/5.webp'}
          alt="Hero Background"
          fill
          className="rounded-lg object-cover"

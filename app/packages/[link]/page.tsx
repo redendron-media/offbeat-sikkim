@@ -540,7 +540,7 @@ const PackagePage: React.FC = () => {
                 <section className="flex justify-end md:justify-start">
                   {!isUpcoming && (
                     <ContactDialog
-                      link={linkString}
+                      link={linkString!}
                       packageTitle={packageData.title}
                       title="Enquire Now"
                     />
@@ -906,7 +906,7 @@ const PackagePage: React.FC = () => {
               <section className="flex justify-end md:justify-start">
                 {!isUpcoming && (
                   <ContactDialog
-                    link={linkString}
+                    link={linkString!}
                     packageTitle={packageData.title}
                     title="Enquire Now"
                   />
@@ -969,7 +969,7 @@ const PackagePage: React.FC = () => {
             </Stack>
             {!isUpcoming && (
               <ContactDialog
-                link={linkString}
+                link={linkString!}
                 packageTitle={packageData.title}
                 title="Enquire Now"
               />

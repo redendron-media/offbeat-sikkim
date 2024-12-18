@@ -7,10 +7,10 @@ import { Chip, Stack } from "@mui/material";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import React from "react";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Link from "next/link";
 export const revalidate = 60;
 import VisibilityIcon from '@mui/icons-material/Visibility';
+
 async function getData(slug: string) {
   const query = `
     *[_type == "blog" && slug.current =='${slug}']{
@@ -62,18 +62,30 @@ function formatDate(dateString: string) {
   return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
 }
 
+interface PageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+
 interface BlogArticleProps {
   params: { slug: string };
 }
 
-async function BlogArticle({ params }: BlogArticleProps) {
-  const data: BlogPage = await getData(params.slug);
+async function BlogArticle({ params }: PageProps) {
+  const resolvedParams = await params;
+
+  if (!resolvedParams || !resolvedParams.slug) {
+    throw new Error("Slug parameter is required.");
+  }
+
+ const data: BlogPage = await getData(resolvedParams.slug);
   const originalDate = new Date(data._createdAt).toISOString().split("T")[0];
   const formattedDate = formatDate(originalDate);
   let currentPageLink =
-    process.env.NEXT_PUBLIC_BASE_URL + "/blog/" + params.slug;
-
-  const views = await incrementViewCount(params.slug);  
+  `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${resolvedParams.slug}`;
+  const views = await incrementViewCount(resolvedParams.slug);
   return (
     <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto py-12 md:py-[76px] pt-20 md:pt-32 flex flex-col gap-6 md:gap-9">
       <Stack gap={1} className="md:px-28 lg:px-52 text-start">
@@ -86,9 +98,8 @@ async function BlogArticle({ params }: BlogArticleProps) {
         </div>
         <div className="flex flex-row gap-3 flex-wrap pt-2 pb-3">
           {data.tags?.map((tag) => (
-            <Link href={`/tags/${tag.slug}`} passHref key={tag._id}>
+            <Link href={`/tags/${tag.slug}`} key={tag._id}>
               <Chip
-                component="a"
                 label={tag.name}
                 clickable
                 sx={{
