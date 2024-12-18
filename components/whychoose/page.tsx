@@ -25,7 +25,7 @@ const WhyChoose = () => {
         />
       </div>
       <div className="bg-black/40 absolute inset-0 rounded-lg" />
-      <h2 className="headlines md:displaym text-white z-10">
+      <h2 className="headlines md:displaym text-white z-10 line-clamp-2 text-balance">
         Why Choose <span className="text-primary">Offbeat Sikkim?</span>
       </h2>
 
