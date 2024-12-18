@@ -6,6 +6,7 @@ import MoveUp from "@/components/move-up-animation/page";
 import Testimonials from "@/components/pages/Testimonials/page";
 import FeaturedArticles from "@/components/pages/featured-articles/page";
 import HeroHome from "@/components/pages/hero-home/page";
+import WhyChoose from "@/components/whychoose/page";
 import { client } from "@/lib/sanity";
 
 const query = `
@@ -125,11 +126,15 @@ export default async function Home() {
         </MoveUp>
        
        <MoveUp>
-       <FeaturedArticles />
+        <WhyChoose/>
        </MoveUp>
-       
+             
        <MoveUp>
        <Credibility />
+       </MoveUp>
+
+       <MoveUp>
+       <FeaturedArticles />
        </MoveUp>
 
         <MoveUp>

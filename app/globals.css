@@ -75,13 +75,14 @@ html.lenis body {
    }
 
    .hide-scrollbar {
-    -ms-overflow-style: none;  
-    scrollbar-width: none;    
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
   
   .hide-scrollbar::-webkit-scrollbar {
-    display: none; 
+    display: none; /* Chrome, Safari */
   }
+  
   .custom-scrollbar {
     overflow-x: auto;
     scrollbar-width: thin; /* For Firefox */
@@ -109,10 +110,10 @@ html.lenis body {
 
   input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+  -WebkitAppearance: none;
   margin: 0;
 }
 input[type="number"] {
-  -moz-appearance: textfield;
+  -MozAppearance: textfield;
 }
 }

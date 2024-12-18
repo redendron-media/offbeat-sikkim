@@ -33,7 +33,7 @@ const RotatingLogo = () => {
         r="36.4686"
         transform="rotate(-150 56.5001 55.5)"
         stroke="white"
-        stroke-dasharray="2 2"
+        strokeDasharray="2 2"
         animate={{ rotate: [0, -360] }}
         transition={{
           repeat: Infinity,

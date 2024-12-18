@@ -1,6 +1,5 @@
 import React from "react";
 import { blogCard, CardTrip } from "@/lib/types";
-import Cards from "@/components/Cards";
 import { client, urlFor } from "@/lib/sanity";
 import Image from "next/image";
 import Link from "next/link";

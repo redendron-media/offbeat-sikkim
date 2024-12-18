@@ -6,12 +6,14 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Link from "next/link";
 import { CardTrip } from "@/lib/types";
 import { urlFor } from "@/lib/sanity";
-
+import { useRouter } from "next/navigation";
 type TourCardProps = {
   card: CardTrip;
 };
 
 const Cards = ({ card }: TourCardProps) => {
+  const router = useRouter();
+
   if (!card || !card.link) {
     console.error("Card or link is undefined", card); 
     return null;
@@ -62,11 +64,9 @@ const Cards = ({ card }: TourCardProps) => {
               </>
             )}       
           </div>
-          <Link href={`/packages/${link}`}>
-            <IconButton className="bg-primary hover:bg-primary/80">
+            <IconButton onClick={()=>router.push(`/packages/${link}`)} className="bg-primary hover:bg-primary/80">
               <ArrowForwardIcon className="text-white text-[28px] md:text-[32px]" />
             </IconButton>
-          </Link>
         </div>
       </Card>
     </Link>
