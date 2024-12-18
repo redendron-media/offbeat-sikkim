@@ -371,19 +371,10 @@ const BookingPage = () => {
           handler: async (response: any) => {
             console.log("Payment successful:", response);
 
-            const postPaymentResponse = await fetch("/api/post-payment-actions", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                razorpay_payment_id: response.razorpay_payment_id,
-              }),
-            });
+           
   
             const payload = {
-              transactionId: response.razorpay_payment_id,
-              formData: {
+           
                 name: formData.name,
                 phone: formData.phone,
                 email: formData.email,
@@ -395,19 +386,22 @@ const BookingPage = () => {
                 amountRemaining: formatIndian(paylater),
                 source: formData.source,
                 coTraveler: formData.coTraveler?.filter((name) => name).join(", "),
-              },
+            
             };
-  
-            const storeResponse = await fetch("/api/store-formdata", {
+            let transactionId = response.razorpay_payment_id;
+            const emailResponse = await fetch("/api/send-email", {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload),
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({...payload, transactionId}),
             });
   
-            if (storeResponse.ok) {
+            if (emailResponse.ok) {
               router.push(`/success?transactionId=${response.razorpay_payment_id}&amount=${gatewayCost}`);
             } else {
-              throw new Error("Failed to store transaction data");
+              console.error("Failed to send email");
+              alert("Payment successful, but failed to send email.");
             }
           },
           theme: { color: "#3399cc" },
