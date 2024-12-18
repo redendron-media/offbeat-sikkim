@@ -28,8 +28,8 @@ const WhyChoose = () => {
           className="bg-transparent border-none shadow-none z-10"
         >
           <AccordionSummary
-            className="px-2 bg-transparent"
-            expandIcon={<ExpandMoreIcon />}
+            className="px-2 bg-transparent border-none"
+            expandIcon={<ExpandMoreIcon className='text-white'/>}
             aria-controls={`panel1-content`}
             id={`panel1-header`}
           >
@@ -48,8 +48,8 @@ const WhyChoose = () => {
           className="bg-transparent border-none shadow-none z-10"
         >
           <AccordionSummary
-            className="px-2 bg-transparent"
-            expandIcon={<ExpandMoreIcon />}
+            className="px-2 bg-transparent border-none"
+            expandIcon={<ExpandMoreIcon className='text-white'/>}
             aria-controls={`panel1-content`}
             id={`panel1-header`}
           >
@@ -69,8 +69,8 @@ const WhyChoose = () => {
           className="bg-transparent border-none shadow-none z-10"
         >
           <AccordionSummary
-            className="px-2 bg-transparent"
-            expandIcon={<ExpandMoreIcon />}
+            className="px-2 bg-transparent border-none"
+            expandIcon={<ExpandMoreIcon className='text-white'/>}
             aria-controls={`panel1-content`}
             id={`panel1-header`}
           >
@@ -89,8 +89,8 @@ const WhyChoose = () => {
           className="bg-transparent border-none shadow-none z-10"
         >
           <AccordionSummary
-            className="px-2 bg-transparent"
-            expandIcon={<ExpandMoreIcon />}
+            className="px-2 bg-transparent border-none"
+            expandIcon={<ExpandMoreIcon className='text-white'/>}
             aria-controls={`panel1-content`}
             id={`panel1-header`}
           >
