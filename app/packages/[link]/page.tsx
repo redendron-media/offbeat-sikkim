@@ -881,7 +881,7 @@ const PackagePage: React.FC = () => {
                           Confirm your booking with only
                         </p>
                         <p className="bodys md:headlines text-primary">
-                          INR 5,000
+                          INR 5,000 per head
                         </p>
                       </Stack>
                     )}
@@ -953,7 +953,7 @@ const PackagePage: React.FC = () => {
                     Confirm your booking with only{" "}
                   </p>
                   <p className="bodys  font-semibold md:bodyl text-primary">
-                    INR 5,000
+                    INR 5,000 per head
                   </p>
                 </Stack>
               )}
