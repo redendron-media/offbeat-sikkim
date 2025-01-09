@@ -5,11 +5,14 @@ import { motion, animate } from "framer-motion";
 interface ScrollToSectionProps {
   targetId: string;
   children: ReactNode;
+  className?      
+  : string;
 }
 
 const ScrollToSection: React.FC<ScrollToSectionProps> = ({
   targetId,
   children,
+  className
 }) => {
   const handleScroll = () => {
     const targetSection = document.getElementById(targetId);
@@ -31,7 +34,7 @@ const ScrollToSection: React.FC<ScrollToSectionProps> = ({
   return (
     <motion.div
       onClick={handleScroll}
-      className="cursor-pointer"
+      className={`cursor-pointer ${className}`}
       whileTap={{ scale: 0.95 }}
     >
       {children}

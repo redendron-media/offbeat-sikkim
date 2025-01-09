@@ -18,6 +18,8 @@ import Link from "next/link";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { PortableText, PortableTextComponents } from "next-sanity";
 import ViewMore from "@/components/viewmore-box/page";
+import { Button } from "@/components/ui/button";
+import ScrollToSection from "@/components/ScrollToSection/page";
 interface DestinationPageProps {
   params: Promise<{ link: string }>;
 }
@@ -104,7 +106,7 @@ export default async function DestinationPage({
     <main className="px-4 bg-[#F6FBF4] md:px-6 pt-20 md:pt-32 flex flex-col">
       {
         <section
-          className={`relative flex flex-col gap-6 px-4 py-9 min-h-[50vh] md:px-14 md:py-24 md:gap-6 items-center justify-center rounded-xl`}
+          className={`relative flex flex-col gap-6 px-4 py-9 min-h-[50vh] md:px-14 md:py-24 md:gap-6 items-center md:items-start justify-center rounded-xl`}
         >
           <div className="absolute  inset-0 w-full z-0">
             <div className="absolute inset-0 bg-black/40 z-10" />
@@ -124,11 +126,17 @@ export default async function DestinationPage({
               {destinationDetails.desc}
             </p>
           </Stack>
+          <ScrollToSection targetId="upcoming" className="z-10"> 
+          <Button className="z-10">
+            Explore Destinations
+          </Button>
+          </ScrollToSection>
+        
         </section>
       }
 
       {upcomingTours.length > 0 && (
-        <section className="flex flex-col py-12 md:py-[76px] gap-4 md:gap-9">
+        <section id="upcoming" className="flex flex-col py-12 md:py-[76px] gap-4 md:gap-9">
           <h2 className="text-secondary-oncontainer headlines md:displays lg:displaym">
             Upcoming Community Trips
           </h2>

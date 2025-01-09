@@ -75,6 +75,11 @@ const Footer = () => {
                   Terms and Conditions
                 </p>
               </Link>
+              <Link href="/payment-policy">
+                <p className="bodyl hover:text-primary hover:underline hover:transition-colors hover:duration-500">
+                 Payment Policy
+                </p>
+              </Link>
               <Link href="/cancellation-policy">
                 <p className="bodyl hover:text-primary hover:underline hover:transition-colors hover:duration-500">
                   Cancellation Policy
