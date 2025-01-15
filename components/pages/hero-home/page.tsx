@@ -239,7 +239,7 @@ const HeroHome = () => {
       }}
       >
         <ScrollToSection targetId="next-section">
-          <RotatingLogo />
+          <RotatingLogo/>
         </ScrollToSection>
       </motion.div>
     </div>

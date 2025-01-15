@@ -45,7 +45,7 @@ const Credibility = () => {
           />
           <div className="h-16 flex flex-col justify-center">
             <p className="labels md:labell">
-              Travel Agents' Association of Sikkim
+              Travel Agents&apos; Association of Sikkim
             </p>
             {/* <p className="labels md:labell">Govt. Of Sikkim</p> */}
           </div>
