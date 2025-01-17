@@ -399,7 +399,7 @@ function Header() {
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        isExactPath("/careers")
+                        isExactPath("/Careers")
                           ? "text-primary"
                           : "text-black"
                       )}
