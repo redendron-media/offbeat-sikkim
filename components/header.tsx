@@ -239,6 +239,23 @@ function Header() {
             <Link
               className={cn(
                 "space-y-6 hover:text-primary duration-700 transition-colors",
+                isExactPath("/Careers")
+                  ? "text-primary"
+                  : isHomepage
+                    ? isScrolled
+                      ? "text-black"
+                      : "text-white"
+                    : "text-black"
+              )}
+              href={"/Careers"}
+            >
+              <p className="bodyl xl:titlel">Careers</p>
+            </Link>
+          </motion.div>
+          <motion.div variants={linkVars}>
+            <Link
+              className={cn(
+                "space-y-6 hover:text-primary duration-700 transition-colors",
                 isExactPath("/About")
                   ? "text-primary"
                   : isHomepage
@@ -373,6 +390,22 @@ function Header() {
                       href={"/blog"}
                     >
                       <p className="body">Blog</p>
+                      <div className="bg-black w-full h-px" />
+                    </Link>
+                  </motion.div>
+
+                  <motion.div variants={linkVars}>
+                    <Link
+                      onClick={toggleMenu}
+                      className={cn(
+                        "space-y-6 headlines hover:text-primary duration-700 transition-colors",
+                        isExactPath("/careers")
+                          ? "text-primary"
+                          : "text-black"
+                      )}
+                      href={"/careers"}
+                    >
+                      <p className="body">Carrers</p>
                       <div className="bg-black w-full h-px" />
                     </Link>
                   </motion.div>

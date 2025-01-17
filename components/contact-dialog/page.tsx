@@ -23,6 +23,7 @@ const ContactDialog: React.FC<ContactDialogProps> = ({ link, packageTitle, title
   const handleClose = () => {
     setOpen(false);
   };
+  
 
     return (
     <>
