@@ -7,7 +7,7 @@ import React from "react";
 const Careers = () => {
   return (
     <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto pt-20 md:pt-32">
-      <div className="flex flex-col-reverse md:flex-row gap-6 items-center">
+      <div className="flex flex-col-reverse md:flex-row gap-2 lg:gap-6 items-center">
         <div className="hidden w-full lg:flex flex-col gap-2 items-center lg:flex-row">
           <Image
             src={'/images/career1.jpg'}
@@ -33,7 +33,7 @@ const Careers = () => {
             className="rounded-lg"      
           />
         </div>
-        <div className="w-full flex flex-col gap-4 md:px-4 py-16">
+        <div className="w-full flex flex-col gap-4 md:px-4 py-6 lg:py-16">
           <h1 className="text-secondary-oncontainer displays lg:displaym ">
             Join our <span className="text-primary">Dream team</span>   
           </h1>
