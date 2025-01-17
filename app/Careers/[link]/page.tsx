@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { carreers } from '@/constants/careers';
 import Apply from '@/components/careerdialog/page';
 
-const page = () => {
+const CareerPage = () => {
     const {link} = useParams();
 const matchedCareer = carreers.find(career =>career.link === link);
     
@@ -96,4 +96,4 @@ if (!matchedCareer) {
   )
 }
 
-export default page
+export default CareerPage;
