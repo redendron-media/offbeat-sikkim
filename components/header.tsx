@@ -403,7 +403,7 @@ function Header() {
                           ? "text-primary"
                           : "text-black"
                       )}
-                      href={"/careers"}
+                      href={"/Careers"}
                     >
                       <p className="body">Carrers</p>
                       <div className="bg-black w-full h-px" />
