@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     const msg = {
-      to: "team@offbeatsikkim.com",
+      to: "info@offbeatsikkim.com",
       from: "team@offbeatsikkim.com",
       templateId: templateIds,
       dynamicTemplateData: { ...fields },
