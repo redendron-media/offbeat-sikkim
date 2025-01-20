@@ -235,23 +235,7 @@ function Header() {
               <p className="bodyl xl:titlel">Blog</p>
             </Link>
           </motion.div>
-          <motion.div variants={linkVars}>
-            <Link
-              className={cn(
-                "space-y-6 hover:text-primary duration-700 transition-colors",
-                isExactPath("/Careers")
-                  ? "text-primary"
-                  : isHomepage
-                    ? isScrolled
-                      ? "text-black"
-                      : "text-white"
-                    : "text-black"
-              )}
-              href={"/Careers"}
-            >
-              <p className="bodyl xl:titlel">Careers</p>
-            </Link>
-          </motion.div>
+        
           <motion.div variants={linkVars}>
             <Link
               className={cn(
@@ -394,21 +378,7 @@ function Header() {
                     </Link>
                   </motion.div>
 
-                  <motion.div variants={linkVars}>
-                    <Link
-                      onClick={toggleMenu}
-                      className={cn(
-                        "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        isExactPath("/Careers")
-                          ? "text-primary"
-                          : "text-black"
-                      )}
-                      href={"/Careers"}
-                    >
-                      <p className="body">Carrers</p>
-                      <div className="bg-black w-full h-px" />
-                    </Link>
-                  </motion.div>
+          
                   <motion.div variants={linkVars}>
                     <Link
                       onClick={toggleMenu}

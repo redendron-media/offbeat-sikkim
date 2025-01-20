@@ -65,6 +65,11 @@ const Footer = () => {
               </Link>
             </Stack>
             <Stack direction={"column"} gap={1.5}>
+            <Link href="/Careers">
+                <p className="bodyl hover:text-primary hover:underline hover:transition-colors hover:duration-500">
+                 Careers
+                </p>
+              </Link>
             <Link href="/faq">
                 <p className="bodyl hover:text-primary hover:underline hover:transition-colors hover:duration-500">
                  Frequently Asked Questions
