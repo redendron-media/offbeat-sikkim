@@ -307,7 +307,7 @@ function Header() {
                 </IconButton>
               </motion.div>
 
-              <div className="flex flex-col-reverse lg:flex-row justify-between h-full">
+              <div className="flex flex-col-reverse lg:fl̃ex-row justify-between h-full">
                 <motion.div
                   variants={linkVars}
                   className="flex flex-row lg:self-end items-center gap-2"

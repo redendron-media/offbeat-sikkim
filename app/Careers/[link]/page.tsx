@@ -88,7 +88,7 @@ if (!matchedCareer) {
           }
         </ul>
       </div>
-      <div className="md:w-1/4 w-full flex flex-col gap-4 ">
+      <div className="w-full flex py-3 bg-[#F6FBF4]  flex-col gap-4 sticky bottom-0">
        <Apply/>
       </div>
     </div>

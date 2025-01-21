@@ -44,13 +44,50 @@ const Careers = () => {
         </div>
       </div>
 
+      <div className="flex flex-col-reverse md:flex-row-reverse gap-2 pt-16 lg:gap-6 items-center">
+        <div className="hidden w-full lg:flex flex-col gap-2 items-center lg:flex-row">
+          <Image
+            src={'/images/career3.jpeg'}
+            width={240}
+            height={500}
+            alt="Career"  
+            className="rounded-lg"        
+          />
+            <Image
+            src={'/images/career4.jpeg'}
+            width={240}
+            height={500}
+            alt="Career"    
+            className="rounded-lg"      
+          />
+        </div>
+        <div className="flex items-center lg:hidden md:w-1/2">
+        <Image
+            src={'/images/career3.jpeg'}
+            width={320}
+            height={500}
+            alt="Career"    
+            className="rounded-lg"      
+          />
+        </div>
+        <div className="w-full flex flex-col gap-4 md:px-4 py-6 lg:py-16">
+          <h1 className="text-secondary-oncontainer displays lg:displaym ">
+            About <span className="text-primary">Us</span>   
+          </h1>
+          <p className="text-black bodym md:bodyl">
+          We help travelers explore Northeast India&apos;s offbeat beauty while promoting eco-tourism, rural development, and heritage preservation. Committed to seamless, sustainable experiences, we empower communities through job creation and education, ensuring value-driven journeys.
+</p>
+
+        </div>
+      </div>
+
       <div className="flex flex-col gap-8 py-16">
         <h1 className="text-secondary-oncontainer displays lg:displaym ">
           Explore Careers
         </h1>
 
         <div className=" flex flex-wrap gap-4">
-        <div className="w-full p-4 lg:h-fit flex flex-row justify-between  gap-2 rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-cardShadow ">
+        <div className="w-full p-4 lg:h-fit flex flex-col md:flex-row justify-between  gap-2 rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-cardShadow ">
             <div>
             <h1 className="titlel">Sales and Business Development Associate</h1>
             <p className="text-black bodym md:bodyl">Sikkim - Full Time</p>
