@@ -42,6 +42,7 @@ export const blog = defineField ({
                 {
                     type:'block',
                 },
+                
             ],
         }),
         defineField({

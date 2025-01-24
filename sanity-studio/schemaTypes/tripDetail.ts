@@ -33,6 +33,12 @@ const tripDetailFields = [
     },
   }),
   defineField({
+    name:'coupon',
+    title: "Coupons", 
+    type: "array",
+    of: [{type: 'reference', to:[{ type: "coupon"}]}],
+ }),
+  defineField({
     name: 'cover',
     type: 'image',
     title: 'Cover Image for card',
