@@ -96,8 +96,8 @@ function Header() {
     animate: {
       opacity: 1,
       boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-      paddingTop: isSmallScreen ? "1.25rem" : "0.75rem",
-      paddingBottom: isSmallScreen ? "1.25rem" : "0.5rem",
+      paddingTop: isSmallScreen ? "1.25rem" : "1rem",
+      paddingBottom: isSmallScreen ? "1.25rem" : "1rem",
       backgroundColor: "#F6FBF4",
       transition: {
         duration: 0.7,
