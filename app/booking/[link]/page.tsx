@@ -37,6 +37,10 @@ interface CustomConnectorWrapperProps {
 interface Tour {
   tourDate: string;
   spots?: string;
+  coupon?: {
+    cname: string;
+    value: string;
+  } | null;
 }
 
 const CustomConnectorWrapper = ({
@@ -70,7 +74,13 @@ const fetchPackageData = async (link: string) => {
       durationd,
       currentPrice,
       originalPrice,
-      "tourDates": tourDates[],
+       "tourDates": tourDates[]{
+      date,
+      coupon->{
+        cname,
+        value
+      }
+    },
       tripType
     }
   `;
@@ -79,11 +89,11 @@ const fetchPackageData = async (link: string) => {
 };
 
 
-const generateDatesByMonth = (tourDates: string[] | undefined) => {
+const generateDatesByMonth = (tourDates: { date: string }[] | undefined) => {
   return (
-    tourDates?.reduce((acc: { [key: string]: Tour[] }, tourString: string) => {
-      const [tourDate, spots] = tourString.split(" | ");
-      const month = tourDate.split(" ")[1];
+    tourDates?.reduce((acc: { [key: string]: Tour[] }, tourObj) => {
+      const [tourDate, spots] = tourObj.date.split(" | "); // Extract date
+      const month = tourDate.split(" ")[1]; // Extract month
       if (!acc[month]) acc[month] = [];
       acc[month].push({ tourDate, spots });
       return acc;
@@ -95,7 +105,6 @@ const BookingPage = () => {
   const router = useRouter();
   const { link } = useParams();
   const decodedLink = decodeURIComponent(link as string);
-  const [dataLoading, setDataLoading] = useState(true);
 
   const {
     data: packageData,
@@ -105,7 +114,11 @@ const BookingPage = () => {
     enabled: !!link,
   });
 
-  const datesByMonth = React.useMemo(() => generateDatesByMonth(packageData?.tourDates), [packageData?.tourDates]);
+  const datesByMonth = React.useMemo(() => 
+    generateDatesByMonth(packageData?.tourDates?.map((t: { date: string }) => ({ date: t.date })) || []), 
+    [packageData?.tourDates]
+  );
+  
   const initialMonth = Object.keys(datesByMonth)[0] || null;
   const initialDate = initialMonth ? datesByMonth[initialMonth][0] : null;
 
@@ -134,8 +147,8 @@ const BookingPage = () => {
 
   useEffect(() => {
     if (packageData) {
-      const newTourDate = initialDate?.tourDate || packageData?.tourDates?.[0]?.tourDate || "";
-  
+      const newTourDate = initialDate?.tourDate || packageData?.tourDates?.[0]?.date || "";
+      const newCoupon = initialDate?.coupon || packageData?.tourDates?.[0]?.coupon || null;
       // Only update formData if necessary
       if (
         formData.packageName !== packageData.title ||

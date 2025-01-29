@@ -95,7 +95,7 @@ function Header() {
     },
     animate: {
       opacity: 1,
-      boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+      boxShadow: "0 4px 6px -2px rgba(0,0,0,0.1)",
       paddingTop: isSmallScreen ? "1.25rem" : "1rem",
       paddingBottom: isSmallScreen ? "1.25rem" : "1rem",
       backgroundColor: "#F6FBF4",
