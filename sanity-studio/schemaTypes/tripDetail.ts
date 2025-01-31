@@ -152,10 +152,15 @@ const tripDetailFields = [
             title: 'Tour Date',
           },
           {
-            name: 'coupon',
-            title: 'Coupon',
-            type: 'reference',
-            to: [{ type: 'coupon' }],
+            name: 'coupons',
+            title: 'Coupons',
+            type: 'array',
+            of: [
+              {
+                type: 'reference',
+                to: [{ type: 'coupon' }],
+              },
+            ]
           },
         ],
       },

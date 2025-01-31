@@ -25,11 +25,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import GroupIcon from "@mui/icons-material/Group";
 import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
-import { payment } from "@/action/ServerActions";
 import { cn } from "@/lib/utils";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { client } from "@/lib/sanity";
-import Razorpay from "razorpay";
 
 interface CustomConnectorWrapperProps {
   activeStep: number;
@@ -37,10 +35,7 @@ interface CustomConnectorWrapperProps {
 interface Tour {
   tourDate: string;
   spots?: string;
-  coupon?: {
-    cname: string;
-    value: string;
-  } | null;
+  coupons?: { cname: string; value: string }[]; // Allow multiple coupons
 }
 
 const CustomConnectorWrapper = ({
@@ -74,12 +69,9 @@ const fetchPackageData = async (link: string) => {
       durationd,
       currentPrice,
       originalPrice,
-       "tourDates": tourDates[]{
+      "tourDates": tourDates[]{
       date,
-      coupon->{
-        cname,
-        value
-      }
+      "coupons": coalesce(coupons[]->{ cname, value }, [])
     },
       tripType
     }
@@ -88,14 +80,17 @@ const fetchPackageData = async (link: string) => {
   return data;
 };
 
-
-const generateDatesByMonth = (tourDates: { date: string }[] | undefined) => {
+const generateDatesByMonth = (
+  tourDates:
+    | { date: string; coupons?: { cname: string; value: string }[] }[]
+    | undefined
+) => {
   return (
     tourDates?.reduce((acc: { [key: string]: Tour[] }, tourObj) => {
-      const [tourDate, spots] = tourObj.date.split(" | "); // Extract date
+      const [tourDate, spots] = tourObj.date.split(" | "); // Extract date and spots
       const month = tourDate.split(" ")[1]; // Extract month
       if (!acc[month]) acc[month] = [];
-      acc[month].push({ tourDate, spots });
+      acc[month].push({ tourDate, spots, coupons: tourObj.coupons || [] }); // Store multiple coupons
       return acc;
     }, {}) || {}
   );
@@ -114,21 +109,51 @@ const BookingPage = () => {
     enabled: !!link,
   });
 
-  const datesByMonth = React.useMemo(() => 
-    generateDatesByMonth(packageData?.tourDates?.map((t: { date: string }) => ({ date: t.date })) || []), 
+  const datesByMonth = React.useMemo(
+    () =>
+      generateDatesByMonth(
+        packageData?.tourDates?.map(
+          (t: {
+            date: string;
+            coupons?: { cname: string; value: string }[];
+          }) => ({
+            date: t.date,
+            coupons: t.coupons || [],
+          })
+        ) || []
+      ),
     [packageData?.tourDates]
   );
-  
+
   const initialMonth = Object.keys(datesByMonth)[0] || null;
   const initialDate = initialMonth ? datesByMonth[initialMonth][0] : null;
 
   const [activeStep, setActiveStep] = useState(0);
   const [step, setStep] = useState(0);
   const [noOfPeople, setNoOfPeople] = useState(1);
+  const [availableCoupons, setAvailableCoupons] = useState<
+    { cname: string; value: string }[]
+  >([]);
+  const [enteredCoupon, setEnteredCoupon] = useState<string>("");
   const [errors, setErrors] = useState<Partial<UpcomingForm>>({});
+  const [couponError, setCouponError] = useState("");
   const [selectedMonth, setSelectedMonth] = useState<string | null>(
     initialMonth
   );
+
+  const [baseTotal, setBaseTotal] = useState(() => {
+    const initialCost = Number(packageData?.currentPrice?.replace(/,/g, "")) || 0;
+    return initialCost * noOfPeople;
+  });
+
+  useEffect(() => {
+    if (packageData?.currentPrice) {
+      const baseCost = Number(packageData.currentPrice.replace(/,/g, ""));
+      setBaseTotal(baseCost * noOfPeople);
+      setTotalCost(baseCost * noOfPeople); // Reset total cost when base changes
+      setAppliedCoupon(null); // Reset applied coupon when base changes
+    }
+  }, [packageData, noOfPeople]);
 
   const [formData, setFormData] = useState<UpcomingForm>({
     packageName: packageData?.title,
@@ -143,12 +168,34 @@ const BookingPage = () => {
   const [paymentOption, setPaymentOption] = useState("full");
 
   const [loading, setLoading] = useState(false);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    cname: string;
+    value: string;
+  } | null>(null);
   const cost = Number(packageData?.currentPrice?.replace(/,/g, ""));
+
+  const [totalCost, setTotalCost] = useState(() => {
+    const initialCost =
+      Number(packageData?.currentPrice?.replace(/,/g, "")) || 0;
+    return initialCost * noOfPeople;
+  });
+
+  useEffect(() => {
+    if (packageData?.currentPrice) {
+      const baseCost = Number(packageData.currentPrice.replace(/,/g, ""));
+      setTotalCost(baseCost * noOfPeople);
+    }
+  }, [packageData, noOfPeople]);
 
   useEffect(() => {
     if (packageData) {
-      const newTourDate = initialDate?.tourDate || packageData?.tourDates?.[0]?.date || "";
-      const newCoupon = initialDate?.coupon || packageData?.tourDates?.[0]?.coupon || null;
+      const newTourDate =
+        initialDate?.tourDate || packageData?.tourDates?.[0]?.date || "";
+      const newCoupons =
+        initialDate?.coupons || packageData?.tourDates?.[0]?.coupons || [];
+      console.log("Setting initial availableCoupons:", newCoupons);
+      setAvailableCoupons(newCoupons);
       // Only update formData if necessary
       if (
         formData.packageName !== packageData.title ||
@@ -161,6 +208,7 @@ const BookingPage = () => {
           noOfAdults: noOfPeople.toString(),
           tourDates: prevData.tourDates || newTourDate, // Only set tourDates if it is empty
         }));
+        setAvailableCoupons(newCoupons);
         setSelectedMonth(initialMonth);
       }
     }
@@ -168,23 +216,84 @@ const BookingPage = () => {
 
   const handleMonthSelect = (month: string) => {
     setSelectedMonth(month);
-    const firstDate = datesByMonth[month]?.[0]?.tourDate ?? "";
-    if (formData.tourDates !== firstDate) {
+    const firstTour = datesByMonth[month]?.[0];
+    if (firstTour && formData.tourDates !== firstTour.tourDate) {
       setFormData((prevData) => ({
         ...prevData,
-        tourDates: firstDate, // Set the first date for the selected month
+        tourDates: firstTour.tourDate,
       }));
+      setAvailableCoupons(firstTour.coupons || []); // Set available coupons
     }
   };
-  
+
   const handleDateSelect = (date: string) => {
-    if (formData.tourDates !== date) {
-      setFormData((prevData) => ({
-        ...prevData,
-        tourDates: date, // Update tour date only
-      }));
+    const selectedDateObj = Object.values(datesByMonth)
+      .flat()
+      .find((dateObj) => dateObj.tourDate === date);
+
+    console.log("Selected Date:", date);
+    console.log("Found Date Object:", selectedDateObj);
+
+    setFormData((prevData) => ({
+      ...prevData,
+      tourDates: date,
+    }));
+
+    if (selectedDateObj) {
+      console.log("Setting Coupons to:", selectedDateObj.coupons);
+      setAvailableCoupons([...(selectedDateObj?.coupons ?? [])]);
+    } else {
+      console.log("No coupons found for this date");
+      setAvailableCoupons([]);
     }
   };
+
+  const handleApplyCoupon = () => {
+    if (!enteredCoupon.trim()) {
+      setCouponError("Please enter a coupon code.");
+      return;
+    }
+    
+    setCouponLoading(true);
+    
+    const matchedCoupon = availableCoupons.find(
+      (coupon) => coupon.cname === enteredCoupon.trim()
+    );
+  
+    if (!matchedCoupon) {
+      setCouponError("Invalid coupon code.");
+      setCouponLoading(false);
+      return;
+    }
+  
+    try {
+      const discountPercentage = Number(matchedCoupon.value);
+  
+      if (isNaN(discountPercentage) || discountPercentage <= 0 || discountPercentage > 100) {
+        setCouponError("Invalid discount percentage.");
+        return;
+      }
+  
+      // Calculate discount amount
+      const discountAmount = Math.floor((baseTotal * discountPercentage) / 100);
+      
+      // Set new total cost
+      setTotalCost(baseTotal - discountAmount);
+
+      setAppliedCoupon(matchedCoupon);
+      
+
+      setCouponError("");
+  
+    } catch (error) {
+      console.error("Error applying coupon:", error);
+      setCouponError("Error applying coupon. Please try again.");
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+
   const handlePeopleInputChange = (
     field: keyof UpcomingForm,
     value: string,
@@ -194,11 +303,10 @@ const BookingPage = () => {
       setFormData((prevFormData) => {
         const updatedCoTraveler = [...(prevFormData.coTraveler || [])];
         updatedCoTraveler[index] = value;
-  
+
         return {
           ...prevFormData,
           coTraveler: updatedCoTraveler,
-
         };
       });
     } else {
@@ -275,7 +383,7 @@ const BookingPage = () => {
       </Box>
     );
   }
-  const totalCost = cost * noOfPeople;
+
   const gst = Math.round(totalCost * 0.05);
   let tcs;
   if (packageData?.title.includes("Bhutan")) {
@@ -314,46 +422,13 @@ const BookingPage = () => {
     return newErrors;
   };
 
-  // const makePayment = async (
-  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  // ) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   const payload = {
-  //     name: formData.name,
-  //     phone: formData.phone,
-  //     email: formData.email,
-  //     tourPackage: packageData.title,
-  //     noOfAdults: parseInt(formData.noOfAdults, 10) || 0,
-  //     tourDates: formData.tourDates,
-  //     modeOfPayment: paymentOption,
-  //     amountPaid: formatIndian(gatewayCost / 100),
-  //     amountRemaining: formatIndian(paylater),
-  //     source: formData.source,
-  //     coTraveler: formData.coTraveler?.filter((name) => name).join(", "),
-  //   };
-
-  //   const redirect = await payment(formData.phone, gatewayCost);
-  //   const transactionId = redirect.transactionid;
-
-  //   const response = await fetch("/api/store-formdata", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ transactionId, formData: payload }),
-  //   });
-  //   console.log("redirect >>", redirect.url);
-  //   router.push(redirect.url);
-  // };
-
-  const makePayment =async (
-       e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-     ) => {
-       e.preventDefault();
+  const makePayment = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     try {
       setLoading(true);
-  
+
       // Fetch the order ID from the backend
       const response = await fetch("/api/create-order", {
         method: "POST",
@@ -363,16 +438,16 @@ const BookingPage = () => {
         body: JSON.stringify({ gatewayCost }), // Pass gatewayCost here
       });
       const { orderId } = await response.json();
-  
+
       if (!orderId) {
         throw new Error("Failed to create order");
       }
-  
+
       // Load the Razorpay script dynamically
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.async = true;
-  
+
       script.onload = () => {
         const options = {
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Public Razorpay Key
@@ -384,22 +459,20 @@ const BookingPage = () => {
           handler: async (response: any) => {
             console.log("Payment successful:", response);
 
-           
-  
             const payload = {
-           
-                name: formData.name,
-                phone: formData.phone,
-                email: formData.email,
-                tourPackage: packageData.title,
-                noOfAdults: parseInt(formData.noOfAdults, 10) || 0,
-                tourDates: formData.tourDates,
-                modeOfPayment: paymentOption,
-                amountPaid: formatIndian(gatewayCost / 100),
-                amountRemaining: formatIndian(paylater),
-                source: formData.source,
-                coTraveler: formData.coTraveler?.filter((name) => name).join(", "),
-            
+              name: formData.name,
+              phone: formData.phone,
+              email: formData.email,
+              tourPackage: packageData.title,
+              noOfAdults: parseInt(formData.noOfAdults, 10) || 0,
+              tourDates: formData.tourDates,
+              modeOfPayment: paymentOption,
+              amountPaid: formatIndian(gatewayCost / 100),
+              amountRemaining: formatIndian(paylater),
+              source: formData.source,
+              coTraveler: formData.coTraveler
+                ?.filter((name) => name)
+                .join(", "),
             };
             let transactionId = response.razorpay_payment_id;
             const emailResponse = await fetch("/api/send-email", {
@@ -407,11 +480,13 @@ const BookingPage = () => {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({...payload, transactionId}),
+              body: JSON.stringify({ ...payload, transactionId }),
             });
-  
+
             if (emailResponse.ok) {
-              router.push(`/success?transactionId=${response.razorpay_payment_id}&amount=${gatewayCost}`);
+              router.push(
+                `/success?transactionId=${response.razorpay_payment_id}&amount=${gatewayCost}`
+              );
             } else {
               console.error("Failed to send email");
               alert("Payment successful, but failed to send email.");
@@ -419,16 +494,16 @@ const BookingPage = () => {
           },
           theme: { color: "#3399cc" },
         };
-  
+
         const razorpay = new (window as any).Razorpay(options);
         razorpay.open();
       };
-  
+
       script.onerror = () => {
         console.error("Failed to load Razorpay script");
         alert("Payment failed. Please try again.");
       };
-  
+
       document.body.appendChild(script);
     } catch (error) {
       console.error("Payment failed:", error);
@@ -437,7 +512,6 @@ const BookingPage = () => {
       setLoading(false);
     }
   };
-  
 
   const validateCoTravellers = (): (string | undefined)[] => {
     return (formData.coTraveler || []).map((coTraveller, index) => {
@@ -616,7 +690,6 @@ const BookingPage = () => {
                   {formData.tourDates && selectedMonth && (
                     <div className="text-start p-2">
                       {selectedMonth &&
-                       
                         (() => {
                           const selectedDateObj = datesByMonth[
                             selectedMonth
@@ -980,6 +1053,85 @@ const BookingPage = () => {
                   </div>
                 </div>
               </div>
+              <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
+                <div className=" flex flex-col gap-2 ">
+                  <div className="w-full text-balance px-6   pt-4 headlines">
+                    <p>Apply Coupon</p>
+                  </div>
+                  <div className="px-6 pb-4 rounded-b-xl pt-2 text-secondary-90">
+                    <div className="space-y-4">
+                      <FormControl variant="outlined" fullWidth>
+                        <OutlinedInput
+                          id={`coupon`}
+                          name={`coupon`}
+                          value={enteredCoupon}
+                          error={!!couponError}
+                          onChange={(e) => {
+                            setEnteredCoupon(e.target.value);
+                            setCouponError(""); // Clear error while typing
+                          }}
+                          endAdornment={
+                            <InputAdornment position="end">
+                            <div className="flex gap-2">
+                              {appliedCoupon && (
+                                  <IconButton
+                                  disableTouchRipple
+                                  onClick={() => {
+                                    setAppliedCoupon(null);
+                                    setEnteredCoupon("");
+                                    setTotalCost(baseTotal);
+                                  }}
+                                >
+                                  <CancelOutlinedIcon />
+                                </IconButton>
+                              )}
+                              <Button onClick={handleApplyCoupon}>
+                                {couponLoading ? (
+                                  <CircularProgress className="text-white" size={24} />
+                                ) : (
+                                  "Apply"
+                                )}
+                              </Button>
+                            </div>
+                          </InputAdornment>
+                          }
+                          sx={{
+                            color: "#404942",
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#404942",
+                            },
+                            "& .MuiInputLabel-root": {
+                              color: "#404942",
+                            },
+                            "& .MuiOutlinedInput-input": {
+                              color: "#404942",
+                            },
+                            "& .MuiOutlinedInput-root": {
+                              "& fieldset": {
+                                borderColor: "#404942",
+                              },
+                              "& input": {
+                                color: "#404942",
+                              },
+                            },
+                            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input":
+                              {
+                                color: "#404942",
+                              },
+                            "& .MuiOutlinedInput-input:-webkit-autofill": {
+                              WebkitBoxShadow: "0 0 0 1000px #E4EAE3 inset",
+                              WebkitTextFillColor: "#404942",
+                            },
+                          }}
+                        />
+                      </FormControl>
+                      {couponError && (
+                        <p className="text-error bodyl">{couponError}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div className="h-fit bg-[#E4EAE3] py-6 rounded-xl">
                 <h2 className="headlines text-start px-6 text-[#171D19] border border-b-2 border-b-[#C0C9C0] md:py-4">
@@ -992,6 +1144,12 @@ const BookingPage = () => {
                       INR {formatIndian(cost)}/- x {noOfPeople}
                     </p>
                   </div>
+                  {appliedCoupon && (
+                    <div className="w-full flex flex-row justify-between items-center text-balance">
+                      <p>Coupon Discount ({appliedCoupon.cname})</p>
+                     <p>- INR {formatIndian(Math.floor((Number(appliedCoupon.value) / 100) * baseTotal))}/-</p>
+                    </div>
+                  )}
                   <div className="w-full flex flex-row justify-between items-center text-balance">
                     <p>GST @ 5%</p>
                     <p>INR {formatIndian(gst)}/-</p>
