@@ -6,6 +6,7 @@ import MoveUp from "@/components/move-up-animation/page";
 import Testimonials from "@/components/pages/Testimonials/page";
 import FeaturedArticles from "@/components/pages/featured-articles/page";
 import HeroHome from "@/components/pages/hero-home/page";
+import SectionsNavigation from "@/components/subheader/page";
 import WhyChoose from "@/components/whychoose/page";
 import { client } from "@/lib/sanity";
 
@@ -67,18 +68,68 @@ async function fetchData() {
   };
 }
 
+interface SectionConfig {
+  id: string;
+  label: string;
+  condition: boolean;
+}
+
+
+
 export default async function Home() {
   const { curatedTrips, trekTrips, upcomingTrips, destinations } =
     await fetchData();
+
+    const sections: SectionConfig[] = [
+      {
+        id: "upcoming",
+        label: "Upcoming Trips",
+        condition: !!upcomingTrips,
+      },
+      {
+        id: "curated",
+        label: "Curated Packages",
+        condition: !!curatedTrips,
+      },
+      
+      {
+        id: 'destinations',
+        label: "Destinations",
+        condition: !!destinations,
+      },
+      {
+        id: 'trek',
+        label: "Treks",
+        condition: !!trekTrips,
+      },
+      {
+        id: "create-your-itinerary",
+        label: "Create Your Itinerary",
+        condition: true,
+      },
+    ];
+
+    const filteredSections = sections
+    .filter((section) => section.condition)
+    .filter((section, index, self) => {
+      return self.findIndex((s) => s.label === section.label) === index;
+    });
+
+
   return (
     <main className=" min-h-screen  w-full ">
       <HeroHome />
+    
       <section
         id="next-section"
         className="flex flex-col px-4 md:px-6 pl-4 md:pl-6 max-w-screen-2xl mx-auto"
       >
+          <div>
+
+      
+<SectionsNavigation sections={filteredSections} />
         <MoveUp>
-          <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
+          <section id="upcoming" className="py-12 md:py-[76px] space-y-4 md:space-y-9 scroll-mt-24">
             <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
               Upcoming Community Trips
             </h2>
@@ -87,7 +138,7 @@ export default async function Home() {
         </MoveUp>
 
         <MoveUp>
-          <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
+          <section id="curated" className="py-12 md:py-[76px] space-y-4 md:space-y-9 scroll-mt-24">
             <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
               Curated Packages for the Explorer in You
             </h2>
@@ -96,7 +147,7 @@ export default async function Home() {
         </MoveUp>
 
         <MoveUp>
-          <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
+          <section id="destinations" className="py-12 md:py-[76px] space-y-4 md:space-y-9 scroll-mt-24">
             <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
               Destinations
             </h2>
@@ -104,7 +155,7 @@ export default async function Home() {
           </section>
         </MoveUp>
         <MoveUp>
-        <section className="py-12 md:py-[76px] space-y-4 md:space-y-9">
+        <section id="trek" className="py-12 md:py-[76px] space-y-4 md:space-y-9 scroll-mt-24">
           <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
             Trek Expeditions
           </h2>
@@ -115,12 +166,14 @@ export default async function Home() {
         <MoveUp>
         <section
           id="create-your-itinerary"
-          className="scroll-m-20 lg:scroll-m-10"
+          className="scroll-m-20"
         >
           <Custom_Form />
         </section>
-        </MoveUp>
 
+        
+        </MoveUp>
+</div>
         <MoveUp>
         <Testimonials />
         </MoveUp>

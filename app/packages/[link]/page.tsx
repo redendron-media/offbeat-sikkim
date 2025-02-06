@@ -134,7 +134,7 @@ const PackagePage: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = usePathname();
   const [isDesktop, setIsDesktop] = useState<boolean>(false);
-
+  const navRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const currentPageLink = `https://offbeatsikkim.com/${pathname}`;
 
@@ -167,12 +167,14 @@ const PackagePage: React.FC = () => {
   useEffect(() => {
     if (!data || !sectionRefs.current) return;
 
-    const observerOptions = {
-      root: null,
-      rootMargin: "-50% 0px -50% 0px",
-      threshold: 0,
-    };
-
+    const observerOptions = { root: null, rootMargin: "-50% 0px -50% 0px", threshold: 0 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, observerOptions);
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1024);
     };
@@ -181,18 +183,6 @@ const PackagePage: React.FC = () => {
 
     window.addEventListener("resize", handleResize);
 
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(
-      observerCallback,
-      observerOptions
-    );
 
     Object.values(sectionRefs.current).forEach((section) => {
       if (section) observer.observe(section);
@@ -205,6 +195,15 @@ const PackagePage: React.FC = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [data]);
+
+  useEffect(() => {
+    if (activeSection && navRef.current) {
+      const activeTab = navRef.current.querySelector(`[data-id="${activeSection}"]`) as HTMLElement;
+      if (activeTab) {
+        activeTab.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      }
+    }
+  }, [activeSection]);
 
   if (isLoading) {
     return (
@@ -425,7 +424,7 @@ const PackagePage: React.FC = () => {
           
             <section className="flex flex-row">
               <div className=" w-full flex flex-col lg:w-2/3">
-                <section className="bg-primary-container titlem md:titlel items-center 2xl:justify-center whitespace-nowrap shadow-cardShadow hide-scrollbar sticky top-16 lg:top-20 z-10 overflow-x-scroll pt-6 rounded-xl my-6  px-6 flex gap-4 md:gap-6 xl:gap-8 2xl:gap-10">
+                <section ref={navRef} className="bg-primary-container titlem md:titlel items-center 2xl:justify-center whitespace-nowrap shadow-cardShadow hide-scrollbar sticky top-16 lg:top-20 z-10 overflow-x-scroll pt-6 rounded-xl my-6  px-6 flex gap-4 md:gap-6 xl:gap-8 2xl:gap-10">
                   {filteredSections.map((section) => (
                     <p
                       key={section.id}
@@ -613,7 +612,7 @@ const PackagePage: React.FC = () => {
               </section>
             )}
                 {(packageData.inclusions || packageData.exclusions) && (
-                  <section className=" flex flex-col scroll-mt-56 md:gap-4">
+                  <section  className=" flex flex-col scroll-mt-56 md:gap-4">
                     <div
                       ref={(el) => {
                         sectionRefs.current["inclusions-mobile"] = el;
