@@ -16,13 +16,12 @@ interface SectionConfig {
   export default function SectionsNavigation({ sections }: SectionsNavigationProps) {
     const [activeSection, setActiveSection] = useState<string | null>(null);
     const navRef = useRef<HTMLDivElement>(null);
-    const [isScrolling, setIsScrolling] = useState(false);
-    const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+   
 
     useEffect(() => {
       
         const handleScroll = () => {
-          if (isScrolling) return;
+        
           let currentActive = null;
     
           sections.forEach((section) => {
@@ -44,16 +43,16 @@ interface SectionConfig {
         handleScroll(); // Run once to set initial state
     
         return () => window.removeEventListener("scroll", handleScroll);
-      }, [sections, activeSection, isScrolling]);
+      }, [sections, activeSection]);
 
-      useEffect(() => {
-        if (activeSection && navRef.current) {
-          const activeTab = navRef.current.querySelector(`[data-id="${activeSection}"]`) as HTMLElement;
-          if (activeTab) {
-            activeTab.scrollIntoView({ behavior: "smooth", block: "start", inline: "center" });
-          }
-        }
-      }, [activeSection]);
+      // useEffect(() => {
+      //   if (activeSection && navRef.current) {
+      //     const activeTab = navRef.current.querySelector(`[data-id="${activeSection}"]`) as HTMLElement;
+      //     if (activeTab) {
+      //       activeTab.scrollIntoView({ behavior: "smooth", block: "start", inline: "center" });
+      //     }
+      //   }
+      // }, [activeSection]);
 
     const scrollToSection = (sectionName: string) => {
       const sectionElement = document.getElementById(sectionName);
@@ -62,15 +61,9 @@ interface SectionConfig {
         return;
       }
       
-      setIsScrolling(true);
-      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-
       sectionElement.scrollIntoView({ behavior: "smooth" });
-   scrollTimeout.current = setTimeout(() => {
-      setIsScrolling(false);
-    }, 600);
-  };
-
+      setTimeout(() => setActiveSection(sectionName), 500);
+    };
   
     return (
       <section ref={navRef} className="bg-primary-container titlem md:titlel items-center 2xl:justify-center whitespace-nowrap  hide-scrollbar sticky top-16 lg:top-20 z-10 overflow-x-scroll pt-6 rounded-xl my-6 px-6 flex gap-4 md:gap-6 xl:gap-8 2xl:gap-10">
