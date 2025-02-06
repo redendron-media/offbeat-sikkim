@@ -127,7 +127,7 @@ export default async function Home() {
           <div>
 
       
-{/* <SectionsNavigation sections={filteredSections} /> */}
+<SectionsNavigation sections={filteredSections} />
         <MoveUp>
           <section id="upcoming" className="py-12 md:py-[76px] space-y-4 md:space-y-9 scroll-mt-24">
             <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
