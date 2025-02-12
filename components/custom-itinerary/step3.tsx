@@ -126,7 +126,7 @@ const Step3Form: React.FC<Step3FormProps> = ({
                   },
                 }}
               >
-                <MenuItem value="0">None</MenuItem>
+                <MenuItem value="0">Select Age</MenuItem>
                 <MenuItem value="1">1</MenuItem>
                 <MenuItem value="2">2</MenuItem>
                 <MenuItem value="3">3</MenuItem>
