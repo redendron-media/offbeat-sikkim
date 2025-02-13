@@ -15,6 +15,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { Step3FormData } from "@/lib/types";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { Button } from "../ui/button";
 
 interface Step3FormProps {
   formData: Step3FormData;
@@ -43,7 +44,7 @@ const Step3Form: React.FC<Step3FormProps> = ({
           Fill in the details below to customize your itinerary
         </p>
       </div>
-      <div className="col-span-1 flex items-center">
+      <div className="col-span-2 flex items-center">
         <FormControl variant="outlined" fullWidth>
           <InputLabel htmlFor="noOfAdults">Number of Adults</InputLabel>
           <OutlinedInput
@@ -97,19 +98,21 @@ const Step3Form: React.FC<Step3FormProps> = ({
         </FormControl>
       </div>
 
-      <div className="gap-3 flex flex-wrap">
+      <div className="gap-3 flex flex-col flex-wrap col-span-2">
+        <p className="titlem text-secondary">Children's Details</p>
+        <div className="flex gap-3 flex-wrap">
         {formData.noOfChildren.map((field, index) => (
           <div key={index} className="col-span-1 flex items-center space-x-2">
             <FormControl variant="outlined" className="w-52">
               <InputLabel htmlFor={`noOfChildren-${index}`}>
-                No of Children & Age
+                Age
               </InputLabel>
               <Select
                 className="w-full"
                 id={`noOfChildren-${index}`}
                 name="noOfChildren"
                 value={field}
-                label="No of Children & Age"
+                label="Age"
                 onChange={(e) =>
                   handleInputChangeChildren(index, e.target.value)
                 }
@@ -150,15 +153,12 @@ const Step3Form: React.FC<Step3FormProps> = ({
             </FormControl>
 
             {index === formData.noOfChildren.length - 1 && (
-              <div className="flex flex-row">
-                <IconButton
-                  disableTouchRipple
-                  size="small"
-                  disabled={!field.trim()}
-                  onClick={handleAddField}
-                >
-                  <AddCircleOutlineIcon className="hover:text-primary" />
-                </IconButton>
+              <div className="flex  flex-row">
+                <Button disabled={!field.trim()} onClick={handleAddField}>
+                Add Child
+                <AddCircleOutlineIcon />
+                </Button>
+             
                 <IconButton
                       disableTouchRipple
                       size="small"
@@ -171,6 +171,8 @@ const Step3Form: React.FC<Step3FormProps> = ({
             )}
           </div>
         ))}
+        </div>
+     
       </div>
 
       <div className="col-span-2 flex items-center">
