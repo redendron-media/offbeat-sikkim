@@ -15,7 +15,32 @@ import React from "react";
 function about() {
   return (
     <main className="px-4 md:px-6 bg-[#F6FBF4] max-w-screen-2xl mx-auto pt-20 md:pt-32">
+      <div className="flex flex-col md:flex-row gap-4 px-6">
       <section className="py-[52px] flex flex-col gap-4">
+        <h1 className="text-secondary-oncontainer headlines md:displays lg:displaym">
+          Our Mission
+        </h1>
+        <p className="text-black bodym md:bodyl">
+          Our mission is to help travelers find and explore the natural beauty
+          of the most Offbeat locations of Northeast India, promote the rural
+          tourism market and preserve their identity and heritage, and help the
+          economic development of Northeast India.
+        </p>
+      </section>
+
+      <section className="px-4 bg-[url('../public/images/vision.jpg')] bg-cover bg-bottom bg-no-repeat rounded-lg flex flex-col py-[52px] md:px-6  gap-4 md:gap-9 lg:gap-4">
+        <h1 className="text-white headlines md:displays lg:displaym">
+          Our Vision
+        </h1>
+        <p className="bodym md:bodyl text-[#EDF2EB]">
+          We aspire to build a community around travel enthusiasts who want to
+          explore the natural beauty of Northeast India in the most radical way, by
+          providing them the best travel experiences and guidance while helping
+          promote eco-tourism and most of all, Offbeat tourism.
+        </p>
+      </section>
+      </div>
+      {/* <section className="py-[52px] flex flex-col gap-4">
         <h1 className="text-secondary-oncontainer headlines md:displays lg:displaym">
           Our Mission
         </h1>
@@ -37,7 +62,7 @@ function about() {
           providing them the best travel experiences and guidance while helping
           promote eco-tourism and most of all, Offbeat tourism.
         </p>
-      </section>
+      </section> */}
 
       <section className="py-[52px] md:py-[76px] md:px-6 flex flex-col gap-4 md:gap-9 lg:gap-4">
         <h1 className="headlines md:displays lg:displaym text-secondary-oncontainer">

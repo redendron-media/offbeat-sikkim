@@ -165,6 +165,7 @@ export interface photoGallery {
     noOfAdults:string,
     source:string,
     coTraveler?:string[],
+    appliedCoupon?:string,
   }
 
   export interface FormErrors {

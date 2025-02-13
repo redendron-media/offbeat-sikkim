@@ -11,7 +11,6 @@ import WhatsAppButton from "@/components/WhatappButton/page";
 import Loader from "@/components/loader/page";
 import Image from "next/image";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { ReactLenis } from "@/lib/lenis";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "700"],
@@ -57,7 +56,7 @@ export default function RootLayout({
       </head>
     
         <body className={`${roboto.className} bg-[#F6FBF4]`}>
-        <ReactLenis root>
+        {/* <ReactLenis root> */}
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Loader />
@@ -66,7 +65,7 @@ export default function RootLayout({
             <WhatsAppButton />
             <Footer />
           </ThemeProvider>
-          </ReactLenis>
+          {/* </ReactLenis> */}
           <noscript>
             <Image
               alt="Facebook"

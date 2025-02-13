@@ -166,7 +166,7 @@ export default async function Home() {
         <MoveUp>
         <section
           id="create-your-itinerary"
-          className="scroll-m-20"
+          className="scroll-m-24"
         >
           <Custom_Form />
         </section>

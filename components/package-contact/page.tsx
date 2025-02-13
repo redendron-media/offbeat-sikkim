@@ -249,7 +249,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
         { name: "email", value: formData.email },
         { name: "mobile", value: formData.phone },
         { name: "start_date", value: formData.startDate },
-        { name: "travel_style", value: formData.travelstyle || "" },
+        { name: "accommodation", value: formData.travelstyle || "" },
         // { name: "accommodation", value: formData.accommodation || "" },
         { name: "adults", value: formData.noOfAdults },
         {
@@ -588,7 +588,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
           {(isDefault || isCurated) && (
             <>
               <FormControl className="col-span-1 w-full">
-                <InputLabel id="travel_style">Travel Style</InputLabel>
+                <InputLabel id="travel_style">Accomodation</InputLabel>
                 <Select
                   className="w-full"
                   labelId="travel_style"
@@ -610,18 +610,36 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
                     },
                   }}
                 >
-                  <MenuItem
-                    value="Premium"
-                    className="whitespace-nowrap overflow-x-auto"
-                  >
-                    Premium (4 star and 5 star hotels)
-                  </MenuItem>
-                  <MenuItem
-                    value="Mid-Range"
-                    className="whitespace-nowrap overflow-x-auto"
-                  >
-                    Mid-Range(Premium Homestay and hotels )
-                  </MenuItem>
+                 <MenuItem
+                            value="Economy"
+                            className="whitespace-nowrap overflow-x-auto"
+                          >
+                            Economy (Homestay and 2 star hotels)
+                          </MenuItem>
+                          <MenuItem
+                            value="Mid-Range"
+                            className="whitespace-nowrap overflow-x-auto"
+                          >
+                            Mid Scale(2-3 start hotels )
+                          </MenuItem>
+                          <MenuItem
+                            value="Upscale"
+                            className="whitespace-nowrap overflow-x-auto"
+                          >
+                             Upscale(3-4 star hotels )
+                          </MenuItem>
+                          <MenuItem
+                            value="Luxury"
+                            className="whitespace-nowrap overflow-x-auto"
+                          >
+                            Luxury(4-5 star hotels/ Heritage  hotels)
+                          </MenuItem>
+                          <MenuItem
+                            value="All"
+                            className="whitespace-nowrap overflow-x-auto"
+                          >
+                            All options
+                          </MenuItem>
                 </Select>
                 {errors.travelstyle && (
                   <p className="text-error bodyl">{errors.travelstyle}</p>

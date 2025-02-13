@@ -162,6 +162,7 @@ const BookingPage = () => {
     phone: "",
     noOfAdults: noOfPeople.toString(),
     tourDates: "",
+    appliedCoupon: "",
     source: "upcoming",
     coTraveler: [],
   });
@@ -466,6 +467,7 @@ const BookingPage = () => {
               tourPackage: packageData.title,
               noOfAdults: parseInt(formData.noOfAdults, 10) || 0,
               tourDates: formData.tourDates,
+              appliedCoupon: appliedCoupon?.cname,
               modeOfPayment: paymentOption,
               amountPaid: formatIndian(gatewayCost / 100),
               amountRemaining: formatIndian(paylater),
@@ -1053,6 +1055,44 @@ const BookingPage = () => {
                   </div>
                 </div>
               </div>
+           
+              <div className="h-fit bg-[#E4EAE3] py-6 rounded-xl">
+                <h2 className="headlines text-start px-6 text-[#171D19] border border-b-2 border-b-[#C0C9C0] md:py-4">
+                  Payment Details
+                </h2>
+                <div className=" flex flex-col gap-2 px-6 bodys py-2 lg:titlem">
+                  <div className="w-full flex flex-row justify-between items-center text-balance">
+                    <p>Trip Package</p>
+                    <p>
+                      INR {formatIndian(cost)}/- x {noOfPeople}
+                    </p>
+                  </div>
+                  {appliedCoupon && (
+                    <div className="w-full flex flex-row justify-between items-center text-balance">
+                      <p>Coupon Discount ({appliedCoupon.cname})</p>
+                     <p>- INR {formatIndian(Math.floor((Number(appliedCoupon.value) / 100) * baseTotal))}/-</p>
+                    </div>
+                  )}
+                  <div className="w-full flex flex-row justify-between items-center text-balance">
+                    <p>GST @ 5%</p>
+                    <p>INR {formatIndian(gst)}/-</p>
+                  </div>
+                  {tcs !== 0 && (
+                    <div className="w-full flex flex-row justify-between items-center text-balance">
+                      <p>TCS @ 5%</p>
+                      <p>INR {formatIndian(tcs)}/-</p>
+                    </div>
+                  )}
+                </div>
+                <div className="w-full px-6 flex flex-row justify-between items-center border border-t-2 border-t-[#C0C9C0] pt-4 text-balance">
+                  <h2 className="headlines text-center md:text-start text-[#171D19]">
+                    Total Cost
+                  </h2>
+                  <p className="text-secondary-oncontainer text-balance titlel md:headlinem">
+                    INR {formatIndian(finalCost)}/-
+                  </p>
+                </div>
+              </div>
               <div className="h-fit bg-[#E4EAE3] pt-6 rounded-xl">
                 <div className=" flex flex-col gap-2 ">
                   <div className="w-full text-balance px-6   pt-4 headlines">
@@ -1133,43 +1173,6 @@ const BookingPage = () => {
                 </div>
               </div>
 
-              <div className="h-fit bg-[#E4EAE3] py-6 rounded-xl">
-                <h2 className="headlines text-start px-6 text-[#171D19] border border-b-2 border-b-[#C0C9C0] md:py-4">
-                  Payment Details
-                </h2>
-                <div className=" flex flex-col gap-2 px-6 bodys py-2 lg:titlem">
-                  <div className="w-full flex flex-row justify-between items-center text-balance">
-                    <p>Trip Package</p>
-                    <p>
-                      INR {formatIndian(cost)}/- x {noOfPeople}
-                    </p>
-                  </div>
-                  {appliedCoupon && (
-                    <div className="w-full flex flex-row justify-between items-center text-balance">
-                      <p>Coupon Discount ({appliedCoupon.cname})</p>
-                     <p>- INR {formatIndian(Math.floor((Number(appliedCoupon.value) / 100) * baseTotal))}/-</p>
-                    </div>
-                  )}
-                  <div className="w-full flex flex-row justify-between items-center text-balance">
-                    <p>GST @ 5%</p>
-                    <p>INR {formatIndian(gst)}/-</p>
-                  </div>
-                  {tcs !== 0 && (
-                    <div className="w-full flex flex-row justify-between items-center text-balance">
-                      <p>TCS @ 5%</p>
-                      <p>INR {formatIndian(tcs)}/-</p>
-                    </div>
-                  )}
-                </div>
-                <div className="w-full px-6 flex flex-row justify-between items-center border border-t-2 border-t-[#C0C9C0] pt-4 text-balance">
-                  <h2 className="headlines text-center md:text-start text-[#171D19]">
-                    Total Cost
-                  </h2>
-                  <p className="text-secondary-oncontainer text-balance titlel md:headlinem">
-                    INR {formatIndian(finalCost)}/-
-                  </p>
-                </div>
-              </div>
             </div>
           </section>
         )}
