@@ -30,14 +30,22 @@ function Contact() {
               </p>
             </Stack>
           </Link>
-          <Link href="tel:+917029749687">
+          
             <Stack direction={"row"} gap={1}>
               <PhoneIcon className="text-white" />
+              <Link href="tel:+917029749687">
               <p className="bodyl text-white hover:text-primary hover:transition-colors hover:duration-500">
                 +91 70297 49687{" "}
               </p>
+              <p>/</p>
+              </Link>
+              <Link href="tel:+919650527264">
+              <p className="bodyl text-white hover:text-primary hover:transition-colors hover:duration-500">
+                +91 96505 27264{" "}
+              </p>
+              </Link>
             </Stack>
-          </Link>
+         
         </Stack>
         <div className="w-[320px] md:w-[368px] z-10">
         <ContactForm />
