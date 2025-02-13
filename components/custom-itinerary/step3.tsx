@@ -99,7 +99,7 @@ const Step3Form: React.FC<Step3FormProps> = ({
       </div>
 
       <div className="gap-3 flex flex-col flex-wrap col-span-2">
-        <p className="titlem text-secondary">Children's Details</p>
+        <p className="titlem text-secondary">Children&apos;s Details</p>
         <div className="flex gap-3 flex-wrap">
         {formData.noOfChildren.map((field, index) => (
           <div key={index} className="col-span-1 flex items-center space-x-2">
