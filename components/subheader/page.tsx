@@ -65,7 +65,7 @@ interface SectionConfig {
     };
   
     return (
-      <section ref={navRef} className="bg-primary-container mt-4 titlem md:titlel items-center 2xl:justify-center whitespace-nowrap  hide-scrollbar sticky top-16 lg:top-20 z-10 overflow-x-scroll pt-6 rounded-xl my-6 px-6 flex gap-4 md:gap-6 xl:gap-8 2xl:gap-10">
+      <section ref={navRef} className="bg-neutral-95 max-w-full md:w-fit mx-auto mt-4 titlem md:titlel items-center 2xl:justify-center whitespace-nowrap  hide-scrollbar sticky top-16 lg:top-20 z-10 overflow-x-scroll pt-6 rounded-xl my-6 px-6 flex gap-4 md:gap-6 xl:gap-8 2xl:gap-10 shadow-md">
         {sections.map((section) => (
           <p
             key={section.id}

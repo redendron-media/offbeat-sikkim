@@ -302,28 +302,28 @@ const Step1Form: React.FC<Step1FormProps> = ({
           }}
         >
           <MenuItem
-            value="Economy"
+            value="Economy (Homestay and 2 star hotels)"
             className="whitespace-nowrap overflow-x-auto"
           >
             Economy (Homestay and 2 star hotels)
           </MenuItem>
           <MenuItem
-            value="Mid-Range"
+            value="Mid Scale (2-3 star hotels)"
             className="whitespace-nowrap overflow-x-auto"
           >
-            Mid Scale(2-3 start hotels )
+            Mid Scale (2-3 star hotels)
           </MenuItem>
           <MenuItem
-            value="Upscale"
+            value="Upscale (3-4 star hotels)"
             className="whitespace-nowrap overflow-x-auto"
           >
-             Upscale(3-4 star hotels )
+             Upscale (3-4 star hotels)
           </MenuItem>
           <MenuItem
-            value="Luxury"
+            value="Luxury (4-5 star hotels/ Heritage  hotels)"
             className="whitespace-nowrap overflow-x-auto"
           >
-            Luxury(4-5 star hotels/ Heritage  hotels)
+            Luxury (4-5 star hotels/ Heritage  hotels)
           </MenuItem>
           <MenuItem
             value="All"
