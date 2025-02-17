@@ -99,7 +99,7 @@ const HeroHome = () => {
         </h1>
       </Stack>
         
-      <div className="w-full md:w-[96%] lg:w-3/4 flex flex-col items-center gap-2 z-10">
+      {/* <div className="w-full md:w-[96%] lg:w-3/4 flex flex-col items-center gap-2 z-10">
         <motion.div
        className="flex flex-row w-full flex-grow overflow-hidden"
         initial={{
@@ -158,7 +158,7 @@ const HeroHome = () => {
         />
       </motion.div>
       </div>
-    
+     */}
 
       <motion.div
         initial={{
@@ -186,8 +186,8 @@ const HeroHome = () => {
             >
               <Image
                 src={"/icons/google.svg"}
-                width={40}
-                height={31}
+                width={31}
+                height={21}
                 alt="Google"
               />
 
@@ -211,8 +211,8 @@ const HeroHome = () => {
             >
               <Image
                 src={"/icons/tripadvisor.svg"}
-                width={40}
-                height={31}
+                width={31}
+                height={21}
                 alt="Google"
               />
               <Stack direction={"row"} alignItems={"center"}>
