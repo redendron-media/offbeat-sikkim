@@ -811,7 +811,8 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
             )}
           </FormControl>
           {!isUpcoming && (
-            <div className="gap-3 w-full flex flex-wrap md:col-span-2">
+            <div className="gap-3 w-full flex flex-col flex-wrap md:col-span-2">
+                <p className="titlem text-secondary">Children&apos;s Details</p>
               {(formData.age || []).map((field, index) => (
                 <div
                   key={index}
@@ -819,14 +820,14 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
                 >
                   <FormControl variant="outlined" className="w-52">
                     <InputLabel htmlFor={`age-${index}`}>
-                      No of Children & Age
+                      Age
                     </InputLabel>
                     <Select
                       className="w-full"
                       id={`age-${index}`}
                       name={`age-${index}`}
                       value={(formData.age && formData.age[index]) || ""}
-                      label="No of Children & Age"
+                      label="Age"
                       onChange={(e) =>
                         handleInputChangeChildren(index, e.target.value)
                       }
@@ -865,14 +866,10 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
 
                   {index === (formData.age || []).length - 1 && (
                     <div className="flex flex-row">
-                      <IconButton
-                        disableTouchRipple
-                        size="small"
-                        disabled={!field.trim()}
-                        onClick={handleAddField}
-                      >
-                        <AddCircleOutlineIcon className="hover:text-primary" />
-                      </IconButton>
+                      <Button disabled={!field.trim()} onClick={handleAddField}>
+                Add Child{" "}
+                <AddCircleOutlineIcon />
+                </Button>
                       <IconButton
                         disableTouchRipple
                         size="small"

@@ -155,7 +155,7 @@ const Step3Form: React.FC<Step3FormProps> = ({
             {index === formData.noOfChildren.length - 1 && (
               <div className="flex  flex-row">
                 <Button disabled={!field.trim()} onClick={handleAddField}>
-                Add Child
+                Add Child{" "}
                 <AddCircleOutlineIcon />
                 </Button>
              
