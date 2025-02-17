@@ -215,7 +215,7 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
         children_details: (formData.age ?? []).filter(
           (age) => age.trim() !== ""
         ),
-        travel_style: formData.travelstyle,
+        accommodation: formData.travelstyle,
         // accommodation: formData.accommodation,
         comments: formData.additionalInformation,
       };

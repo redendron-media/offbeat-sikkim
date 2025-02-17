@@ -220,7 +220,7 @@ const Custom_Form = () => {
         children_details: formData.noOfChildren
         .filter(age => age.trim() !== "")
         .map(age => ({ age: parseInt(age, 10) })),
-        travel_style: formData.travel_style,
+        accommodation: formData.travel_style,
         destination: formData.places,
         // accommodation: formData.accommodation,
         endDate: formData.endDate,
