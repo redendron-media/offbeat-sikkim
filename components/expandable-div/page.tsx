@@ -41,7 +41,7 @@ const ExpandableContent: React.FC<ExpandableContentProps> = ({
       {isOverflowing && (
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="mt-2 text-blue-500 hover:underline mx-auto focus:outline-none"
+          className="mt-2 text-blue-500 hover:underline w-full focus:outline-none"
         >
           
           {isExpanded ? 'View Less' : 'View More'}
