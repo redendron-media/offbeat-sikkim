@@ -33,11 +33,11 @@ const tripDetailFields = [
     },
   }),
   defineField({
-    name:'coupon',
-    title: "Coupons", 
-    type: "array",
-    of: [{type: 'reference', to:[{ type: "coupon"}]}],
- }),
+    name: 'coupon',
+    title: 'Coupons',
+    type: 'array',
+    of: [{type: 'reference', to: [{type: 'coupon'}]}],
+  }),
   defineField({
     name: 'cover',
     type: 'image',
@@ -100,7 +100,7 @@ const tripDetailFields = [
     options: {
       layout: 'checkbox',
     },
-    initialValue: false, 
+    initialValue: false,
   }),
   defineField({
     name: 'originalPrice',
@@ -141,7 +141,7 @@ const tripDetailFields = [
     name: 'tourDates',
     title: 'Tour Dates',
     type: 'array',
-    // of: [{ type: 'string', title: 'Tour Date and Spots' }], 
+    // of: [{ type: 'string', title: 'Tour Date and Spots' }],
     of: [
       {
         type: 'object',
@@ -158,15 +158,15 @@ const tripDetailFields = [
             of: [
               {
                 type: 'reference',
-                to: [{ type: 'coupon' }],
+                to: [{type: 'coupon'}],
               },
-            ]
+            ],
           },
         ],
       },
-    ]
+    ],
   }),
-  
+
   defineField({
     name: 'link',
     title: 'Link',
@@ -217,6 +217,31 @@ const tripDetailFields = [
     title: 'Booking Process',
     type: 'array',
     of: [{type: 'string'}],
+  }),
+  defineField({
+    name: 'faqs',
+    title: 'FAQs',
+    type: 'array',
+    of: [
+      {
+        type: 'block',
+        styles: [
+          { title: 'Heading 1', value: 'h1' }, // Will be rendered as <h1>
+          { title: 'Heading 2', value: 'h2' }, // Will be rendered as <h2>
+          { title: 'Normal', value: 'normal' }, // Default paragraph
+        ],
+        marks: {
+          annotations: [
+            {
+              type: 'textColor',
+            },
+            {
+              type: 'highlightColor',
+            },
+          ],
+        },
+      },
+    ],
   }),
   defineField({
     name: 'thingsToCarry',
@@ -335,9 +360,7 @@ const destinationFields = [
     type: 'string',
     title: 'Trip Type',
     options: {
-      list: [
-        {title: 'Destination', value: 'destination'},
-      ],
+      list: [{title: 'Destination', value: 'destination'}],
       layout: 'radio',
     },
   }),
@@ -407,7 +430,7 @@ const destinationFields = [
                 name: 'substeps',
                 title: 'Details',
                 type: 'array',
-                of: [{ type: 'string' }],
+                of: [{type: 'string'}],
               },
             ],
           },
@@ -448,7 +471,7 @@ const destinationFields = [
                 name: 'substeps',
                 title: 'Details',
                 type: 'array',
-                of: [{ type: 'string' }],
+                of: [{type: 'string'}],
               },
             ],
           },
@@ -489,7 +512,7 @@ const destinationFields = [
                 name: 'substeps',
                 title: 'Details',
                 type: 'array',
-                of: [{ type: 'string' }],
+                of: [{type: 'string'}],
               },
             ],
           },
@@ -530,7 +553,7 @@ const destinationFields = [
                 name: 'substeps',
                 title: 'Details',
                 type: 'array',
-                of: [{ type: 'string' }],
+                of: [{type: 'string'}],
               },
             ],
           },
@@ -571,7 +594,7 @@ const destinationFields = [
                 name: 'substeps',
                 title: 'Details',
                 type: 'array',
-                of: [{ type: 'string' }],
+                of: [{type: 'string'}],
               },
             ],
           },
@@ -612,7 +635,7 @@ const destinationFields = [
                 name: 'substeps',
                 title: 'Details',
                 type: 'array',
-                of: [{ type: 'string' }],
+                of: [{type: 'string'}],
               },
             ],
           },
@@ -625,7 +648,6 @@ const destinationFields = [
       },
     ],
   }),
- 
 ]
 export const upcomingTripDetail = defineType({
   name: 'upcomingTripDetail',

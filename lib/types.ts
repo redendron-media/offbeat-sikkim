@@ -21,6 +21,7 @@ export interface CardProps {
     durationd?:string,
     costDouble?:string,
     costTriple?:string,
+    faqs?:any,
     originalPrice?:string,
     currentPrice?:string,
     photoGalleries?:photoGallery[],
