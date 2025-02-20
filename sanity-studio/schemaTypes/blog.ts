@@ -102,6 +102,16 @@ export const blog = defineField ({
             of: [
                 {
                     type:'block',
+                    // marks:{
+                    //     annotations: [
+                    //         {
+                    //             type:'textColor',
+                    //         },
+                    //         {
+                    //             type: 'highlightColor'
+                    //         }
+                    //     ]
+                    // }
                 },
             ],
         }),

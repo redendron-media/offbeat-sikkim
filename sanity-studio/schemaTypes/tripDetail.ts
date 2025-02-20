@@ -226,9 +226,15 @@ const tripDetailFields = [
       {
         type: 'block',
         styles: [
-          { title: 'Heading 1', value: 'h1' }, // Will be rendered as <h1>
-          { title: 'Heading 2', value: 'h2' }, // Will be rendered as <h2>
-          { title: 'Normal', value: 'normal' }, // Default paragraph
+          { title: 'Heading 1', value: 'h1' },
+          { title: 'Heading 2', value: 'h2' }, 
+          { title: 'Normal', value: 'normal' },
+          { title: 'Bulleted List', value: 'bullet' }, // Defines a bulleted list
+          { title: 'Numbered List', value: 'number' },
+        ],
+        lists: [
+          { title: 'Bullet', value: 'bullet' },
+          { title: 'Number', value: 'number' }, 
         ],
         marks: {
           annotations: [
