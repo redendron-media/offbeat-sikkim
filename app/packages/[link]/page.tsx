@@ -189,28 +189,28 @@ const PackagePage: React.FC = () => {
   const [thumbnailRef] = useKeenSlider<HTMLDivElement>(
     {
       initial: 0,
-      slides:{
+      slides: {
         perView: 3,
-        spacing: 3
+        spacing: 3,
       },
-      breakpoints:{
-"(min-width: 500px)":{
-  slides: {
-    perView: 4,
-    spacing: 2
-  }
-},
-"(min-width: 650px)":{
-  slides: {
-    perView: 7,
-    spacing: 2
-  }
-},
-"(min-width: 980px)":{
-  slides: {
-    perView: "auto"
-  }
-}
+      breakpoints: {
+        "(min-width: 500px)": {
+          slides: {
+            perView: 4,
+            spacing: 2,
+          },
+        },
+        "(min-width: 650px)": {
+          slides: {
+            perView: 7,
+            spacing: 2,
+          },
+        },
+        "(min-width: 980px)": {
+          slides: {
+            perView: "auto",
+          },
+        },
       },
     },
     [ThumbnailPlugin(instanceRef)]
@@ -415,21 +415,21 @@ const PackagePage: React.FC = () => {
     }
   };
 
-  const pdfUrl =`${packageData?.pdfItinerary ?? ""}?dl=Itinerary.pdf`;
+  const pdfUrl = `${packageData?.pdfItinerary ?? ""}?dl=Itinerary.pdf`;
   return (
     <main className=" relative bg-[#F6FBF4]  pt-20 md:pt-32  max-w-screen-2xl mx-auto">
       {packageData && (
         <>
           <div className="flex flex-col px-4 md:px-6">
-          <section
+            <section
               className={`flex flex-col justify-center gap-6 py-9 px-4 relative  md:px-14 md:py-24 md:gap-6 min-h-[60vh] rounded-xl overflow-hidden`}
             >
               <motion.div
                 className="absolute inset-0 w-full z-0"
                 style={{ scale }}
               >
-                 <div className="absolute inset-0 bg-black/30 z-10" />
-               <Image
+                <div className="absolute inset-0 bg-black/30 z-10" />
+                <Image
                   src={urlFor(packageData.image).url()}
                   alt={packageData.title}
                   fill
@@ -451,7 +451,6 @@ const PackagePage: React.FC = () => {
                     </div>
                   ))}
                 </div> */}
-                
               </motion.div>
               <Stack className="z-10 px-4 md:px-6" direction={"column"} gap={1}>
                 <h2 className="headlines md:displaym lg:displayl text-white">
@@ -501,7 +500,6 @@ const PackagePage: React.FC = () => {
                   ))}
                 </div>
               </div> */}
-            
             </section>
             <div className="px-4 md:px-6">
               <section className="py-6 rounded-xl px-4 md:px-6 flex flex-col md:flex-row gap-4">
@@ -820,21 +818,21 @@ const PackagePage: React.FC = () => {
                           className="bg-[#E4EAE3] w-full scroll-mt-56 rounded-xl p-6 hidden lg:flex flex-col gap-4"
                         >
                           <ExpandableContent maxHeight={350} className="p-6">
-                          <h2 className="headlines text-[#171D19]">
-                            Inclusions
-                          </h2>
-                          {packageData.inclusions?.map((item, index) => (
-                            <Stack
-                              id={`${index}`}
-                              direction={"row"}
-                              gap={2}
-                              key={index}
-                              className="border border-b-2 border-b-[#C0C9C0] py-2"
-                            >
-                              <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
-                              <p className="text-[#171D19] bodyl">{item}</p>
-                            </Stack>
-                          ))}
+                            <h2 className="headlines text-[#171D19]">
+                              Inclusions
+                            </h2>
+                            {packageData.inclusions?.map((item, index) => (
+                              <Stack
+                                id={`${index}`}
+                                direction={"row"}
+                                gap={2}
+                                key={index}
+                                className="border border-b-2 border-b-[#C0C9C0] py-2"
+                              >
+                                <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
+                                <p className="text-[#171D19] bodyl">{item}</p>
+                              </Stack>
+                            ))}
                           </ExpandableContent>
                         </div>
                       )}
@@ -848,21 +846,21 @@ const PackagePage: React.FC = () => {
                           className="bg-[#E4EAE3] scroll-mt-56 w-full rounded-xl p-6 hidden lg:flex  flex-col gap-4"
                         >
                           <ExpandableContent maxHeight={350} className="p-6">
-                          <h2 className="headlines text-[#171D19]">
-                            Exclusions
-                          </h2>
-                          {packageData.exclusions?.map((item, index) => (
-                            <Stack
-                              id={`${index}`}
-                              direction={"row"}
-                              gap={2}
-                              key={index}
-                              className="border border-b-2 border-b-[#C0C9C0] py-2"
-                            >
-                              <ClearIcon className=" bg-error text-white rounded-full p-1" />
-                              <p className="text-[#171D19] bodyl">{item}</p>
-                            </Stack>
-                          ))}
+                            <h2 className="headlines text-[#171D19]">
+                              Exclusions
+                            </h2>
+                            {packageData.exclusions?.map((item, index) => (
+                              <Stack
+                                id={`${index}`}
+                                direction={"row"}
+                                gap={2}
+                                key={index}
+                                className="border border-b-2 border-b-[#C0C9C0] py-2"
+                              >
+                                <ClearIcon className=" bg-error text-white rounded-full p-1" />
+                                <p className="text-[#171D19] bodyl">{item}</p>
+                              </Stack>
+                            ))}
                           </ExpandableContent>
                         </div>
                       )}
@@ -879,54 +877,62 @@ const PackagePage: React.FC = () => {
                         id="thingstocarry"
                         className="bg-[#E4EAE3] scroll-mt-56 rounded-xl h-full "
                       >
-                         <ExpandableContent maxHeight={350} className="p-6">
-                         <h2 className="headlines text-[#171D19]">
-                          Things to Carry
-                        </h2>
-                        <p className="bodym text-[#404942]">
-                          Essential Items to Pack: Please refer to the list
-                          below for recommendations on what to bring for your
-                          trip.
-                        </p>
+                        <ExpandableContent maxHeight={350} className="p-6">
+                          <h2 className="headlines text-[#171D19]">
+                            Things to Carry
+                          </h2>
+                          <p className="bodym text-[#404942]">
+                            Essential Items to Pack: Please refer to the list
+                            below for recommendations on what to bring for your
+                            trip.
+                          </p>
 
-                        {packageData.thingsToCarryTrek?.map((item, index) => (
-                          <Stack key={`${index}`} direction={"column"} gap={1}>
-                            <p className="text-[#171D19] bodyl">{item.title}</p>
-                            <ul className=" text-[#171D19] space-y-2">
-                              {item.list?.map((listItem, listIndex) => (
-                                <li key={listIndex}>
-                                  <Stack
-                                    direction={"row"}
-                                    gap={2}
-                                    className="border border-b-2 items-center border-b-[#C0C9C0] py-2"
-                                  >
-                                    <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
-                                    <p className="text-[#171D19] bodym">
-                                      {listItem}
-                                    </p>
-                                  </Stack>
-                                </li>
-                              ))}
+                          {packageData.thingsToCarryTrek?.map((item, index) => (
+                            <Stack
+                              key={`${index}`}
+                              direction={"column"}
+                              gap={1}
+                            >
+                              <p className="text-[#171D19] bodyl">
+                                {item.title}
+                              </p>
+                              <ul className=" text-[#171D19] space-y-2">
+                                {item.list?.map((listItem, listIndex) => (
+                                  <li key={listIndex}>
+                                    <Stack
+                                      direction={"row"}
+                                      gap={2}
+                                      className="border border-b-2 items-center border-b-[#C0C9C0] py-2"
+                                    >
+                                      <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
+                                      <p className="text-[#171D19] bodym">
+                                        {listItem}
+                                      </p>
+                                    </Stack>
+                                  </li>
+                                ))}
+                              </ul>
+                            </Stack>
+                          ))}
+
+                          {packageData.thingsToCarry?.map((thing, index) => (
+                            <ul
+                              key={index}
+                              className="text-[#171D19] space-y-4"
+                            >
+                              <li className="bodyl">
+                                <Stack
+                                  direction={"row"}
+                                  gap={2}
+                                  className="border border-b-2 items-start border-b-[#C0C9C0] py-2"
+                                >
+                                  <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
+                                  <p className="text-[#171D19]">{thing}</p>
+                                </Stack>
+                              </li>
                             </ul>
-                          </Stack>
-                        ))}
-
-                        {packageData.thingsToCarry?.map((thing, index) => (
-                          <ul key={index} className="text-[#171D19] space-y-4">
-                            <li className="bodyl">
-                              <Stack
-                                direction={"row"}
-                                gap={2}
-                                className="border border-b-2 items-start border-b-[#C0C9C0] py-2"
-                              >
-                                <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
-                                <p className="text-[#171D19]">{thing}</p>
-                              </Stack>
-                            </li>
-                          </ul>
-                        ))}
-                         </ExpandableContent>
-                      
+                          ))}
+                        </ExpandableContent>
                       </div>
                     )}
                     {packageData.bookingProcess && (
@@ -1002,39 +1008,71 @@ const PackagePage: React.FC = () => {
                         id="knowbeforeyougo"
                         className=" bg-[#E4EAE3] w-full scroll-mt-56 rounded-xl "
                       >
-                        <ExpandableContent maxHeight={300} className="flex flex-col p-6">
-                        <h2 className="headlines text-[#171D19]">
-                          Know Before You Go
-                        </h2>
-                        {packageData.knowBeforeYouGo.map((booking, index) => (
-                          <ul key={index} className=" text-[#171D19] space-y-4">
-                            <li key={index} className="bodyl">
-                              {" "}
-                              <Stack
-                                direction={"row"}
-                                gap={2}
-                                className="border border-b-2 items-start border-b-[#C0C9C0] py-2"
-                              >
-                                <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
-                                <p className="text-[#171D19]">{booking}</p>
-                              </Stack>
-                            </li>
-                          </ul>
-                        ))}
+                        <ExpandableContent
+                          maxHeight={300}
+                          className="flex flex-col p-6"
+                        >
+                          <h2 className="headlines text-[#171D19]">
+                            Know Before You Go
+                          </h2>
+                          {packageData.knowBeforeYouGo.map((booking, index) => (
+                            <ul
+                              key={index}
+                              className=" text-[#171D19] space-y-4"
+                            >
+                              <li key={index} className="bodyl">
+                                {" "}
+                                <Stack
+                                  direction={"row"}
+                                  gap={2}
+                                  className="border border-b-2 items-start border-b-[#C0C9C0] py-2"
+                                >
+                                  <CheckIcon className="text-[#002111] bg-primary-container rounded-full p-1" />
+                                  <p className="text-[#171D19]">{booking}</p>
+                                </Stack>
+                              </li>
+                            </ul>
+                          ))}
                         </ExpandableContent>
-                       
                       </div>
                     )}
-                    {
-                      packageData.faqs && (
-                        <ExpandableContent className=" bg-[#E4EAE3] w-full scroll-mt-56 rounded-xl flex flex-col gap-4 p-6" maxHeight={300}>
-                           <h2 className="headlines text-[#171D19] mb-4">
+                    {packageData.faqs && (
+                      <ExpandableContent
+                        className=" bg-[#E4EAE3] w-full scroll-mt-56 rounded-xl flex flex-col gap-4 p-6"
+                        maxHeight={300}
+                      >
+                        <h2 className="headlines text-[#171D19] mb-4">
                           Frequently Asked Questions
                         </h2>
-                          <PortableText value={packageData.faqs} components={CustomComponents}/>
-                        </ExpandableContent>
-                      )
-                    }
+                        {packageData.faqs.map((faq, index) => (
+                          <Accordion
+                            key={index}
+                            defaultExpanded={index === 0}
+                            className="bg-transparent border-none shadow-none"
+                          >
+                            <AccordionSummary
+                              className="px-2"
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls={`panel${index + 1}-content`}
+                              id={`panel${index + 1}-header`}
+                            >
+                              <p className="bodyl text-balance text-[#171D19]">
+                                {faq.question}
+                              </p>
+                            </AccordionSummary>
+                            <AccordionDetails className="bodym text-[#171D19]">
+                              <ul className="space-y-4 list-disc pl-4">
+                                {faq.answer.map(
+                                  (answer, answerIndex) => (
+                                    <li key={answerIndex}>{answer}</li>
+                                  )
+                                )}
+                              </ul>
+                            </AccordionDetails>
+                          </Accordion>
+                        ))}
+                      </ExpandableContent>
+                    )}
                   </section>
                 </div>
 
@@ -1129,9 +1167,7 @@ const PackagePage: React.FC = () => {
               {isUpcoming && (
                 <Link href={`/booking/${packageData.link}`}>
                   <Button>
-                    <span className="labels md:labell">
-                      View Dates
-                    </span>
+                    <span className="labels md:labell">View Dates</span>
                   </Button>
                 </Link>
               )}

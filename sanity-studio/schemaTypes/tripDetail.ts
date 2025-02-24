@@ -224,28 +224,20 @@ const tripDetailFields = [
     type: 'array',
     of: [
       {
-        type: 'block',
-        styles: [
-          { title: 'Heading 1', value: 'h1' },
-          { title: 'Heading 2', value: 'h2' }, 
-          { title: 'Normal', value: 'normal' },
-          { title: 'Bulleted List', value: 'bullet' }, // Defines a bulleted list
-          { title: 'Numbered List', value: 'number' },
+        type: 'object',
+        fields: [
+          {
+            name: 'question',
+            type: 'string',
+            title: 'Question',
+          },
+          {
+            name: 'answer',
+            type: 'array',
+            title: 'Answer',
+            of: [{type: 'string'}],
+          },
         ],
-        lists: [
-          { title: 'Bullet', value: 'bullet' },
-          { title: 'Number', value: 'number' }, 
-        ],
-        marks: {
-          annotations: [
-            {
-              type: 'textColor',
-            },
-            {
-              type: 'highlightColor',
-            },
-          ],
-        },
       },
     ],
   }),

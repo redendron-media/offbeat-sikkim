@@ -21,7 +21,7 @@ export interface CardProps {
     durationd?:string,
     costDouble?:string,
     costTriple?:string,
-    faqs?:any,
+    faqs?:FAQs[],
     originalPrice?:string,
     currentPrice?:string,
     photoGalleries?:photoGallery[],
@@ -53,6 +53,11 @@ export interface CardProps {
     day: string;
     title: string,
     activities: string[];
+}
+
+export interface FAQs {
+  question: string,
+  answer: string[];
 }
 export interface photoGallery {
   title: string,
