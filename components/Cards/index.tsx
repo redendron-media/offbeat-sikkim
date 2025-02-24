@@ -24,7 +24,6 @@ const Cards = ({ card }: TourCardProps) => {
         <div className="relative w-full h-[350px] md:h-[400px] aboslute left-0 inset-0 z-10">
           <Image
             src={urlFor(card.cover).url()}
-            // src={'/images/featured-articles.webp'}
             className="object-cover rounded-b-lg select-none group-hover:scale-105 duration-700 transition-transform"
             fill
             alt={card.title}
@@ -44,14 +43,7 @@ const Cards = ({ card }: TourCardProps) => {
           )}
           <div className="absolute bottom-0 z-40 py-5 text-white ">
           <div className="flex flex-col w-full">
-          {/* {card.durationn && (
-              <div className="px-2 py-1.5 bg-[#FFFF00] text-black w-fit rounded-e-lg shadow-lg mb-2">
-                <p className="bodys">
-                  {card.durationn} Nights {card.durationd} Days
-                </p>
-              </div>
-            )} */}
-            <h2 className="headlinem justify-self-end px-2 md:px-4 w-full ">
+            <h2 className="headlines justify-self-end px-2 md:px-4 w-full ">
               {card.title}
             </h2>
             {
@@ -77,12 +69,6 @@ const Cards = ({ card }: TourCardProps) => {
               </div>
             )}
           </div>
-          {/* <IconButton
-            onClick={() => router.push(`/packages/${link}`)}
-            className="bg-primary mx-2 hover:bg-primary/80"
-          >
-            <ArrowForwardIcon className="text-white text-[28px] md:text-[32px]" />
-          </IconButton> */}
         </div>
         </div>
         
