@@ -51,7 +51,6 @@ import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import Image from "next/image";
 import { CardTrip, TripDetail } from "@/lib/types";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { PortableText } from "next-sanity";
 import {
   useKeenSlider,
   KeenSliderPlugin,

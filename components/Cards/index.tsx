@@ -43,7 +43,7 @@ const Cards = ({ card }: TourCardProps) => {
           )}
           <div className="absolute bottom-0 z-40 py-5 text-white ">
           <div className="flex flex-col w-full">
-            <h2 className="headlines justify-self-end px-2 md:px-4 w-full ">
+            <h2 className="titlel font-semibold justify-self-end px-2 md:px-4 w-full ">
               {card.title}
             </h2>
             {
