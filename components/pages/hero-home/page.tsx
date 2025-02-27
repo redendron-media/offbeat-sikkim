@@ -1,166 +1,73 @@
-"use client";
-import {
-  Stack,
-  FormControl,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
-  styled,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import React, { ChangeEvent, useRef, useState } from "react";
-import Image from "next/image";
-import StarIcon from "@mui/icons-material/Star";
-import Link from "next/link";
-import { useScroll, useTransform, motion } from "framer-motion";
-import RotatingLogo from "@/components/animated-logo/page";
+"use client"; // ✅ Must be a Client Component
+
+import { Box, Stack } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import ScrollToSection from "@/components/ScrollToSection/page";
-import { useRouter } from "next/navigation";
-const CustomOutlinedInput = styled(OutlinedInput)({
-  "& .MuiOutlinedInput-input::placeholder": {
-    color: "#2C322D",
-  },
-  "& .MuiOutlinedInput-input:-webkit-autofill": {
-    WebkitBoxShadow: "0 0 0 1000px #F6FBF4 inset",
-    WebkitTextFillColor: "#404942",
-  },
-});
+import RotatingLogo from "@/components/animated-logo/page";
+import Image from "next/image";
+import Link from "next/link";
+import StarIcon from "@mui/icons-material/Star";
+export default function HeroHome({ videoUrls }: { videoUrls: { videoDesktopUrl: string; videoMobileUrl: string } }) {
+    const text = "Where to next?";
+   
+    const [videoSrc, setVideoSrc] = useState(videoUrls.videoDesktopUrl); // Default to desktop
 
-const HeroHome = () => {
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [daysValue, setDaysValue] = useState<string>("");
-  const router = useRouter();
+    // Function to detect and set correct video source
+    useEffect(() => {
+        const updateVideoSource = () => {
+            if (window.innerWidth <= 767) {
+                setVideoSrc(videoUrls.videoMobileUrl); // Mobile video
+            } else {
+                setVideoSrc(videoUrls.videoDesktopUrl); // Desktop video
+            }
+        };
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    const newValue = event.target.value;
-    setSearchValue(newValue);
-  };
+        updateVideoSource(); // Run on mount
 
-  const handleDaysChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setDaysValue(event.target.value);
-  };
+        // Listen for screen size changes
+        window.addEventListener("resize", updateVideoSource);
+        return () => window.removeEventListener("resize", updateVideoSource);
+    }, [videoUrls]);
 
-  const getSearchURL = (input: string, days: string): string => {
-    const encodedSearch = encodeURIComponent(input.trim());
-    const encodedDays = encodeURIComponent(days.trim());
-    return encodedSearch || encodedDays
-      ? `/search?query=${encodedSearch}&days=${encodedDays}`
-      : "";
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && searchValue.trim()) {
-      const searchURL = getSearchURL(searchValue, daysValue);
-      if (searchURL) {
-        router.push(searchURL);
-      }
-    }
-  };
-  const text = "Where to next?";
-
-  const { scrollY } = useScroll();
-  const scale = useTransform(scrollY, [0, 1000], [1, 1.2]);
-  return (
-    <div className="relative h-screen w-full rounded-lg flex items-start justify-center px-4 md:px-14 flex-col gap-4 md:gap-6">
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
-      <motion.div className="absolute  inset-0 w-full z-0">
-        <div className="absolute inset-0 bg-black/20 z-10 " />
-        <Image
-          src="/images/hero.webp"
-          alt="Hero Background"
-          fill
-          className="object-cover"
-          priority
-        />
-      </motion.div>
-      </div>
-     
-
-      <Stack className="z-10" direction={"column"} gap={1}>
-        <h1 className="displays md:displayl text-white">
-          {text.split("").map((letter, index) => (
-            <motion.span
-              key={index}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                duration: 3,
-                delay: index * 0.15,
-              }}
+    return (
+        <div className="relative h-screen w-full rounded-lg flex items-center justify-center px-4 md:px-14 flex-col gap-4 md:gap-6">
+            {/* Background Video */}
+            <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+                <div className="absolute inset-0 w-full z-0">
+                    <div className="absolute inset-0 bg-black/20 z-20 " />
+                  <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                width="100%"
+                key={videoSrc} // Force reloading video when source changes
+                className="absolute inset-0 w-full h-full object-cover"
             >
-              {letter}
-            </motion.span>
-          ))}
-        </h1>
-      </Stack>
-        
-      {/* <div className="w-full md:w-[96%] lg:w-3/4 flex flex-col items-center gap-2 z-10">
-        <motion.div
-       className="flex flex-row w-full flex-grow overflow-hidden"
-        initial={{
-          opacity: 0,
-        }}
-        animate={{
-          opacity: 1,
-        }}
-        transition={{
-          duration: 3,
-          ease: "easeInOut",
-        }}
-      >
-        <FormControl className="w-[45%] md:w-1/4 bg-[#F6FBF4] border-none rounded-s-lg rounded-e-none">
-        <CustomOutlinedInput
-              value={daysValue}
-              onChange={handleDaysChange}
-              type="number"
-              placeholder="Duration(days)"
-              className="w-full bg-[#F6FBF4] labell md:bodyl rounded-s-lg rounded-e-none"
-              sx={{
-                "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button": {
-                  "WebkitAppearance": "none",
-                  margin: 0,
-                },
-                "& input[type=number]": {
-                  "MozAppearance": "textfield", // Firefox
-                },
-              }}
-            />
-        </FormControl>
+                <source src={videoSrc} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+                </div>
+            </div>
 
-        <CustomOutlinedInput
-          id="search"
-          className="w-full rounded-e-lg rounded-s-none bg-[#F6FBF4] labell md:bodyl"
-          value={searchValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          endAdornment={
-            <InputAdornment position="end" className="pr-2">
-              <Link href={getSearchURL(searchValue, daysValue)} passHref>
-                <IconButton
-                  aria-label="Search"
-                  disableFocusRipple
-                  disableRipple
-                  disableTouchRipple
-                  disabled={!searchValue.trim()}
-                  edge="end"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Link>
-            </InputAdornment>
-          }
-          placeholder="Search Destinations, Packages, etc."
-        />
-      </motion.div>
-      </div>
-     */}
+            {/* Motion Animated Text */}
+            <Stack className="z-10" direction={"column"} gap={1}>
+                <h1 className="displays md:displayl text-white">
+                    {text.split("").map((letter, index) => (
+                        <motion.span
+                            key={index}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 3, delay: index * 0.15 }}
+                        >
+                            {letter}
+                        </motion.span>
+                    ))}
+                </h1>
+            </Stack>
 
-      <motion.div
+            <motion.div
         initial={{
           opacity:0,
         }}
@@ -242,8 +149,8 @@ const HeroHome = () => {
           <RotatingLogo/>
         </ScrollToSection>
       </motion.div>
-    </div>
-  );
-};
+                   
 
-export default HeroHome;
+        </div>
+    );
+}
