@@ -59,7 +59,7 @@ export default function HeroHome({
 
       {/* Motion Animated Text */}
       <Stack className="z-10" direction={"column"} gap={1}>
-        <h1 className="displays md:displayl text-white">
+        <h1 className="displays md:displayl text-white text-center">
           {/* {text.split("").map((letter, index) => (
             <motion.span
               key={index}
@@ -80,8 +80,7 @@ export default function HeroHome({
                             "connects people.",
                             "is therapy.",
                         ]}
-                        loop={0} // 0 means infinite loop
-                       
+                        loop={0}              
                         typeSpeed={80}
                         deleteSpeed={50}
                         delaySpeed={1500}
