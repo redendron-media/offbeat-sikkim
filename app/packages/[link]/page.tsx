@@ -29,7 +29,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import React, { useEffect, useRef, useState, MutableRefObject } from "react";
 import ContactDialog from "@/components/contact-dialog/page";
 import Sliderr from "@/components/Slider";
-import PhotoGallery from "@/components/photo-gallery/page";
 import Link from "next/link";
 import ShareIcon from "@mui/icons-material/Share";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -57,9 +56,10 @@ import {
   KeenSliderInstance,
 } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import CustomComponents from "@/components/portabletext-components/page";
 import ExpandableContent from "@/components/expandable-div/page";
-
+import dynamic from "next/dynamic";
+import NextJsImage from "@/components/Lightbox/image";
+const Lightbox = dynamic(() => import("@/components/Lightbox/page"));
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -181,6 +181,7 @@ const PackagePage: React.FC = () => {
   const navRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const currentPageLink = `https://offbeatsikkim.com/${pathname}`;
+  const [open, setOpen] = useState<boolean>();
 
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
@@ -342,11 +343,6 @@ const PackagePage: React.FC = () => {
       condition: !!packageData.detailedItinerary,
     },
     {
-      id: "gallery",
-      label: "Gallery",
-      condition: !!packageData.photoGalleries,
-    },
-    {
       id: isDesktop ? "inclusions" : "inclusions-mobile",
       label: "Inclusions",
       condition: !!packageData.inclusions,
@@ -414,6 +410,7 @@ const PackagePage: React.FC = () => {
     }
   };
 
+  const images = packageData?.photoGalleries?.slice(0, 5) ?? [];
   const pdfUrl = `${packageData?.pdfItinerary ?? ""}?dl=Itinerary.pdf`;
   return (
     <main className=" relative bg-[#F6FBF4]  pt-20 md:pt-32  max-w-screen-2xl mx-auto">
@@ -421,41 +418,102 @@ const PackagePage: React.FC = () => {
         <>
           <div className="flex flex-col px-4 md:px-6">
             <section
-              className={`flex flex-col justify-center gap-6 py-9 px-4 relative  md:px-14 md:py-24 md:gap-6 min-h-[60vh] rounded-xl overflow-hidden`}
+              className={`flex flex-row justify-center gap-2 px-4 relative md:gap-6 min-h-[60vh] rounded-xl overflow-hidden`}
             >
-              <motion.div
-                className="absolute inset-0 w-full z-0"
-                style={{ scale }}
-              >
-                <div className="absolute inset-0 bg-black/30 z-10" />
-                <Image
-                  src={urlFor(packageData.image).url()}
-                  alt={packageData.title}
-                  fill
-                  className="rounded-lg object-cover"
-                  priority
-                />
-                {/* <div ref={sliderRef} className="keen-slider h-full">
-                  {packageData.photoGalleries?.map((image, index) => (
-                    <div key={index} className="keen-slider__slide">
-                      <div className="w-full h-full relative z-40">
-                        <Image
-                          src={urlFor(image.images).url()}
-                          fill
-                          alt={image.title}
-                          loading="lazy"
-                          className="z-40 object-bottom"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div> */}
-              </motion.div>
+              <div className="grid grid-cols-2 md:grid-cols-4 w-screen grid-rows-2 gap-2 rounded-lg overflow-hidden">
+                {/* Large Left Image */}
+                <div className="col-span-1 md:col-span-1 md:row-span-2 group overflow-clip relative ">
+                  <Image
+                    src={urlFor(images[0].images).url()}
+                    alt={images[0].title}
+                    fill
+                    className="object-cover rounded-ss-lg lg:rounded-s-lg group-hover:scale-105 duration-500 transition-transform"
+                  />
+                </div>
+
+                {/* Top-Right Medium Image (Stacks below the first image on small screens, placed correctly in bento on medium+) */}
+                <div className="col-span-1 group overflow-clip md:row-span-2 relative">
+                  <Image
+                    src={urlFor(images[1].images).url()}
+                    alt={images[1].title}
+                    fill
+                    className="object-cover rounded-es-lg md:rounded-none group-hover:scale-105 duration-500 transition-transform"
+                  />
+                </div>
+
+                {/* Two Stacked Images in Middle-Right */}
+                <div className="hidden col-span-1 row-span-2  md:flex flex-col gap-2">
+                  <div className="relative flex-1 group overflow-clip">
+                    <Image
+                      src={urlFor(images[2].images).url()}
+                      alt={images[2].title}
+                      fill
+                      className="object-cover group-hover:scale-105 duration-500 transition-transform"
+                    />
+                  </div>
+                  <div className="relative group overflow-clip flex-1">
+                    <Image
+                      src={urlFor(images[3].images).url()}
+                      alt={images[3].title}
+                      fill
+                      className=" object-cover group-hover:scale-105 duration-500 transition-transform"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex md:hidden col-span-1 group overflow-clip row-span-2 relative">
+                  <Image
+                    src={urlFor(images[2].images).url()}
+                    alt={images[2].title}
+                    fill
+                    className="object-cover rounded-es-lg group-hover:scale-105 duration-500 transition-transform"
+                  />
+                </div>
+
+                {/* Bottom-Right Medium Image with "View All" Button */}
+                {
+                  images[4] && (
+                    <div className="col-span-1 row-span-2 flex relative group overflow-clip">
+                    <Image
+                      src={urlFor(images[4].images).url()}
+                      alt={images[4].title}
+                      fill
+                      className="object-cover rounded-ee-lg group-hover:scale-105 duration-500 transition-transform"
+                    />
+                  </div>
+                  )
+                }
+             
+              
+                <button onClick={()=> setOpen(true)} className="absolute bottom-4 right-6 bg-white p-2 rounded-lg shadow-md flex items-center gap-1 text-sm z-30">
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M4 16v2h16v-2H4zm0-4h10v2H4v-2zm0-4h16v2H4V8z"></path>
+                  </svg>
+                  View all
+                </button>
+
+                {open !=undefined && (
+                  <Lightbox open={open} close={()=>setOpen(false)} 
+                  slides={images.map(image => ({
+                    src: urlFor(image.images).url(), // Get the image URL
+                    title: image.title || "" // Optional title
+                  }))}
+                  render={{slide: NextJsImage}}/>
+                )}
+              </div>
+            </section>
+            <section
+              className={`flex flex-col lg:flex-row justify-center gap-6 pt-9 px-4 relative md:gap-6 rounded-xl overflow-hidden`}
+            >
               <Stack className="z-10 px-4 md:px-6" direction={"column"} gap={1}>
-                <h2 className="headlines md:displaym lg:displayl text-white">
+                <h2 className="headlines md:displaym lg:displayl text-black">
                   {packageData.title}
                 </h2>
-                <p className="bodys md:bodym lg:bodyl lg:pr-32 text-white">
+                <p className="bodys md:bodym lg:bodyl lg:pr-32 text-black">
                   {packageData.desc}
                 </p>
               </Stack>
@@ -483,25 +541,9 @@ const PackagePage: React.FC = () => {
                   )}
                 </Stack>
               )}
-
-              {/* <div className="w-full backdrop-blur-lg absolute left-0 right-0 bottom-10 lg:bottom-0">
-              <div ref={thumbnailRef} className=" keen-slider backdrop-blur z-50">
-                  {packageData.photoGalleries?.map((image, index) => (
-                    <div key={index} className="keen-slider__slide z-50">
-                      <Image
-                        src={urlFor(image.images).url()}
-                        width={100}
-                        height={150}
-                        alt={image.title}
-                        className="z-50 object-contain "
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div> */}
             </section>
             <div className="px-4 md:px-6">
-              <section className="py-6 rounded-xl px-4 md:px-6 flex flex-col md:flex-row gap-4">
+              <section className="py-6 rounded-xl px-4 md:px-6 flex flex-wrap flex-row gap-2 md:gap-4">
                 <Stack
                   direction={"row"}
                   gap={1}
@@ -524,7 +566,7 @@ const PackagePage: React.FC = () => {
                     alignItems={"center"}
                   >
                     <p className="labels md:labell text-black text-balance">
-                      Starts at{" "}
+                      Starting{" "}
                     </p>
                     <p className="bodys  md:bodyl text-black">
                       <span className="text-primary font-semibold ">
@@ -676,18 +718,7 @@ const PackagePage: React.FC = () => {
                     )}
                   </section>
 
-                  <section
-                    ref={(el) => {
-                      sectionRefs.current["gallery"] = el;
-                    }}
-                    id="gallery"
-                    className="flex flex-col scroll-mt-56 gap-5 py-12 md:py-[76px]"
-                  >
-                    <h2 className="text-black headlines md:displaym">
-                      Photo Gallery
-                    </h2>
-                    <PhotoGallery items={packageData.photoGalleries ?? []} />
-                  </section>
+               
 
                   {packageData.privateTrip && (
                     <section className="py-6 bg-[#E4EAE3] rounded-xl px-4 md:px-6 flex flex-col gap-4 w-fit scroll-mt-56 my-12 md:my-[76px]">
@@ -1061,11 +1092,9 @@ const PackagePage: React.FC = () => {
                             </AccordionSummary>
                             <AccordionDetails className="bodym text-[#171D19]">
                               <ul className="space-y-4 list-disc pl-4">
-                                {faq.answer.map(
-                                  (answer, answerIndex) => (
-                                    <li key={answerIndex}>{answer}</li>
-                                  )
-                                )}
+                                {faq.answer.map((answer, answerIndex) => (
+                                  <li key={answerIndex}>{answer}</li>
+                                ))}
                               </ul>
                             </AccordionDetails>
                           </Accordion>

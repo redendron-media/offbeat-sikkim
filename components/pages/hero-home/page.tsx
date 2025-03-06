@@ -37,7 +37,7 @@ export default function HeroHome({
   }, [videoUrls]);
 
   return (
-    <div className="relative h-[80vh] md:h-screen w-full rounded-lg flex items-center justify-center px-4 md:px-14 flex-col gap-4 md:gap-6">
+    <div className="relative h-[80vh] md:h-screen w-full rounded-lg flex items-center  justify-center px-4 md:px-14 flex-col gap-4 md:gap-6">
       {/* Background Video */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <div className="absolute inset-0 w-full z-0">
@@ -60,32 +60,23 @@ export default function HeroHome({
       {/* Motion Animated Text */}
       <Stack className="z-10" direction={"column"} gap={1}>
         <h1 className="displays md:displayl text-white text-center">
-          {/* {text.split("").map((letter, index) => (
-            <motion.span
-              key={index}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 3, delay: index * 0.15 }}
-            >
-              {letter}
-            </motion.span>
-          ))} */}
-
-<span className="text-primary">Travel </span>
-                <span>
-                    <Typewriter
-                        words={[
-                            "is human.",
-                            "is eco-friendly.",
-                            "connects people.",
-                            "is therapy.",
-                        ]}
-                        loop={0}              
-                        typeSpeed={80}
-                        deleteSpeed={50}
-                        delaySpeed={1500}
-                    />
-                </span>
+          <span className="text-primary">Travel </span>
+          <span>
+            <Typewriter
+              words={[
+                "is human",
+                "is eco-friendly",
+                "connects people",
+                "is therapy",
+              ]}
+              loop={0}
+              cursor
+              cursorStyle="_"
+              typeSpeed={80}
+              deleteSpeed={50}
+              delaySpeed={1500}
+            />
+          </span>
         </h1>
       </Stack>
 
@@ -100,7 +91,7 @@ export default function HeroHome({
           duration: 3,
           ease: "easeInOut",
         }}
-        className="z-10"
+        className="z-10 lg:absolute lg:left-8 lg:bottom-8 text-center"
       >
         <Stack
           className=" flex flex-wrap gap-2"
@@ -159,7 +150,7 @@ export default function HeroHome({
       </motion.div>
 
       <motion.div
-        className="z-10 h-auto flex absolute items-center bottom-8 transform justify-center left-1/2 -translate-x-1/2 right-1/2"
+        className="z-10 h-auto flex absolute items-center bottom-8 transform betwee justify-center left-1/2 -translate-x-1/2 right-1/2"
         initial={{
           opacity: 0,
         }}
