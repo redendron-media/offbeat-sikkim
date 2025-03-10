@@ -139,7 +139,7 @@ async function blog() {
                           <h2 className="titles line-clamp-2 md:titlel font-bold">
                             {group[0].title}
                           </h2>
-                          <p className="labell line-clamp-2 overflow-ellipsis select-none">
+                          <p className="labell  overflow-ellipsis select-none">
                             {group[0].caption}
                           </p>
                         </div>
