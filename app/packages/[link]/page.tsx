@@ -183,38 +183,7 @@ const PackagePage: React.FC = () => {
   const currentPageLink = `https://offbeatsikkim.com/${pathname}`;
   const [open, setOpen] = useState<boolean>();
 
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    initial: 0,
-  });
-  const [thumbnailRef] = useKeenSlider<HTMLDivElement>(
-    {
-      initial: 0,
-      slides: {
-        perView: 3,
-        spacing: 3,
-      },
-      breakpoints: {
-        "(min-width: 500px)": {
-          slides: {
-            perView: 4,
-            spacing: 2,
-          },
-        },
-        "(min-width: 650px)": {
-          slides: {
-            perView: 7,
-            spacing: 2,
-          },
-        },
-        "(min-width: 980px)": {
-          slides: {
-            perView: "auto",
-          },
-        },
-      },
-    },
-    [ThumbnailPlugin(instanceRef)]
-  );
+  
 
   const decodedLink = decodeURIComponent(link as string);
   const linkString = Array.isArray(link) ? link[0] : link;
@@ -416,13 +385,31 @@ const PackagePage: React.FC = () => {
     <main className=" relative bg-[#F6FBF4]  pt-20 md:pt-32  max-w-screen-2xl mx-auto">
       {packageData && (
         <>
+          <section
+            className={`flex lg:hidden flex-col lg:flex-row justify-center gap-6 pt-10 pb-6 px-4 relative md:gap-6 rounded-xl overflow-hidden`}
+          >
+            <Stack className="z-10 px-4 md:px-6" direction={"column"} gap={1}>
+              <h2 className="headlines md:displaym lg:displayl text-black">
+                {packageData.title}
+              </h2>
+              <Stack direction={"row"} gap={0.5} alignItems={"center"}>
+                <AccessTimeIcon
+                  fontSize="small"
+                  className="text-primary-oncontainer"
+                />
+                <p className="bodys md:bodym lg:bodyl text-black">
+                  {packageData.durationn} Nights {packageData.durationd} Days
+                </p>
+              </Stack>
+            </Stack>
+          </section>
           <div className="flex flex-col px-4 md:px-6">
             <section
               className={`flex flex-row justify-center gap-2 px-4 relative md:gap-6 min-h-[60vh] rounded-xl overflow-hidden`}
             >
               <div className="grid grid-cols-2 md:grid-cols-4 w-screen grid-rows-2 gap-2 rounded-lg overflow-hidden">
                 {/* Large Left Image */}
-                <div className="col-span-1 md:col-span-1 md:row-span-2 group overflow-clip relative ">
+                <div className="col-span-2 md:col-span-1 md:row-span-2 group overflow-clip relative ">
                   <Image
                     src={urlFor(images[0].images).url()}
                     alt={images[0].title}
@@ -431,14 +418,24 @@ const PackagePage: React.FC = () => {
                   />
                 </div>
 
-                {/* Top-Right Medium Image (Stacks below the first image on small screens, placed correctly in bento on medium+) */}
-                <div className="col-span-1 group overflow-clip md:row-span-2 relative">
-                  <Image
-                    src={urlFor(images[1].images).url()}
-                    alt={images[1].title}
-                    fill
-                    className="object-cover rounded-es-lg md:rounded-none group-hover:scale-105 duration-500 transition-transform"
-                  />
+                {/* Top-Right Medium Image  */}
+                <div className="col-span-2 md:col-span-1 md:row-span-2 row-span-1 flex flex-row gap-2 relative">
+                  <div className="relative flex-1 group overflow-clip">
+                    <Image
+                      src={urlFor(images[1].images).url()}
+                      alt={images[1].title}
+                      fill
+                      className="object-cover rounded-es-lg md:rounded-none group-hover:scale-105 duration-500 transition-transform"
+                    />
+                  </div>
+                  <div className="relative flex-1 md:hidden group overflow-clip">
+                    <Image
+                      src={urlFor(images[2].images).url()}
+                      alt={images[2].title}
+                      fill
+                      className="object-cover rounded-ee-lg group-hover:scale-105 duration-500 transition-transform"
+                    />
+                  </div>
                 </div>
 
                 {/* Two Stacked Images in Middle-Right */}
@@ -461,19 +458,9 @@ const PackagePage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex md:hidden col-span-1 group overflow-clip row-span-2 relative">
-                  <Image
-                    src={urlFor(images[2].images).url()}
-                    alt={images[2].title}
-                    fill
-                    className="object-cover rounded-es-lg group-hover:scale-105 duration-500 transition-transform"
-                  />
-                </div>
-
                 {/* Bottom-Right Medium Image with "View All" Button */}
-                {
-                  images[4] && (
-                    <div className="col-span-1 row-span-2 flex relative group overflow-clip">
+                {images[4] && (
+                  <div className="col-span-1 row-span-2 hidden md:flex relative group overflow-clip">
                     <Image
                       src={urlFor(images[4].images).url()}
                       alt={images[4].title}
@@ -481,11 +468,12 @@ const PackagePage: React.FC = () => {
                       className="object-cover rounded-ee-lg group-hover:scale-105 duration-500 transition-transform"
                     />
                   </div>
-                  )
-                }
-             
-              
-                <button onClick={()=> setOpen(true)} className="absolute bottom-4 right-6 bg-white p-2 rounded-lg shadow-md flex items-center gap-1 text-sm z-30">
+                )}
+
+                <button
+                  onClick={() => setOpen(true)}
+                  className="absolute bottom-4 right-6 bg-white p-2 rounded-lg shadow-md flex items-center gap-1 text-sm z-30"
+                >
                   <svg
                     className="w-5 h-5"
                     fill="currentColor"
@@ -496,26 +484,28 @@ const PackagePage: React.FC = () => {
                   View all
                 </button>
 
-                {open !=undefined && (
-                  <Lightbox open={open} close={()=>setOpen(false)} 
-                  slides={images.map(image => ({
-                    src: urlFor(image.images).url(), // Get the image URL
-                    title: image.title || "" // Optional title
-                  }))}
-                  render={{slide: NextJsImage}}/>
+                {open != undefined && (
+                  <Lightbox
+                    open={open}
+                    close={() => setOpen(false)}
+                    slides={images.map((image) => ({
+                      src: urlFor(image.images).url(), // Get the image URL
+                      title: image.title || "", // Optional title
+                    }))}
+                    render={{ slide: NextJsImage }}
+                  />
                 )}
               </div>
             </section>
+
             <section
-              className={`flex flex-col lg:flex-row justify-center gap-6 pt-9 px-4 relative md:gap-6 rounded-xl overflow-hidden`}
+              className={`hidden lg:flex flex-col lg:flex-row justify-center gap-6 pt-9 px-4 relative md:gap-6 rounded-xl overflow-hidden`}
             >
               <Stack className="z-10 px-4 md:px-6" direction={"column"} gap={1}>
                 <h2 className="headlines md:displaym lg:displayl text-black">
                   {packageData.title}
                 </h2>
-                <p className="bodys md:bodym lg:bodyl lg:pr-32 text-black">
-                  {packageData.desc}
-                </p>
+               
               </Stack>
 
               {isUpcoming && (
@@ -544,12 +534,7 @@ const PackagePage: React.FC = () => {
             </section>
             <div className="px-4 md:px-6">
               <section className="py-6 rounded-xl px-4 md:px-6 flex flex-wrap flex-row gap-2 md:gap-4">
-                <Stack
-                  direction={"row"}
-                  gap={1}
-                  className="bg-primary-container shadow-cardShadow w-fit rounded-xl px-3 py-3"
-                  alignItems={"center"}
-                >
+                <div className="bg-primary-container hidden lg:flex flex-row items-center gap-2 shadow-cardShadow w-fit rounded-xl px-3 py-3">
                   <AccessTimeIcon className="text-primary-oncontainer" />
                   <Stack direction={"column"} gap={1} justifyContent={"center"}>
                     <p className=" bodys md:bodyl flex text-black">
@@ -557,14 +542,9 @@ const PackagePage: React.FC = () => {
                       Days
                     </p>
                   </Stack>
-                </Stack>
+                </div>
                 {isUpcoming && (
-                  <Stack
-                    direction={"row"}
-                    gap={1}
-                    className="bg-primary-98 shadow-cardShadow w-fit rounded-xl px-3 py-3"
-                    alignItems={"center"}
-                  >
+                  <div className="bg-primary-98 flex flex-row lg:items-center gap-2 shadow-cardShadow w-fit rounded-xl px-3 py-3">
                     <p className="labels md:labell text-black text-balance">
                       Starting{" "}
                     </p>
@@ -580,7 +560,7 @@ const PackagePage: React.FC = () => {
                       )}{" "}
                       per head
                     </p>
-                  </Stack>
+                  </div>
                 )}
               </section>
 
@@ -605,7 +585,20 @@ const PackagePage: React.FC = () => {
                       </p>
                     ))}
                   </section>
-
+                  <section
+                    ref={(el) => {
+                      sectionRefs.current["about"] = el;
+                    }}
+                    id="itinerary"
+                    className="bg-[#E4EAE3] scroll-mt-56 py-6 rounded-xl my-6  px-6 flex flex-col gap-4"
+                  >
+                     <h2 className="headlines text-[#171D19]">
+                        About the trip
+                      </h2>
+                      <p className="bodys md:bodym lg:bodyl text-black">
+                  {packageData.desc}
+                </p>
+                    </section>
                   <section
                     ref={(el) => {
                       sectionRefs.current["itinerary"] = el;
@@ -717,8 +710,6 @@ const PackagePage: React.FC = () => {
                       </Link>
                     )}
                   </section>
-
-               
 
                   {packageData.privateTrip && (
                     <section className="py-6 bg-[#E4EAE3] rounded-xl px-4 md:px-6 flex flex-col gap-4 w-fit scroll-mt-56 my-12 md:my-[76px]">
