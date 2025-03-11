@@ -46,7 +46,6 @@ async function incrementViewCount(slug:string): Promise<number> {
     },
     body:JSON.stringify({slug}),
   });
-  console.log("Response Status:", res.status);
   if (!res.ok){
     console.log("Failed to increment view count, Response Text:", await res.text());
     throw new Error('Failed to increment view count');
