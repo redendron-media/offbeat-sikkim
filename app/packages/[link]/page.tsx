@@ -472,7 +472,7 @@ const PackagePage: React.FC = () => {
 
                 <button
                   onClick={() => setOpen(true)}
-                  className="absolute bottom-4 right-6 bg-white p-2 rounded-lg shadow-md flex items-center gap-1 text-sm z-30"
+                  className="absolute bottom-4 right-6 p-2 rounded-lg shadow-md flex items-center gap-1 text-sm z-30 bg-neutral-95"
                 >
                   <svg
                     className="w-5 h-5"
