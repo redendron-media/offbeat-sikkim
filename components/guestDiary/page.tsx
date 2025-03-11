@@ -36,7 +36,7 @@ export default function GuestDiary() {
     async function fetchImages() {
       try {
         const data = await client.fetch(query);
-        console.log("Fetched Data from Sanity:", data); // Debugging
+       
 
         if (!data.length) return;
 
@@ -112,7 +112,7 @@ export default function GuestDiary() {
         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-[#F6FBF4] z-10 pointer-events-none" />
         <p
           onClick={() => setOpen(true)}
-          className="text-primary bg-white/10 text-center titlel md:headlines z-30 absolute bottom-0 left-0 right-0 g-white p-2  shadow-md "
+          className="text-primary cursor-pointer bg-white/10 text-center titlel md:headlines z-30 absolute bottom-0 left-0 right-0 g-white p-2  shadow-md "
         >
           View all
         </p>

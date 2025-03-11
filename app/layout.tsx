@@ -7,7 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 import Script from "next/script";
-import WhatsAppButton from "@/components/WhatappButton/page";
+import WhatsAppWidget from "@/components/WhatappButton/page";
 import Loader from "@/components/loader/page";
 import Image from "next/image";
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -62,7 +62,7 @@ export default function RootLayout({
             <Loader />
             <Header />
             {children}
-            <WhatsAppButton />
+            <WhatsAppWidget />
             <Footer />
           </ThemeProvider>
           {/* </ReactLenis> */}
