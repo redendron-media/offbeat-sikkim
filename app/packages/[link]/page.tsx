@@ -386,7 +386,7 @@ const PackagePage: React.FC = () => {
       {packageData && (
         <>
           <section
-            className={`flex lg:hidden flex-col lg:flex-row justify-center gap-6 pt-10 pb-6 px-4 relative md:gap-6 rounded-xl overflow-hidden`}
+            className={`flex lg:hidden flex-col lg:flex-row justify-center gap-6 pt-6 pb-6 px-4 relative md:gap-6 rounded-xl overflow-hidden`}
           >
             <Stack className="z-10 px-4 md:px-6" direction={"column"} gap={1}>
               <h2 className="headlines md:displaym lg:displayl text-black">
