@@ -18,6 +18,7 @@ import { CircularProgress, SelectChangeEvent } from "@mui/material";
 import axios from "axios";
 import { cn } from "@/lib/utils";
 
+
 interface CustomConnectorWrapperProps {
   activeStep: number;
 }
@@ -265,7 +266,7 @@ const Custom_Form = () => {
   };
 
   return (
-    <form className="w-full flex flex-col px-2.5 md:px-16 py-12 gap-8">
+    <form className="w-full flex flex-col px-2.5 md:px-16 pb-12 gap-8">
       <CustomConnectorWrapper activeStep={activeStep} />
 
       <div className="flex-1">

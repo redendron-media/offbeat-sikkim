@@ -1,6 +1,7 @@
 import Slider from "@/components/Slider";
 import ContactDialog from "@/components/contact-dialog/page";
 import Credibility from "@/components/credibility/page";
+import CustomItineraryDialog from "@/components/custom-itinerary/custom-itinerary-dialog";
 import Custom_Form from "@/components/custom-itinerary/custom-itinerary-form";
 import GuestDiary from "@/components/guestDiary/page";
 import HeroServer from "@/components/heroserver/page";
@@ -127,24 +128,30 @@ export default async function Home() {
           <MoveUp>
             <section
               id="upcoming"
-              className="py-12 md:py-[76px] space-y-4 md:space-y-9 scroll-mt-24"
+              className="pt-12 pb-4 md:pt-[76px] md:pb-[56px] space-y-6 md:space-y-12 scroll-mt-24"
             >
               <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
                 Upcoming Community Trips
               </h2>
               <Slider items={upcomingTrips} />
+              <div className="px-4">
+              <CustomItineraryDialog />
+              </div>
             </section>
           </MoveUp>
 
           <MoveUp>
             <section
               id="curated"
-              className="py-12 md:py-[76px] space-y-4 md:space-y-9 scroll-mt-24"
+              className="pt-12 pb-4 md:pt-[76px] md:pb-[56px] space-y-6 md:space-y-12 scroll-mt-24"
             >
               <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
                 Curated Packages for the Explorer in You
               </h2>
               <Slider items={curatedTrips} />
+              <div className="px-4">
+              <CustomItineraryDialog />
+              </div>
             </section>
           </MoveUp>
 
@@ -170,15 +177,16 @@ export default async function Home() {
               <Slider items={trekTrips} />
             </section>
           </MoveUp>
-
+         
           <MoveUp>
-            <section id="create-your-itinerary" className="scroll-m-24">
-              <Custom_Form />
-            </section>
+            <div id="create-your-itinerary" className="pt-12 ">
+            <Custom_Form />
+
+            </div>
           </MoveUp>
         </div>
         <MoveUp>
-          <GuestDiary/>
+          <GuestDiary />
         </MoveUp>
         <MoveUp>
           <Testimonials />
