@@ -389,7 +389,7 @@ const PackagePage: React.FC = () => {
             className={`flex lg:hidden flex-col lg:flex-row justify-center gap-6 pt-6 pb-6 px-4 relative md:gap-6 rounded-xl overflow-hidden`}
           >
             <Stack className="z-10 px-4 md:px-6" direction={"column"} gap={1}>
-              <h2 className="headlines md:displaym lg:displayl text-start text-black">
+              <h2 className="headlines md:displaym lg:displayl text-black">
                 {packageData.title}
               </h2>
               <Stack direction={"row"} gap={0.5} alignItems={"center"}>
@@ -403,7 +403,6 @@ const PackagePage: React.FC = () => {
               </Stack>
             </Stack>
           </section>
-
           <div className="flex flex-col px-4 md:px-6">
             <section
               className={`flex flex-row justify-center gap-2 px-4 relative md:gap-6 min-h-[60vh] rounded-xl overflow-hidden`}
@@ -500,9 +499,9 @@ const PackagePage: React.FC = () => {
             </section>
 
             <section
-              className={`hidden lg:flex flex-row justify-center pt-9 relative gap-6 rounded-xl overflow-hidden`}
+              className={`hidden lg:flex flex-col lg:flex-row justify-between gap-6 pt-9 px-4 relative md:gap-6 rounded-xl overflow-hidden`}
             >
-              <Stack className="z-10" direction={"column"} gap={1}>
+              <Stack className="z-10 " direction={"column"} gap={1}>
                 <h2 className="headlines md:displaym lg:displayl text-black">
                   {packageData.title}
                 </h2>
@@ -534,8 +533,8 @@ const PackagePage: React.FC = () => {
               )}
             </section>
             <div className="px-4 md:px-6">
-              <section className="py-6 rounded-xl px-4 md:px-6 flex flex-wrap flex-row gap-2 md:gap-4">
-                <div className="bg-primary-container hidden lg:flex flex-row items-center gap-2 shadow-cardShadow w-fit rounded-xl px-3 py-3">
+              <section className="py-6 rounded-xl  flex flex-wrap justify-between lg:justify-normal flex-row gap-4 ">
+                <div className="bg-primary-container hidden lg:flex flex-row items-center gap-2 shadow-md w-fit rounded-xl px-3 py-3">
                   <AccessTimeIcon className="text-primary-oncontainer" />
                   <Stack direction={"column"} gap={1} justifyContent={"center"}>
                     <p className=" bodys md:bodyl flex text-black">
@@ -545,7 +544,8 @@ const PackagePage: React.FC = () => {
                   </Stack>
                 </div>
                 {isUpcoming && (
-                  <div className="bg-primary-98 flex flex-row lg:items-center gap-2 shadow-cardShadow w-fit rounded-xl px-3 py-3">
+                  <>
+                  <div className="bg-primary-98 flex flex-row lg:items-center gap-2 shadow-md w-fit rounded-xl px-3 py-3">
                     <p className="labels md:labell text-black text-balance">
                       Starting{" "}
                     </p>
@@ -562,6 +562,27 @@ const PackagePage: React.FC = () => {
                       per head
                     </p>
                   </div>
+                 
+                    <div
+                      className="z-10  lg:hidden"
+                    >
+                      {pdfUrl ? (
+                        <a
+                          href={pdfUrl}
+                          download
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Button className=" w-fit flex gap-1 xs:bodys">
+                            Download Itinerary{" "}
+                            <DownloadIcon className="xs:text-sm text-[20px] mt-0.5" />
+                          </Button>
+                        </a>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+               </>
                 )}
               </section>
 
