@@ -207,3 +207,17 @@ export interface photoGallery {
     currentPrice?: number;
     destination?:string;
   }
+
+  export interface BlogCardType {
+   
+      title: string,
+      caption: string,
+      titleImage: string,
+      currentSlug: string,
+      _createdAt: string,
+      tags: {
+        _id: string,
+        slug: string,
+        name: string
+      }[]
+  }

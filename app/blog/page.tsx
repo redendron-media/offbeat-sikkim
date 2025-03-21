@@ -173,13 +173,10 @@ async function blog() {
                         <div className="px-4 pt-4 space-y-1 text-[#051E13]">
                           <div className="flex flex-row gap-3 items-center flex-wrap pb-3">
                             {post.tags?.map((tag) => (
-                              <Link
-                                href={`/tags/${tag.slug}`}
-                                passHref
-                                key={tag._id}
-                              >
+                            
                                 <Chip
                                   label={tag.name}
+                                  key={tag._id}
                                   component="a"
                                   clickable
                                   sx={{
@@ -195,7 +192,7 @@ async function blog() {
                                     padding: "6px",
                                   }}
                                 />
-                              </Link>
+                      
                             ))}
                           </div>
                           <Stack direction={"row"} justifyContent={"space-between"}>

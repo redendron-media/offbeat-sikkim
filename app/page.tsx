@@ -57,6 +57,14 @@ const query = `
     cover,
     "link": destination,
 },
+
+"blogs": *[_type == 'blog' ] | order(_createdAt desc) {
+  title,caption,titleImage,
+    "currentSlug":slug.current,
+    _createdAt,
+     tags[]-> {
+      _id,"slug": slug.current ,name
+    },},
 }
   `;
 
@@ -68,6 +76,7 @@ async function fetchData() {
     trekTrips: data.trekTrips,
     upcomingTrips: data.upcomingTrips,
     destinations: data.destinations,
+    blog: data.blogs,
   };
 }
 
@@ -78,7 +87,7 @@ interface SectionConfig {
 }
 
 export default async function Home() {
-  const { curatedTrips, trekTrips, upcomingTrips, destinations } =
+  const { curatedTrips, trekTrips, upcomingTrips, destinations, blog } =
     await fetchData();
 
   const sections: SectionConfig[] = [
@@ -135,7 +144,7 @@ export default async function Home() {
               </h2>
               <Slider items={upcomingTrips} />
               <div className="px-4">
-              <CustomItineraryDialog />
+                <CustomItineraryDialog />
               </div>
             </section>
           </MoveUp>
@@ -150,7 +159,7 @@ export default async function Home() {
               </h2>
               <Slider items={curatedTrips} />
               <div className="px-4">
-              <CustomItineraryDialog />
+                <CustomItineraryDialog />
               </div>
             </section>
           </MoveUp>
@@ -177,11 +186,10 @@ export default async function Home() {
               <Slider items={trekTrips} />
             </section>
           </MoveUp>
-         
+
           <MoveUp>
             <div id="create-your-itinerary" className="pt-12 ">
-            <Custom_Form />
-
+              <Custom_Form />
             </div>
           </MoveUp>
         </div>
@@ -201,7 +209,7 @@ export default async function Home() {
         </MoveUp>
 
         <MoveUp>
-          <FeaturedArticles />
+          <FeaturedArticles items={blog} />
         </MoveUp>
 
         <MoveUp>
