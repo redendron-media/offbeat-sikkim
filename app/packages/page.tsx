@@ -1,6 +1,7 @@
 
 import Slider from '@/components/Slider'
 import ContactDialog from '@/components/contact-dialog/page'
+import CustomItineraryDialog from '@/components/custom-itinerary/custom-itinerary-dialog';
 import Custom_Form from '@/components/custom-itinerary/custom-itinerary-form'
 import Testimonials from '@/components/pages/Testimonials/page';
 import { client } from '@/lib/sanity'
