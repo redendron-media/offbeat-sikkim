@@ -209,7 +209,7 @@ export interface photoGallery {
   }
 
   export interface BlogCardType {
-   
+      views?:string;
       title: string,
       caption: string,
       titleImage: string,

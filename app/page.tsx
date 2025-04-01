@@ -12,7 +12,9 @@ import HeroHome from "@/components/pages/hero-home/page";
 import SectionsNavigation from "@/components/subheader/page";
 import WhyChoose from "@/components/whychoose/page";
 import { client } from "@/lib/sanity";
-
+import { blogCard } from "@/lib/types";
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 const query = `
  {
   "curatedTrips": *[_type == "curatedTripDetail"] | order(id asc) {
@@ -70,13 +72,22 @@ const query = `
 
 export const revalidate = 60;
 async function fetchData() {
+
   const data = await client.fetch(query);
+   const blogWithViews = await Promise.all(
+    data.blogs.map(async (post: blogCard) => {
+      const postRef = doc(db, "posts", post.currentSlug);
+      const postSnap = await getDoc(postRef);
+      const views = postSnap.exists() ? postSnap.data().views : 0;
+      return { ...post, views };
+    })
+  );
   return {
     curatedTrips: data.curatedTrips,
     trekTrips: data.trekTrips,
     upcomingTrips: data.upcomingTrips,
     destinations: data.destinations,
-    blog: data.blogs,
+    blog: blogWithViews,
   };
 }
 

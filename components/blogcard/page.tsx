@@ -4,8 +4,8 @@ import Card from "@mui/material/Card";
 import Image from "next/image";
 import { BlogCardType } from "@/lib/types";
 import { urlFor } from "@/lib/sanity";
-import { Chip } from "@mui/material";
-
+import { Chip, Stack } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 interface BlogProps {
   item: BlogCardType;
 }
@@ -28,13 +28,23 @@ const BlogCard: React.FC<BlogProps> = ({ item }) => {
             loading="lazy"
           />
         </div>
+
         <div className="flex relative flex-col gap-2 w-full">
           <h2 className="titlem font-semibold justify-self-end min-h-12 line-clamp-2 px-2 md:px-4 w-full ">
             {item.title}
           </h2>
-          <p className="labels  px-2 md:px-4 text-[#404942]">
-            {formatDate(new Date(item._createdAt).toISOString().split("T")[0])}
-          </p>
+
+          <div className="flex flex-row justify-between  px-2 md:px-4">
+            <p className="labels  text-[#404942]">
+              {formatDate(
+                new Date(item._createdAt).toISOString().split("T")[0]
+              )}
+            </p>
+            <Stack direction={"row"} gap={0.5} alignItems={"center"}>
+              <VisibilityIcon fontSize="small" className=" text-neutral-40" />
+              <p className="labell text-[#404942]">{item.views}</p>
+            </Stack>
+          </div>
         </div>
       </Card>
     </Link>
