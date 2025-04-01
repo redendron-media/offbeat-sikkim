@@ -74,7 +74,8 @@ export const revalidate = 60;
 async function fetchData() {
 
   const data = await client.fetch(query);
-   const blogWithViews = await Promise.all(
+
+  const blogWithViews = await Promise.all(
     data.blogs.map(async (post: blogCard) => {
       const postRef = doc(db, "posts", post.currentSlug);
       const postSnap = await getDoc(postRef);
@@ -82,12 +83,15 @@ async function fetchData() {
       return { ...post, views };
     })
   );
+
+  const sortedBlogs = blogWithViews.sort((a, b) => b.views - a.views);
+
   return {
     curatedTrips: data.curatedTrips,
     trekTrips: data.trekTrips,
     upcomingTrips: data.upcomingTrips,
     destinations: data.destinations,
-    blog: blogWithViews,
+    blog: sortedBlogs,
   };
 }
 
