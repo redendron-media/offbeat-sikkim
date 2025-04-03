@@ -13,7 +13,7 @@ const WhyChoose = () => {
     };
 
   return (
-    <section className="relative px-4 md:px-6 py-16 md:py-24 rounded-lg flex flex-col gap-4 md:gap-6">
+    <section className="relative px-4 md:px-6 py-16 md:py-24 flex flex-col gap-4 md:gap-6 ">
       <h2 className="headlines md:displaym text-black z-10 mb-2 text-balance">
         Why Choose <span className="text-primary">Offbeat Sikkim?</span>
       </h2>

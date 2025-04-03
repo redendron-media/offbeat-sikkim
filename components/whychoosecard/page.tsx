@@ -1,63 +1,58 @@
 import Image from "next/image";
 
-
 const WhyChooseCard = () => {
-    const content =[
-        {
-            title: "Expertise in Offbeat Destinations",
-            description: "We specialize in showcasing the unexplored beauty of Northeast India, providing authentic experiences in untouched locations.",
-            image:"/images/north-sikkim/hero.webp"
-        },
-        {
-            title: "Tailored Experiences",
-            description: "Every trip is curated with meticulous attention to detail, ensuring personalized itineraries that cater to your preferences",
-            image:"/images/goechala/1.webp"
-        },
-        {
-            title: "Community Support",
-            description: "We actively contribute to rural development by creating job opportunities and promoting cultural tourism.",
-            image:"/images/dzukou-valley/5.webp"
-        },
-        {
-            title: "Seamless Planning",
-            description: "From start to finish, our team ensures a hassle-free and memorable travel experience with reliable and innovative solutions.",
-            image:"/images/arunachal/1.webp"
-        }
-    ]
-    return (
-      <div className="flex flex-row gap-8 flex-wrap">  
-      {
-        content.map((item,index) => (
-            <div key={index} className="w-[232px] md:w-[289px] lg:w-[292px] relative h-[400px] text-[#051E13] gap-2">
-            <div className="absolute inset-0 w-full h-full z-0">
-              <Image
-                src={item.image}
-                alt={item.title}
-                fill
-                className="rounded-lg z-0 object-cover"
-              />
-            </div>
-            
-            {/* Gradient Overlay */}
-            <div className=" absolute inset-0 z-10 rounded-lg" style={{
-                 background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.4), black)'
-            }}/>
-    
-            {/* Text Content */}
-            <div className="absolute gap-2 inset-0 px-5 py-6 z-20 flex flex-col justify-end">
-              <p className="titlem md:titlel font-semibold z-30 text-white">
-                {item.title}
-              </p>
-              <p className="bodys text-pretty text-[#F3FCF2]">
-                {item.description}
-              </p>
-            </div>
+  const content = [
+    {
+      title: "Expertise in Offbeat Destinations",
+      description:
+        "We specialize in showcasing the unexplored beauty of Northeast India, providing authentic experiences in untouched locations.",
+      image: "/images/whychoose/expertise.png",
+    },
+    {
+      title: "Tailored Experiences",
+      description:
+        "Every trip is curated with meticulous attention to detail, ensuring personalized itineraries that cater to your preferences",
+      image: "/images/whychoose/tailored.png",
+    },
+    {
+      title: "Community Support",
+      description:
+        "We actively contribute to rural development by creating job opportunities and promoting cultural tourism.",
+      image: "/images/whychoose/community.png",
+    },
+    {
+      title: "Seamless Planning",
+      description:
+        "From start to finish, our team ensures a hassle-free and memorable travel experience with reliable and innovative solutions.",
+      image: "/images/whychoose/seamless.png",
+    },
+  ];
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:px-16 ">
+      {content.map((item, index) => (
+        <div
+          key={index}
+          className="w-full col-span-1 hover:bg-neutral-98  md:w-fit text-[#051E13] flex flex-row items-center hover:shadow-sm hover:shadow-primary gap-6 px-8 py-12 border border-primary rounded-lg transition-all duration-500 ease-in-out"
+        >
+          <Image
+            src={item.image}
+            alt={item.title}
+            width={180}
+            height={180}
+            className="rounded-full object-cover lg:w-32 lg:h-32"
+          />
+
+          {/* Text Content */}
+          <div className=" z-20 flex flex-col gap-6 justify-end">
+            <p className="titlem md:titlel font-semibold z-30 text-black">
+              {item.title}
+            </p>
+            <p className="bodys text-pretty text-black">{item.description}</p>
           </div>
-        ))
-      }
-       
-      </div>
-    );
-  };
-  
-  export default WhyChooseCard;
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default WhyChooseCard;
