@@ -39,7 +39,7 @@ const WhyChooseCard = () => {
             alt={item.title}
             width={180}
             height={180}
-            className="rounded-full object-cover lg:w-32 lg:h-32"
+            className="rounded-full object-cover lg:object-contain lg:w-32 lg:h-32"
           />
 
           {/* Text Content */}
