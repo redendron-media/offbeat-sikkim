@@ -10,6 +10,7 @@ import React from "react";
 import Link from "next/link";
 export const revalidate = 60;
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import CustomComponents from "@/components/portabletext-components/page";
 
 async function getData(slug: string) {
   const query = `
@@ -38,7 +39,6 @@ async function getData(slug: string) {
 
 async function incrementViewCount(slug:string): Promise<number> {
   const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`
-  console.log("Base URL:", baseUrl);
   const res = await fetch(`${baseUrl}/api/incrementView`, {
     method: 'POST',
     headers: {
@@ -52,7 +52,6 @@ async function incrementViewCount(slug:string): Promise<number> {
   }
 
   const {views} = await res.json();
-  console.log("View count received:", views); 
   return views;
 }
 
@@ -134,7 +133,7 @@ async function BlogArticle({ params }: PageProps) {
       />
       <p className="bodym md:px-28 lg:px-52 text-[#404942]">{data.caption}</p>
       <div className=" md:px-28 lg:px-52 text-black bodym md:bodyl">
-        <PortableText value={data.content} />
+        <PortableText value={data.content} components={CustomComponents}/>
       </div>
       {data.image1 && (
         <Image
@@ -148,7 +147,7 @@ async function BlogArticle({ params }: PageProps) {
       )}
       {data.content2 && (
         <div className=" md:px-28 lg:px-52 text-black bodym md:bodyl">
-          <PortableText value={data.content2} />
+          <PortableText value={data.content2} components={CustomComponents}/>
         </div>
       )}
 
@@ -164,7 +163,7 @@ async function BlogArticle({ params }: PageProps) {
       )}
       {data.content3 && (
         <div className=" md:px-28 lg:px-52 text-black bodym md:bodyl">
-          <PortableText value={data.content3} />
+          <PortableText value={data.content3} components={CustomComponents}/>
         </div>
       )}
 
@@ -180,7 +179,7 @@ async function BlogArticle({ params }: PageProps) {
       )}
       {data.content4 && (
         <div className=" md:px-28 lg:px-52 text-black bodym md:bodyl">
-          <PortableText value={data.content4} />
+          <PortableText value={data.content4} components={CustomComponents}/>
         </div>
       )}
 
@@ -196,7 +195,7 @@ async function BlogArticle({ params }: PageProps) {
       )}
       {data.content5 && (
         <div className=" md:px-28 lg:px-52 text-black bodym md:bodyl">
-          <PortableText value={data.content5} />
+          <PortableText value={data.content5} components={CustomComponents}/>
         </div>
       )}
     </main>
