@@ -153,8 +153,14 @@ const config: Config = {
   			}
   		},
   		fontFamily: {
-  			roboto: ['var(--font-roboto)', 'sans'],
-  			slab: ['var(--font-roboto-slab)', 'sans']
+  			roboto: [
+  				'var(--font-roboto)',
+  				'sans'
+  			],
+  			slab: [
+  				'var(--font-roboto-slab)',
+  				'sans'
+  			]
   		},
   		boxShadow: {
   			cardShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 1px 3px 1px rgba(0, 0, 0, 0.15)',
@@ -176,11 +182,29 @@ const config: Config = {
   				to: {
   					height: '0'
   				}
+  			},
+  			marquee: {
+  				from: {
+  					transform: 'translateX(0)'
+  				},
+  				to: {
+  					transform: 'translateX(calc(-100% - var(--gap)))'
+  				}
+  			},
+  			'marquee-vertical': {
+  				from: {
+  					transform: 'translateY(0)'
+  				},
+  				to: {
+  					transform: 'translateY(calc(-100% - var(--gap)))'
+  				}
   			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+  			marquee: 'marquee var(--duration) infinite linear',
+  			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite'
   		}
   	}
   },

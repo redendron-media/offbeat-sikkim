@@ -25,7 +25,8 @@ const TestimonialCard = ({ card }: TestimonialProps) => {
     return <></>;
   }
   return (
-    <Card className="size-[200px] rounded-[10px] text-[#051E13] bg-[#F5F5F5] shadow-cardShadow py-6 px-5 flex flex-col gap-2">
+    <Card className="w-[300px] md:w-[525px]  rounded-lg text-[#051E13] bg-[#F5F5F5] shadow-cardShadow p-10 flex flex-col gap-2">
+        <Stack  direction={{sm: 'column', md: 'row'}} gap={{sm:1,md:2}} justifyContent={"space-between"}>
         <h2 className="titlem select-none">{card.title}</h2>
         <Stack direction={"row"} gap={1}>
         {[...Array(5)].map((_,index)=>(
@@ -33,6 +34,8 @@ const TestimonialCard = ({ card }: TestimonialProps) => {
         ))
         }
         </Stack>
+        </Stack>
+      
         <p className="bodys line-clamp-5 overflow-ellipsis select-none">{card.testimonial}</p> 
         <p onClick={handleClickOpen} className="bodys cursor-pointer select-none underline text-neutral-24">Read More</p>
         <Dialog

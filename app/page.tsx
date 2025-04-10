@@ -15,6 +15,7 @@ import { client } from "@/lib/sanity";
 import { blogCard } from "@/lib/types";
 import { db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
+import Image from "next/image";
 const query = `
  {
   "curatedTrips": *[_type == "curatedTripDetail"] | order(id asc) {
@@ -72,7 +73,6 @@ const query = `
 
 export const revalidate = 60;
 async function fetchData() {
-
   const data = await client.fetch(query);
 
   const blogWithViews = await Promise.all(
@@ -203,8 +203,28 @@ export default async function Home() {
           </MoveUp>
 
           <MoveUp>
-            <div id="create-your-itinerary" className="pt-12 ">
-              <Custom_Form />
+            <div
+              id="create-your-itinerary"
+              className=" relative px-5 py-28 lg:py-24 flex flex-col text-center gap-4 items-center justify-center"
+            >
+               <div className="absolute  inset-0 w-full z-0">
+               <div className="absolute inset-0 bg-black/20 z-10" />
+              <Image 
+              src={'/4.jpg'}
+              alt="Create Your Itinerary"
+              fill
+              className="object-cover z-0"
+              />
+              </div>
+              <h2 className="headlines md:displays z-10 lg:displaym text-white">
+                Your Personalized Itinerary Awaits
+              </h2>
+              <div className="flex flex-col gap-6 z-10 items-center justify-center">
+                <p className="bodyl z-10 text-white">
+                  Customize your NorthEast India/Bhutan itinerary in 60 seconds.
+                </p>
+                <CustomItineraryDialog />
+              </div>
             </div>
           </MoveUp>
         </div>
