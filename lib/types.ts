@@ -172,6 +172,7 @@ export interface photoGallery {
     source:string,
     coTraveler?:string[],
     appliedCoupon?:string,
+    terms?:string,
   }
 
   export interface FormErrors {
@@ -183,6 +184,7 @@ export interface photoGallery {
     tourDates?: string;
     source?: string;
     coTraveler?: string[] | undefined;
+    terms?:string;
   }
 
   interface Cover {

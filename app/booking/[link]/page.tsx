@@ -29,6 +29,8 @@ import { cn } from "@/lib/utils";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { client } from "@/lib/sanity";
 
+import { Checkbox } from "@/components/ui/checkbox";
+import { set } from "sanity";
 interface CustomConnectorWrapperProps {
   activeStep: number;
 }
@@ -61,6 +63,7 @@ const CustomConnectorWrapper = ({
   );
 };
 
+
 const fetchPackageData = async (link: string) => {
   const query = `
     *[_type == "upcomingTripDetail" && link == "${link}"][0] {
@@ -79,6 +82,8 @@ const fetchPackageData = async (link: string) => {
   const data = await client.fetch(query);
   return data;
 };
+
+
 
 const generateDatesByMonth = (
   tourDates:
@@ -140,7 +145,7 @@ const BookingPage = () => {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(
     initialMonth
   );
-
+const [acceptedTerms,setAcceptedTerms] = useState(false)
   const [baseTotal, setBaseTotal] = useState(() => {
     const initialCost = Number(packageData?.currentPrice?.replace(/,/g, "")) || 0;
     return initialCost * noOfPeople;
@@ -166,6 +171,7 @@ const BookingPage = () => {
     source: "upcoming",
     coTraveler: [],
   });
+
   const [paymentOption, setPaymentOption] = useState("full");
 
   const [loading, setLoading] = useState(false);
@@ -249,6 +255,13 @@ const BookingPage = () => {
     }
   };
 
+  const handleTermsSelected = () => {
+    setAcceptedTerms(!acceptedTerms);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      terms: undefined
+    }));
+  }
   const handleApplyCoupon = () => {
     if (!enteredCoupon.trim()) {
       setCouponError("Please enter a coupon code.");
@@ -523,6 +536,14 @@ const BookingPage = () => {
       return undefined;
     });
   };
+
+  const validateTerms = (): string | undefined => {
+    if (!acceptedTerms) {
+      return "Please accept the terms and conditions.";
+    }
+    return undefined;
+  };
+
   const goForward = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (activeStep === 1) {
       e.preventDefault();
@@ -550,6 +571,14 @@ const BookingPage = () => {
       setActiveStep(activeStep + 1);
       setStep(step + 1);
     } else if (activeStep === 3) {
+      const termsErrors = validateTerms();
+      if (termsErrors) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          terms: termsErrors,
+        }));
+        return;
+      }
       makePayment(e);
     }
   };
@@ -1310,6 +1339,33 @@ const BookingPage = () => {
                     </div>
                   </RadioGroup>
                 </FormControl>
+              
+              <div className="px-6 flex flex-col gap-2 ">
+                <div className="flex flex-row gap-2 items-center">
+                <Checkbox
+                  checked={acceptedTerms}
+                  className="data-[state=checked]:bg-primary"
+                  onCheckedChange={handleTermsSelected}  
+                />
+                <p>I agree to the  {"  "}
+                  <a href="/terms-and-conditions" target="_blank" className="text-primary px-1 underline">
+                  Terms and Conditions 
+                  </a>
+                 {"  "}
+                  and  {"  "}
+                  <a href="/payment-policy" target="_blank" className="text-primary pl-1 underline">
+                  Payment Policy
+                  </a> *
+                </p>
+                </div>
+                  <div>
+                    {errors.terms && (
+                      <p className="text-error bodyl">{errors.terms}</p>
+                    )}
+                  </div>
+          
+              </div>
+         
               </div>
             </div>
           </section>
