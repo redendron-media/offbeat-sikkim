@@ -102,7 +102,7 @@ export default function HeroHome({
             <Stack
               direction={"row"}
               gap={1}
-              className="rounded-[5px] bg-[#FEFEEC]/35 pl-1 pr-2 py-2"
+              className="rounded-[5px] bg-[#FEFEEC] pl-1 pr-2 py-2"
             >
               <Image
                 src={"/icons/google.svg"}
@@ -129,7 +129,7 @@ export default function HeroHome({
             <Stack
               direction={"row"}
               gap={1}
-              className="rounded-[5px] bg-[#FEFEEC]/35 pl-1 pr-2 py-2"
+              className="rounded-[5px] bg-[#FEFEEC] pl-1 pr-2 py-2"
             >
               <Image
                 src={"/icons/tripadvisor.svg"}

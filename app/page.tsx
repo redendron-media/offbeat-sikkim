@@ -158,9 +158,9 @@ export default async function Home() {
                 Upcoming Community Trips
               </h2>
               <Slider items={upcomingTrips} />
-              <div className="px-4">
+              {/* <div className="px-4">
                 <CustomItineraryDialog />
-              </div>
+              </div> */}
             </section>
           </MoveUp>
 
@@ -173,9 +173,9 @@ export default async function Home() {
                 Curated Packages for the Explorer in You
               </h2>
               <Slider items={curatedTrips} />
-              <div className="px-4">
+              {/* <div className="px-4">
                 <CustomItineraryDialog />
-              </div>
+              </div> */}
             </section>
           </MoveUp>
 
@@ -207,24 +207,7 @@ export default async function Home() {
               id="create-your-itinerary"
               className=" relative px-5 py-28 lg:py-24 flex flex-col text-center gap-4 items-center justify-center"
             >
-               <div className="absolute  inset-0 w-full z-0">
-               <div className="absolute inset-0 bg-black/20 z-10" />
-              <Image 
-              src={'/4.jpg'}
-              alt="Create Your Itinerary"
-              fill
-              className="object-cover z-0"
-              />
-              </div>
-              <h2 className="headlines md:displays z-10 lg:displaym text-white">
-                Your Personalized Itinerary Awaits
-              </h2>
-              <div className="flex flex-col gap-6 z-10 items-center justify-center">
-                <p className="bodyl z-10 text-white">
-                  Customize your NorthEast India/Bhutan itinerary in 60 seconds.
-                </p>
-                <CustomItineraryDialog />
-              </div>
+              <Custom_Form/>
             </div>
           </MoveUp>
         </div>
