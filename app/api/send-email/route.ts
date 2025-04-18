@@ -1,20 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import sgMail from "@sendgrid/mail";
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
+import axios from "axios";
 
 const templateMapping = {
   curated: {
-    admin: process.env.SENDGRID_TEMPLATE_ID_CURATED_ADMIN,
-    user: process.env.SENDGRID_TEMPLATE_ID_CURATED_USER,
+    admin: 4,
+    user: 3,
   },
   trek: {
-    admin: process.env.SENDGRID_TEMPLATE_ID_TREK_ADMIN,
-    user: process.env.SENDGRID_TEMPLATE_ID_TREK_USER,
+    admin: 5,
+    user: 6,
   },
   upcoming: {
-    admin: process.env.SENDGRID_TEMPLATE_ID_UPCOMING_ADMIN,
-    user: process.env.SENDGRID_TEMPLATE_ID_UPCOMING_USER,
+    admin: 2,
+    user: 1,
   },
 };
 
@@ -50,47 +48,38 @@ export async function POST(request: NextRequest) {
       ...(formData.source.includes("upcoming") ? {} : { age: formData.age && Array.isArray(formData.age) ? formData.age.join(", ") : formData.age || '' }),
     };
 
-    const adminMsg = {
-      to: "enquiry@offbeatsikkim.com",
-      from: "team@offbeatsikkim.com",
-      name: "Offbeat Sikkim",
-      templateId: templateIds.admin,
-       dynamicTemplateData: { ...transformedFormData },
+    const brevoPayload = (templateId: number, toEmail: string) => ({
+      templateId: Number(templateId),
+      to: [{ email: toEmail }],
+      params: transformedFormData,
+    });
+
+     const headers = {
+      "Content-Type": "application/json",
+      "api-key": process.env.BREVO_API_KEY!,
     };
 
-    const userMsg =
-      formData.email && templateIds.user
-        ? {
-            to: formData.email,
-            from: "team@offbeatsikkim.com",
-            name: "Offbeat Sikkim",
-            templateId: templateIds.user,
-            dynamicTemplateData: { ...transformedFormData },
-          }
-        : null;
+    const adminEmail = await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      brevoPayload(templateIds.admin, "enquiry@offbeatsikkim.com"),
+      { headers }
+    );
 
-    try {
-      await sgMail.send(adminMsg);
-      if (userMsg) {
-        await sgMail.send(userMsg);
-      } else {
-        console.warn("User email not sent: no user email or template ID");
-      }
-
-      return NextResponse.json({ message: "Emails sent successfully" });
-    } catch (emailError) {
-      const error = emailError as { response: { body: { errors: any[] } } };
-      console.error("SendGrid Email Error:", error.response.body.errors);
-      return NextResponse.json(
-        { error: "Failed to send emails" },
-        { status: 500 }
+    if (formData.email && templateIds.user) {
+      const userEmail = await axios.post(
+        "https://api.brevo.com/v3/smtp/email",
+        brevoPayload(templateIds.user, formData.email),
+        { headers }
       );
     }
-  } catch (error) {
-    console.error("General Error:", error);
-    return NextResponse.json(
-      { error: "Failed to process request" },
-      { status: 500 }
-    );
+
+    return NextResponse.json({ message: "Emails sent successfully via Brevo" });
+  } catch (error: any) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("Brevo Error:", error.response.data);
+      return NextResponse.json({ error: "Brevo email failed", details: error.response.data }, { status: 500 });
+    }
+    console.error("Unhandled Error:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

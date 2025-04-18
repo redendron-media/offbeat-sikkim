@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import sgMail from "@sendgrid/mail";
+import axios from "axios";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
+
 
 export async function POST(request: NextRequest) {
     try {
       const formData = await request.json();
-      const templateIds = process.env.SENDGRID_TEMPLATE_ID_CONTACT_ADMIN;
+      const templateIds = 7;
   
       if (!templateIds) {
         return NextResponse.json(
@@ -14,25 +14,32 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
-      const msg = {
-        to: "team@offbeatsikkim.com",
-        from: "team@offbeatsikkim.com",
+      const brevoPayload = {
         templateId: templateIds,
-        dynamicTemplateData: { ...formData },
+        to: [{ email: "enquiry@offbeatsikkim.com" }],
+        params: formData,
       };
-      try {
-        await sgMail.send(msg);
-        console.log("Admin email sent successfully");
-        return NextResponse.json({ message: "Emails sent successfully" });
-      } catch (emailError) {
-        const error = emailError as { response: { body: { errors: any[] } } };
-        console.error("SendGrid Email Error:", error.response.body.errors);
+  
+      const headers = {
+        "Content-Type": "application/json",
+        "api-key": process.env.BREVO_API_KEY!,
+      };
+  
+      await axios.post("https://api.brevo.com/v3/smtp/email", brevoPayload, {
+        headers,
+      });
+  
+      console.log("Admin email sent successfully via Brevo");
+      return NextResponse.json({ message: "Email sent successfully" });
+    } catch (error: any) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error("Brevo API Error:", error.response.data);
         return NextResponse.json(
-          { error: "Failed to send emails" },
+          { error: "Failed to send email", details: error.response.data },
           { status: 500 }
         );
       }
-    } catch (error) {
+  
       console.error("General Error:", error);
       return NextResponse.json(
         { error: "Failed to process request" },
@@ -40,4 +47,3 @@ export async function POST(request: NextRequest) {
       );
     }
   }
-  

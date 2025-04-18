@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import sgMail from "@sendgrid/mail";
+import axios from "axios";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
+
 
 export const config = {
   api: {
@@ -9,6 +9,7 @@ export const config = {
   },
 };
 
+const templateIds = 8;
 export async function POST(request: NextRequest) {
   try {
    
@@ -18,12 +19,10 @@ export async function POST(request: NextRequest) {
     let pdfFile: File | null = null;
 
     for (const [key, value] of formData.entries()) {
-      if (value instanceof File) {
-        if (key === "resume") {
-          pdfFile = value;
-        }
-      } else {
-        fields[key] = value.toString();
+      if (value instanceof File && key === "resume") {
+        pdfFile = value;
+      } else if (typeof value === "string") {
+        fields[key] = value;
       }
     }
 
@@ -45,7 +44,7 @@ export async function POST(request: NextRequest) {
     const fileBytes = await pdfFile.arrayBuffer();
     const base64Content = Buffer.from(fileBytes).toString("base64");
 
-    const templateIds = process.env.SENDGRID_TEMPLATE_ID_CAREER_ADMIN;
+
     if (!templateIds) {
       return NextResponse.json(
         { error: "Invalid template ID" },
@@ -53,28 +52,38 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const msg = {
-      to: "info@offbeatsikkim.com",
-      from: "team@offbeatsikkim.com",
+    const brevoPayload = {
       templateId: templateIds,
-      dynamicTemplateData: { ...fields },
-      attachments: [
+      to: [{ email: "enquiry@offbeatsikkim.com" }],
+      params: fields,
+      attachment: [
         {
           content: base64Content,
-          filename: pdfFile.name,
-          type: "application/pdf",
-          disposition: "attachment",
+          name: pdfFile.name,
         },
       ],
     };
 
-    await sgMail.send(msg);
-    return NextResponse.json({ message: "Emails sent successfully" });
-  } catch (error) {
+    const headers = {
+      "Content-Type": "application/json",
+      "api-key": process.env.BREVO_API_KEY!,
+    };
+
+    await axios.post("https://api.brevo.com/v3/smtp/email", brevoPayload, {
+      headers,
+    });
+
+    return NextResponse.json({ message: "Email sent successfully via Brevo" });
+  } catch (error: any) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("Brevo API Error:", error.response.data);
+      return NextResponse.json(
+        { error: "Failed to send email", details: error.response.data },
+        { status: 500 }
+      );
+    }
+
     console.error("General Error:", error);
-    return NextResponse.json(
-      { error: "Failed to process request" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to process request" }, { status: 500 });
   }
 }

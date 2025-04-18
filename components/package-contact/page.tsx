@@ -275,27 +275,27 @@ const PackageContactForm: React.FC<PackageContactFormProps> = ({
         },
       ];
 
-      try {
-        const templateResponse = await fetch("/api/sendTemplateMessage", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            phone_number: `91${formData.phone}`,
-            template_message_id: "5946",
-            template_params: templateParams,
-          }),
-        });
+      // try {
+      //   const templateResponse = await fetch("/api/sendTemplateMessage", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       phone_number: `91${formData.phone}`,
+      //       template_message_id: "5946",
+      //       template_params: templateParams,
+      //     }),
+      //   });
 
-        if (templateResponse.ok) {
-          console.log("Template message sent successfully.");
-        } else {
-          console.error("Template message sending failed.");
-        }
-      } catch (error) {
-        console.error("Error sending template message:", error);
-      }
+      //   if (templateResponse.ok) {
+      //     console.log("Template message sent successfully.");
+      //   } else {
+      //     console.error("Template message sending failed.");
+      //   }
+      // } catch (error) {
+      //   console.error("Error sending template message:", error);
+      // }
     }
 
     if (!isDefault && !isCurated) {

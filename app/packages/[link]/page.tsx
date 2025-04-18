@@ -718,7 +718,7 @@ const PackagePage: React.FC = () => {
                     ))}
                   </section>
 
-                  <section className="flex justify-end md:justify-start">
+                  <section className="flex justify-end md:justify-start pb-8">
                     {!isUpcoming && (
                       <ContactDialog
                         link={linkString!}
