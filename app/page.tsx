@@ -167,15 +167,15 @@ export default async function Home() {
           <MoveUp>
             <section
               id="curated"
-              className="pt-12 pb-4 md:pt-[76px] md:pb-[56px] space-y-6 md:space-y-12 scroll-mt-24"
+              className="pt-12 pb-4 md:pt-[76px] md:pb-[56px] space-y-12 md:space-y-[76px] scroll-mt-24"
             >
               <h2 className="headlines md:displays lg:displaym text-secondary-oncontainer">
                 Curated Packages for the Explorer in You
               </h2>
               <Slider items={curatedTrips} />
-              {/* <div className="px-4">
+              <div className="px-4">
                 <CustomItineraryDialog />
-              </div> */}
+              </div> 
             </section>
           </MoveUp>
 
