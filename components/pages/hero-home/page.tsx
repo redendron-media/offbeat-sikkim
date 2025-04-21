@@ -98,7 +98,7 @@ export default function HeroHome({
           direction={"row"}
           gap={{ xs: 2, sm: 3 }}
         >
-          <Link href={"https://g.co/kgs/ycR2zwv"} target="_blank">
+          {/* <Link href={"https://g.co/kgs/ycR2zwv"} target="_blank">
             <Stack
               direction={"row"}
               gap={1}
@@ -119,7 +119,7 @@ export default function HeroHome({
                 5 <StarIcon className="text-[#e7c262] text-xs" />
               </Stack>
             </Stack>
-          </Link>
+          </Link> */}
           <Link
             target="_blank"
             href={
@@ -135,7 +135,7 @@ export default function HeroHome({
                 src={"/icons/tripadvisor.svg"}
                 width={31}
                 height={21}
-                alt="Google"
+                alt="Tripadvisor"
               />
               <Stack
                 className="text-lg"
