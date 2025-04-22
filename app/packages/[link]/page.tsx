@@ -59,6 +59,7 @@ import "keen-slider/keen-slider.min.css";
 import ExpandableContent from "@/components/expandable-div/page";
 import dynamic from "next/dynamic";
 import NextJsImage from "@/components/Lightbox/image";
+import { fetchPackageData } from '@/lib/fetchPackageData'
 const Lightbox = dynamic(() => import("@/components/Lightbox/page"));
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -66,46 +67,13 @@ interface TabPanelProps {
   value: number;
 }
 
-const fetchPackageData = async (packageType: string, link: string) => {
-  const query = `
-    {
-      "packageData": *[_type == "${packageType}" && link == "${link}"][0] {
-        title,
-        desc,
-        image,
-        durationn,
-        durationd,
-        currentPrice,
-        originalPrice,
-        detailedItinerary,
-        inclusions,
-        exclusions,
-        thingsToCarry,
-        link,
-        thingsToCarryTrek,
-        faqs,
-        bookingProcess,
-        mandatoryDocuments,
-        knowBeforeYouGo,
-        privateTrip,
-        photoGalleries,
-        tourDates,
-        "pdfItinerary": pdfItinerary.asset->url
-      },
-      "relatedPackages": *[_type == "${packageType}" && link != "${link}"] {
-        id,
-        title,
-        cover,
-        link,
-        durationn,
-        durationd,
-        currentPrice,
-        originalPrice,
-        tripType
-      }
-    }`;
-  return await client.fetch(query);
-};
+
+function getPackageType(link: string): string {
+  if (link.startsWith('upcoming')) return 'upcomingTripDetail'
+  if (link.endsWith('trek')) return 'trekTripDetail'
+  return 'curatedTripDetail'
+}
+
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -182,9 +150,6 @@ const PackagePage: React.FC = () => {
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const currentPageLink = `https://offbeatsikkim.com/${pathname}`;
   const [open, setOpen] = useState<boolean>();
-
-  
-
   const decodedLink = decodeURIComponent(link as string);
   const linkString = Array.isArray(link) ? link[0] : link;
   const isUpcoming = decodedLink.startsWith("upcoming");
@@ -192,11 +157,7 @@ const PackagePage: React.FC = () => {
   const isCurated = decodedLink.startsWith("curated");
   const { scrollY } = useScroll();
   const scale = useTransform(scrollY, [0, 1000], [1, 1.2]);
-  const packageType = isUpcoming
-    ? "upcomingTripDetail"
-    : isTrek
-      ? "trekTripDetail"
-      : "curatedTripDetail";
+  const packageType = getPackageType(decodedLink)
 
   const { data, error, isLoading } = useQuery<{
     packageData: TripDetail;
@@ -218,6 +179,7 @@ const PackagePage: React.FC = () => {
       root: null,
       rootMargin: "-50% 0px -50% 0px",
       threshold: 0,
+
     };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {

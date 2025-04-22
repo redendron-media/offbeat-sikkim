@@ -12,6 +12,11 @@ const tripDetailFields = [
     title: 'Title',
   }),
   defineField({
+    name: 'metaDescription',
+    type: 'string',
+    title: 'Meta Description',
+  }),
+  defineField({
     name: 'tripType',
     type: 'string',
     title: 'Trip Type',

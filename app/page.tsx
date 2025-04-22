@@ -72,6 +72,7 @@ const query = `
   `;
 
 export const revalidate = 60;
+
 async function fetchData() {
   const data = await client.fetch(query);
 

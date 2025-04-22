@@ -22,8 +22,7 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "Offbeat Sikkim",
-  description:
-    "Plan your adventure across the offbeat locations in North East India with Offbeat Sikkim. Explore Sikkim, Meghalaya, Arunachal Pradesh, Nagaland, and similar offbeat destinations. Book treks, cultural tours, group tours and travel packages starting at just INR 13,999/-",
+  description: "Explore Northeast India and Bhutan with Offbeat Sikkim - your gateway to hidden gems in Sikkim, Meghalaya, Arunachal, and beyond. Book North East India and Bhutan tours, treks, and cultural experiences."
 };
 
 export default function RootLayout({
@@ -54,31 +53,30 @@ export default function RootLayout({
         `}
         </Script>
       </head>
-    
-        <body className={`${roboto.className} bg-[#F6FBF4]`}>
+
+      <body className={`${roboto.className} bg-[#F6FBF4]`}>
         {/* <ReactLenis root> */}
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Loader />
-            <Header />
-            {children}
-            <WhatsAppWidget />
-            <Footer />
-          </ThemeProvider>
-          {/* </ReactLenis> */}
-          <noscript>
-            <Image
-              alt="Facebook"
-              height="1"
-              width="1"
-              style={{ display: "none" }}
-              src={
-                "https://www.facebook.com/tr?id=870665934694594&ev=PageView&noscript=1"
-              }
-            />
-          </noscript>
-        </body>
-     
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Loader />
+          <Header />
+          {children}
+          <WhatsAppWidget />
+          <Footer />
+        </ThemeProvider>
+        {/* </ReactLenis> */}
+        <noscript>
+          <Image
+            alt="Facebook"
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src={
+              "https://www.facebook.com/tr?id=870665934694594&ev=PageView&noscript=1"
+            }
+          />
+        </noscript>
+      </body>
     </html>
   );
 }

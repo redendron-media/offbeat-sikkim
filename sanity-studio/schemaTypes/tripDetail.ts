@@ -113,6 +113,11 @@ const tripDetailFields = [
     title: 'Current Price',
   }),
   defineField({
+    name: 'metaDescription',
+    type: 'string',
+    title: 'Meta Description',
+  }),
+  defineField({
     name: 'photoGalleries',
     title: 'Photo Galleries',
     type: 'array',
