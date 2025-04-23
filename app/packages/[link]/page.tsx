@@ -11,7 +11,6 @@ export async function generateMetadata({ params }: { params: { link: string } })
   const decodedLink = decodeURIComponent(params.link)
   const packageType = getPackageType(decodedLink)
   const { packageData } = await fetchPackageData(packageType, decodedLink)
-  console.log('🧠 generateMetadata fetched:', { decodedLink, packageType, packageData })
 
   const fallbackTitle = 'Offbeat Sikkim'
   const fallbackDescription = 'Northeast India and Bhutan with Offbeat Sikkim - your gateway to hidden gems in Sikkim, Meghalaya, Arunachal, and beyond. Book North East India and Bhutan tours, treks, and cultural experiences'

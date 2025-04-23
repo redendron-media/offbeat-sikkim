@@ -71,6 +71,29 @@ export async function POST(request: NextRequest) {
         brevoPayload(templateIds.user, formData.email),
         { headers }
       );
+
+      const [firstname, lastname = " "] =formData.name?.split(" ") ?? ["", ""];
+      let sourceLabel = "";
+      if (templateIds.user === 1) sourceLabel = "upcoming";
+      else if (templateIds.user === 3) sourceLabel = "curated";
+      else if (templateIds.user === 6) sourceLabel = "trek";
+
+      await axios.post(
+        "https://api.brevo.com/v3/contacts",
+        {
+          email: formData.email,
+          attributes: {
+            FIRSTNAME: firstname,
+            LASTNAME: lastname,
+            FULLNAME: formData.name || "",
+            SMS: formData.phone ? `+91${formData.phone}` : "",
+            SOURCE: sourceLabel,
+          },
+          listIds: [4], 
+          updateEnabled: true,
+        },
+        { headers }
+      );
     }
 
     return NextResponse.json({ message: "Emails sent successfully via Brevo" });
