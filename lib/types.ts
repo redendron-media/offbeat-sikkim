@@ -19,6 +19,7 @@ export interface CardProps {
     desc?: string,
     durationn?:string,
     durationd?:string,
+    metaDescription?:string,
     costDouble?:string,
     costTriple?:string,
     faqs?:FAQs[],
