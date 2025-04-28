@@ -7,7 +7,9 @@ import { db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import React from "react";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { BentoGrid } from "@/components/magicui/bento-grid";
+import MoveUp from "@/components/move-up-animation/page";
 export const revalidate = 300;
 
 async function getData() {
@@ -70,7 +72,7 @@ async function blog() {
             </p>
           </section>
 
-          <section className="hidden md:flex flex-wrap">
+          {/* <section className="hidden md:flex flex-wrap">
             {groupPosts.map((group, idx) => (
               <div
                 key={idx}
@@ -221,68 +223,79 @@ async function blog() {
                 </div>
               </div>
             ))}
-          </section>
+          </section> */}
 
           {/* Small screens */}
-          <section className="flex flex-col gap-6 py-8 md:hidden">
-            {data.map((post, index) => (
-              <Link key={index} href={`/blog/${post.currentSlug}`}>
-                <div className="flex-1 pb-4 rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-cardShadow">
-                  <div className="w-full h-[240px] relative">
-                    <Image
-                      src={urlFor(post.titleImage).url()}
-                      fill
-                      alt={post.title}
-                      className="rounded-lg object-cover lg:rounded-[10px]"
-                    />
-                  </div>
-                  <div className="px-4 pt-4 space-y-1 text-[#051E13]">
-                    <div className="flex flex-row gap-2 items-center flex-wrap pb-3">
-                      {post.tags?.map((tag) => (
-                        <Link href={`/tags/${tag.slug}`} passHref key={tag._id}>
-                          <Chip
-                            component="a"
-                            key={tag._id}
-                            label={tag.name}
-                            clickable
-                            sx={{
-                              backgroundColor: "primary.main",
-                              "&:hover": {
-                                backgroundColor: "primary.dark",
-                              },
-                              "& .MuiChip-label": {
-                                color: "white",
-                              },
 
-                              fontSize: "0.7rem",
-                              padding: "6px",
-                            }}
-                          />
-                        </Link>
-                      ))}
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 py-8 ">
+            {data.map((post, index) => (
+              <MoveUp>
+                <Link key={index} href={`/blog/${post.currentSlug}`}>
+                  <div className="col-span-1 h-full  pb-4 rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-lg">
+                    <div className="w-full h-[300px] relative">
+                      <Image
+                        src={urlFor(post.titleImage).url()}
+                        fill
+                        alt={post.title}
+                        className="rounded-lg  object-cover lg:rounded-[10px]"
+                      />
                     </div>
-                    <Stack direction={"row"} justifyContent={"space-between"}>
-                          <p className="labels text-[#404942]">
-                            {formatDate(
-                              new Date(post._createdAt)
-                                .toISOString()
-                                .split("T")[0]
-                            )}
-                          </p>
-                          <Stack direction={"row"} gap={0.5} alignItems={"center"}>
-                            <VisibilityIcon className="text-sm text-neutral-40"/>
-                            <p className="labell text-[#404942]">{post.views}</p>
-                          </Stack>
-                          </Stack>
-                    <h2 className="titles line-clamp-2 md:titlel font-bold">
-                      {post.title}
-                    </h2>
-                    <p className="labell line-clamp-2 overflow-ellipsis select-none">
-                      {post.caption}
-                    </p>
+                    <div className="px-4 pt-4 space-y-1 text-[#051E13]">
+                      <div className="flex flex-row gap-2 items-center flex-wrap pb-3">
+                        {post.tags?.map((tag) => (
+                          <Link
+                            href={`/tags/${tag.slug}`}
+                            passHref
+                            key={tag._id}
+                          >
+                            <Chip
+                              component="a"
+                              key={tag._id}
+                              label={tag.name}
+                              clickable
+                              sx={{
+                                backgroundColor: "primary.main",
+                                "&:hover": {
+                                  backgroundColor: "primary.dark",
+                                },
+                                "& .MuiChip-label": {
+                                  color: "white",
+                                },
+
+                                fontSize: "0.7rem",
+                                padding: "6px",
+                              }}
+                            />
+                          </Link>
+                        ))}
+                      </div>
+                      <Stack direction={"row"} justifyContent={"space-between"}>
+                        <p className="labels text-[#404942]">
+                          {formatDate(
+                            new Date(post._createdAt)
+                              .toISOString()
+                              .split("T")[0]
+                          )}
+                        </p>
+                        <Stack
+                          direction={"row"}
+                          gap={0.5}
+                          alignItems={"center"}
+                        >
+                          <VisibilityIcon className="text-sm text-neutral-40" />
+                          <p className="labell text-[#404942]">{post.views}</p>
+                        </Stack>
+                      </Stack>
+                      <h2 className="titles line-clamp-2 md:titlel font-bold">
+                        {post.title}
+                      </h2>
+                      <p className="labell line-clamp-2 overflow-ellipsis select-none">
+                        {post.caption}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </MoveUp>
             ))}
           </section>
         </>
