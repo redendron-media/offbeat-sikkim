@@ -15,14 +15,15 @@ function getPackageType(link: string): string {
   return 'curatedTripDetail'
 }
 
-export async function generateMetadata({ params }: { params: { link: string } }): Promise<Metadata> {
-  const decodedLink = decodeURIComponent(params.link)
-  const packageType = getPackageType(decodedLink)
-  const { packageData } = await fetchPackageData(packageType, decodedLink)
+export async function generateMetadata({ params }: { params: Promise<{ link: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const decodedLink = decodeURIComponent(resolvedParams.link);
+  const packageType = getPackageType(decodedLink);
+  const { packageData } = await fetchPackageData(packageType, decodedLink);
 
-  const fallbackTitle = 'Offbeat Sikkim'
-  const fallbackDescription = 'Northeast India and Bhutan with Offbeat Sikkim - your gateway to hidden gems in Sikkim, Meghalaya, Arunachal, and beyond. Book North East India and Bhutan tours, treks, and cultural experiences'
-  const fallbackImage = 'https://yourdomain.com/default-og.jpg'
+  const fallbackTitle = 'Offbeat Sikkim';
+  const fallbackDescription = 'Northeast India and Bhutan with Offbeat Sikkim - your gateway to hidden gems in Sikkim, Meghalaya, Arunachal, and beyond.';
+  const fallbackImage = 'https://yourdomain.com/default-og.jpg';
 
   return {
     title: packageData?.title || fallbackTitle,
@@ -41,12 +42,11 @@ export async function generateMetadata({ params }: { params: { link: string } })
         },
       ],
     },
-  }
+  };
 }
-
 export default async function Page({ params }: { params: { link: string } }) {
-  const decodedLink = decodeURIComponent(params.link)
-  const packageType = getPackageType(decodedLink)
+  const decodedLink = decodeURIComponent(params.link);
+  const packageType = getPackageType(decodedLink);
 
-  return <PackagePageWrapper decodedLink={decodedLink} packageType={packageType} />
+  return <PackagePageWrapper decodedLink={decodedLink} packageType={packageType} />;
 }
