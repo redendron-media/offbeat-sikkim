@@ -44,8 +44,9 @@ export async function generateMetadata({ params }: { params: Promise<{ link: str
     },
   };
 }
-export default async function Page({ params }: { params: { link: string } }) {
-  const decodedLink = decodeURIComponent(params.link);
+export default async function Page({ params }: { params: Promise<{ link: string }> }) {
+  const resolvedParams = await params;
+  const decodedLink = decodeURIComponent(resolvedParams.link);
   const packageType = getPackageType(decodedLink);
 
   return <PackagePageWrapper decodedLink={decodedLink} packageType={packageType} />;
