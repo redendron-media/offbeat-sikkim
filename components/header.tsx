@@ -14,7 +14,6 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
@@ -25,6 +24,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
+import PhoneIcon from "@mui/icons-material/Phone";
 interface NavbarScrollProps {
   toggleMenu: () => void;
   isScrolling: boolean;
@@ -171,7 +171,8 @@ function Header() {
             <Link
               className={cn(
                 "space-y-6 hover:text-primary duration-700 transition-colors",
-                isExactPath("/packages") ?  "text-primary"
+                isExactPath("/packages")
+                  ? "text-primary"
                   : isHomepage
                     ? isScrolled
                       ? "text-black"
@@ -188,7 +189,7 @@ function Header() {
             <NavigationMenu
               className={cn(
                 "space-y-6 hover:text-primary duration-700 transition-colors cursor-pointert",
-                isSubPath("/packages") 
+                isSubPath("/packages")
                   ? "text-primary"
                   : isHomepage
                     ? isScrolled
@@ -235,7 +236,7 @@ function Header() {
               <p className="bodyl xl:titlel">Blog</p>
             </Link>
           </motion.div>
-        
+
           <motion.div variants={linkVars}>
             <Link
               className={cn(
@@ -273,6 +274,16 @@ function Header() {
 
           <ContactDialog link="" title="Enquire Now" />
         </Stack>
+        <div className=" bodyl xl:titlel items-center">
+          <div className={`hidden lg:flex gap-2 items-center h-full `}>
+          <PhoneIcon /> +91 7029749687
+          </div>
+          <div className="lg:hidden">
+            <Link className="flex gap-2 items-center" href="tel:+917029749687">
+              <PhoneIcon /> +91 7029749687
+            </Link>
+          </div>
+        </div>
         <IconButton className="lg:hidden rounded-none p-0" onClick={toggleMenu}>
           <MenuIcon className={cn(isScrolled ? "text-black" : "text-white")} />
         </IconButton>
@@ -280,8 +291,9 @@ function Header() {
     );
   };
   const isExactPath = (path: string) => pathname === path;
-  const isSubPath = (path: string) => pathname.startsWith(path) && pathname !== path;
-  
+  const isSubPath = (path: string) =>
+    pathname.startsWith(path) && pathname !== path;
+
   return (
     <>
       <AnimatePresence>
@@ -318,7 +330,7 @@ function Header() {
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                  isExactPath("/packages") ? "text-primary" : "text-black"
+                        isExactPath("/packages") ? "text-primary" : "text-black"
                       )}
                       href={"/packages"}
                     >
@@ -333,7 +345,9 @@ function Header() {
                         <AccordionTrigger
                           className={cn(
                             "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                            isSubPath("/packages") ? "text-primary" : "text-black"
+                            isSubPath("/packages")
+                              ? "text-primary"
+                              : "text-black"
                           )}
                         >
                           Destinations
@@ -342,12 +356,14 @@ function Header() {
                           <div className="w-full py-4 flex flex-col gap-2 px-1">
                             {destinations.map((destination) => (
                               <Link
-                              key={destination.id}
+                                key={destination.id}
                                 href={destination.link}
                                 onClick={toggleMenu}
                                 className={cn(
                                   "space-y-6 titlel hover:text-primary duration-700 transition-colors",
-                                  isExactPath(destination.link) ? "text-primary" : "text-black"
+                                  isExactPath(destination.link)
+                                    ? "text-primary"
+                                    : "text-black"
                                 )}
                               >
                                 <div className="flex flex-row gap-3">
@@ -367,9 +383,7 @@ function Header() {
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        isExactPath("/blog")
-                          ? "text-primary"
-                          : "text-black"
+                        isExactPath("/blog") ? "text-primary" : "text-black"
                       )}
                       href={"/blog"}
                     >
@@ -378,15 +392,12 @@ function Header() {
                     </Link>
                   </motion.div>
 
-          
                   <motion.div variants={linkVars}>
                     <Link
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        isExactPath("/About")
-                          ? "text-primary"
-                          : "text-black"
+                        isExactPath("/About") ? "text-primary" : "text-black"
                       )}
                       href={"/About"}
                     >
@@ -399,9 +410,7 @@ function Header() {
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        isExactPath("/Contact")
-                          ? "text-primary"
-                          : "text-black"
+                        isExactPath("/Contact") ? "text-primary" : "text-black"
                       )}
                       href={"/Contact"}
                     >

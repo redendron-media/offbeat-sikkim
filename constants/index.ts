@@ -80,6 +80,18 @@ export const team = [
     name: "Prabesh Subba",
     role: "Co-Founder/CFO",
   },
+  {
+    id:"4",
+    image:"team4",
+    name: "Nitya Thapa",
+    role: "Business Development Associate"
+  },
+  {
+    id: "5",
+    image: "team5",
+    name: "Sanjeeta Lama",
+    role: "Business Development Associate"
+  }
 ];
 
 export const placesAndDestinations: { [key: string]: string[] } = {

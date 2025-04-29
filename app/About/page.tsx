@@ -107,14 +107,17 @@ function about() {
                 <CarouselItem key={item.id} className="basis-auto px-4 py-2">
                   <div
                     key={item.id}
-                    className="relative snap-center flex-shrink-0 w-fit h-[369px] bg-[#f5f5f5] rounded-[10px] text-center shadow-cardShadow flex flex-col px-6 pb-6 gap-3"
+                    className="relative snap-center flex-shrink-0 w-fit h-[369px] bg-[#f5f5f5] rounded-[10px] text-center shadow-cardShadow flex flex-col px-6 py-6 gap-3"
                   >
+                    <div className="relative aspect-square w-full">
                     <Image
                       src={`/images/${item.image}.png`}
-                      width={244}
-                      height={287}
+                     fill
                       alt={item.name}
+                      className="rounded-full object-cover"
                     />
+                    </div>
+                   
                     <Stack direction={"column"} gap={1} width={244}>
                       <h3 className="text-[#051e13] font-bold text-lg ">
                         {item.name}
@@ -130,24 +133,44 @@ function about() {
           </Carousel>
         </div>
 
-        <div className="hidden w-full lg:flex flex-row gap-4 xl:gap-8 items-center justify-center">
-          {team.map((item) => (
-            <div
-              key={item.id}
-              className="w-[292px] h-[369px] md:w-[240px] lg:w-[292px] bg-[#f5f5f5] rounded-[10px] text-center shadow-cardShadow flex flex-col px-6 pb-6 gap-3 md:gap-0 lg:gap-3"
-            >
-              <div className="relative w-full h-[287px]">
-                <Image src={`/images/${item.image}.png`} fill alt={item.name} />
-              </div>
-              <Stack direction={"column"} gap={1} width={244}>
-                <h3 className="text-[#051e13] font-bold text-lg ">
-                  {item.name}
-                </h3>
-                <p className="text-[#051e13 text-[13px]">{item.role}</p>
-              </Stack>
-            </div>
-          ))}
+        <div className="hidden w-full lg:flex flex-col items-center justify-center gap-8">
+  {/* First Row (First 3 items) */}
+  <div className="flex flex-row flex-wrap gap-6 xl:gap-8 items-center justify-center">
+    {team.slice(0, 3).map((item) => (
+      <div
+        key={item.id}
+        className="w-[292px] h-[369px] md:w-[240px] items-center lg:w-[292px] bg-[#f5f5f5] rounded-[10px] text-center shadow-lg flex flex-col px-6 py-6 gap-3 md:gap-0 lg:gap-3"
+      >
+        <div className="relative aspect-square w-full">
+          <Image src={`/images/${item.image}.png`} className="rounded-full object-cover object-center" fill alt={item.name} />
         </div>
+        <Stack direction="column" gap={1} width={244}>
+          <h3 className="text-[#051e13] font-bold text-lg">{item.name}</h3>
+          <p className="text-[#051e13] text-[13px]">{item.role}</p>
+        </Stack>
+      </div>
+    ))}
+  </div>
+
+  {/* Second Row (Last 2 items) */}
+  <div className="flex flex-row flex-wrap gap-6 xl:gap-8 items-center justify-center">
+    {team.slice(3).map((item) => (
+      <div
+        key={item.id}
+        className="w-[292px] h-[369px] md:w-[240px] items-center lg:w-[292px] bg-[#f5f5f5] rounded-[10px] text-center shadow-lg flex flex-col px-6 py-6 gap-3 md:gap-0 lg:gap-3"
+      >
+        <div className="relative aspect-square w-full">
+          <Image src={`/images/${item.image}.png`} className="rounded-full object-cover object-center" fill alt={item.name} />
+        </div>
+        <Stack direction="column" gap={1} width={244}>
+          <h3 className="text-[#051e13] font-bold text-lg">{item.name}</h3>
+          <p className="text-[#051e13] text-[13px]">{item.role}</p>
+        </Stack>
+      </div>
+    ))}
+  </div>
+</div>
+
       </section>
       <section className="flex flex-col justify-center items-center w-full gap-6 py-[60px] md:py-[88px]">
         <h2 className="headlines md:headlinem lg:headlinel text-secondary-oncontainer text-center">
