@@ -143,7 +143,7 @@ function ThumbnailPlugin(
 }
 
 function PackageClient({ decodedLink, packageType }: Props) {
-  const { link } = useParams();
+ 
   const [value, setValue] = useState(0);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -153,7 +153,6 @@ function PackageClient({ decodedLink, packageType }: Props) {
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const currentPageLink = `https://offbeatsikkim.com/${pathname}`;
   const [open, setOpen] = useState<boolean>();
-  const linkString = Array.isArray(link) ? link[0] : link;
   const isUpcoming = decodedLink.startsWith("upcoming");
   const isTrek = decodedLink.endsWith("trek");
   const isCurated = decodedLink.startsWith("curated");
@@ -166,7 +165,7 @@ function PackageClient({ decodedLink, packageType }: Props) {
     ["packageData", packageType, decodedLink],
     () => fetchPackageData(packageType, decodedLink),
     {
-      enabled: !!link,
+      enabled: !!decodedLink,
       retry: 2,
       staleTime: 1000 * 60 * 5,
     }
@@ -676,7 +675,7 @@ function PackageClient({ decodedLink, packageType }: Props) {
                   <section className="flex justify-end md:justify-start pb-8">
                     {!isUpcoming && (
                       <ContactDialog
-                        link={linkString!}
+                        link={decodedLink!}
                         packageTitle={packageData.title}
                         title="Enquire Now"
                       />
@@ -1108,7 +1107,7 @@ function PackageClient({ decodedLink, packageType }: Props) {
                 <section className="flex justify-end md:justify-start">
                   {!isUpcoming && (
                     <ContactDialog
-                      link={linkString!}
+                      link={decodedLink!}
                       packageTitle={packageData.title}
                       title="Enquire Now"
                     />
@@ -1170,7 +1169,7 @@ function PackageClient({ decodedLink, packageType }: Props) {
             </Stack>
             {!isUpcoming && (
               <ContactDialog
-                link={linkString!}
+                link={decodedLink!}
                 packageTitle={packageData.title}
                 title="Enquire Now"
               />
