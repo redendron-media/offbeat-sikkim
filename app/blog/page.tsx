@@ -229,7 +229,7 @@ async function blog() {
 
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 py-8 ">
             {data.map((post, index) => (
-              <MoveUp>
+              <MoveUp key={index}>
                 <Link key={index} href={`/blog/${post.currentSlug}`}>
                   <div className="col-span-1 h-full  pb-4 rounded-lg lg:rounded-[10px] bg-[#F8FCFA] shadow-lg">
                     <div className="w-full h-[300px] relative">
