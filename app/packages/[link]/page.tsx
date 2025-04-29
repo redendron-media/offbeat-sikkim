@@ -1,6 +1,7 @@
 import { fetchPackageData } from '@/lib/fetchPackageData'
 import PackagePageWrapper from './PackageClient'
-import { Metadata } from 'next'
+import { type Metadata } from 'next';
+
 type PageProps = {
   params: {
     link: string
