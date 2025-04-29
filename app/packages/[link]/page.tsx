@@ -15,7 +15,7 @@ function getPackageType(link: string): string {
   return 'curatedTripDetail'
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { link: string } }): Promise<Metadata> {
   const decodedLink = decodeURIComponent(params.link)
   const packageType = getPackageType(decodedLink)
   const { packageData } = await fetchPackageData(packageType, decodedLink)
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default function Page({ params }: PageProps) {
+export default async function Page({ params }: { params: { link: string } }) {
   const decodedLink = decodeURIComponent(params.link)
   const packageType = getPackageType(decodedLink)
 
