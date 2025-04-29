@@ -1,5 +1,12 @@
 import { fetchPackageData } from '@/lib/fetchPackageData'
 import PackagePageWrapper from './PackageClient'
+import { Metadata } from 'next'
+type PageProps = {
+  params: {
+    link: string
+  }
+}
+
 
 function getPackageType(link: string): string {
   if (link.startsWith('upcoming')) return 'upcomingTripDetail'
@@ -7,7 +14,7 @@ function getPackageType(link: string): string {
   return 'curatedTripDetail'
 }
 
-export async function generateMetadata({ params }: { params: { link: string } }) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const decodedLink = decodeURIComponent(params.link)
   const packageType = getPackageType(decodedLink)
   const { packageData } = await fetchPackageData(packageType, decodedLink)
@@ -36,7 +43,7 @@ export async function generateMetadata({ params }: { params: { link: string } })
   }
 }
 
-export default function Page({ params }: { params: { link: string } }) {
+export default function Page({ params }: PageProps) {
   const decodedLink = decodeURIComponent(params.link)
   const packageType = getPackageType(decodedLink)
 
