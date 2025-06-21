@@ -11,7 +11,7 @@ html.lenis body {
   scroll-behavior: auto !important;
 }
 
-.lenis.lenis-smooth [data-lenis-prevent]{
+.lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
 
@@ -21,99 +21,232 @@ html.lenis body {
 
 .lenis.lenis-stopped iframe {
   pointer-events: none;
-
 }
+
 @layer components {
-   .displayl {
-    @apply text-[57px] leading-[64px] font-semibold tracking-[-0.25px]
-   }
-   .displaym {
-    @apply text-[45px] leading-[52px] font-semibold
-   }
-   .displays {
-    @apply text-[36px] leading-[44px] font-semibold
-   }
+  .displayl {
+    @apply text-[57px] leading-[64px] font-semibold tracking-[-0.25px];
+  }
+  .displaym {
+    @apply text-[45px] leading-[52px] font-semibold;
+  }
+  .displays {
+    @apply text-[36px] leading-[44px] font-semibold;
+  }
 
-   .headlinel {
-    @apply text-[32px] leading-[40px] font-semibold 
-   }
-   .headlinem {
-    @apply text-[28px] leading-[36px] font-semibold 
-   }
-   .headlines {
-    @apply text-[24px] leading-[32px] font-semibold 
-   }
+  .headlinel {
+    @apply text-[32px] leading-[40px] font-semibold;
+  }
+  .headlinem {
+    @apply text-[28px] leading-[36px] font-semibold;
+  }
+  .headlines {
+    @apply text-[24px] leading-[32px] font-semibold;
+  }
 
-   .titlel{
-    @apply text-[22px] leading-[28px]
-   }
-   .titlem{
-    @apply text-[16px] leading-[24px] font-medium tracking-[0.15px]
-   }
-   .titles{
-    @apply text-[14px] leading-[20px] font-medium tracking-[0.1px]
-   }
+  .titlel {
+    @apply text-[22px] leading-[28px];
+  }
+  .titlem {
+    @apply text-[16px] leading-[24px] font-medium tracking-[0.15px];
+  }
+  .titles {
+    @apply text-[14px] leading-[20px] font-medium tracking-[0.1px];
+  }
 
-   .labell{
-    @apply text-[14px] leading-[20px] font-medium tracking-[0.1px]
-   }
-   .labelm{
-    @apply text-[12px] leading-[16px] font-medium tracking-[0.5px]
-   }
-   .labels{
-    @apply text-[11px] leading-[16px] font-medium tracking-[0.5px]
-   }
+  .labell {
+    @apply text-[14px] leading-[20px] font-medium tracking-[0.1px];
+  }
+  .labelm {
+    @apply text-[12px] leading-[16px] font-medium tracking-[0.5px];
+  }
+  .labels {
+    @apply text-[11px] leading-[16px] font-medium tracking-[0.5px];
+  }
 
-   .bodyl{
-    @apply text-[16px] leading-[24px] tracking-[0.5px]
-   }
-   .bodym{
-    @apply text-[14px] leading-[20px] tracking-[0.25px]
-   }
-   .bodys{
-    @apply text-[12px] leading-[16px] tracking-[0.4px]
-   }
+  .bodyl {
+    @apply text-[16px] leading-[24px] tracking-[0.5px];
+  }
+  .bodym {
+    @apply text-[14px] leading-[20px] tracking-[0.25px];
+  }
+  .bodys {
+    @apply text-[12px] leading-[16px] tracking-[0.4px];
+  }
 
-   .hide-scrollbar {
+  .hide-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .hide-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari */
   }
-  
+
   .custom-scrollbar {
     overflow-x: auto;
     scrollbar-width: thin; /* For Firefox */
     scrollbar-color: #19a96c rgba(25, 169, 108, 0.1); /* For Firefox */
   }
-  
+
   .custom-scrollbar::-webkit-scrollbar {
     height: 8px;
     display: none; /* Hide scrollbar */
   }
-  
+
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: #19a96c; /* Your primary color */
     border-radius: 4px;
   }
-  
+
   .custom-scrollbar::-webkit-scrollbar-track {
     background-color: rgba(25, 169, 108, 0.1);
   }
-  
+
   /* Only show scrollbar when scrolling */
   .custom-scrollbar:hover::-webkit-scrollbar {
     display: block; /* Show scrollbar when hovered */
   }
 
   input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -WebkitAppearance: none;
-  margin: 0;
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 }
-input[type="number"] {
-  -MozAppearance: textfield;
+
+/* Z-index hierarchy fix */
+.z-40 {
+  z-index: 40;
 }
+.z-50 {
+  z-index: 50;
+}
+.z-60 {
+  z-index: 60;
+}
+.z-70 {
+  z-index: 70;
+}
+
+/* Navbar responsive fixes */
+.main-navbar-toggle-button {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .main-navbar-toggle-button {
+    display: flex !important;
+    position: relative;
+    z-index: 51 !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .main-navbar-toggle-button {
+    display: none !important;
+  }
+}
+
+/* Navbar close button responsive fix */
+.main-navbar-close-button {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .main-navbar-close-button {
+    display: flex !important;
+    position: fixed !important;
+    right: 1rem !important;
+    top: 1.5rem !important;
+    z-index: 70 !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .main-navbar-close-button {
+    display: none !important;
+  }
+}
+
+/* Logout widget fixes */
+#logout-widget-portal {
+  position: relative;
+  z-index: 10; /* Lower than navbar */
+}
+
+#book-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  max-height: 60px;
+  overflow: hidden;
+  z-index: 10; /* Lower than navbar */
+}
+
+/* Ensure the widget doesn't interfere with navbar */
+.logout-footer-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10 !important; /* Much lower than navbar (z-index: 50) */
+  background: #f6fbf4;
+  border-radius: 0.75rem 0.75rem 0 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  max-height: 70px;
+}
+
+/* Custom button styles */
+.btn-custom {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+/* Add padding to main content to prevent overlap with fixed footer */
+.padding-for-footer {
+  padding-bottom: 80px;
+}
+
+/* Mobile responsive fixes for logout widget */
+@media (max-width: 768px) {
+  #book-container {
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: center;
+    max-height: 50px;
+  }
+
+  .logout-footer-container {
+    max-height: 60px;
+    z-index: 10 !important; /* Ensure it stays below navbar on mobile */
+  }
+
+  /* Ensure mobile menu has higher z-index than widget */
+  .main-navbar-close-button {
+    z-index: 70 !important;
+  }
+}
+
+/* Prevent widget from interfering with scroll detection */
+.logout-footer-container * {
+  pointer-events: auto;
+}
+
+/* Fix any potential layout issues */
+.logout-footer-container {
+  transform: translateZ(0); /* Force hardware acceleration */
+  backface-visibility: hidden;
 }

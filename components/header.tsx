@@ -25,6 +25,7 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 import PhoneIcon from "@mui/icons-material/Phone";
+
 interface NavbarScrollProps {
   toggleMenu: () => void;
   isScrolling: boolean;
@@ -35,8 +36,27 @@ function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const isHomepage = pathname === "/";
-  const isSmallScreen =
-    typeof window !== "undefined" && window.innerWidth < 768;
+
+  // Fixed responsive detection with proper window check
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  // Check if current route is a packages route
+  const isPackagesRoute =
+    pathname === "/packages" || pathname.startsWith("/packages/");
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 768);
+    };
+
+    // Initial check
+    checkScreenSize();
+
+    // Add resize listener
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
   const toggleMenu = () => {
     setNavbar((prevOpen) => !prevOpen);
   };
@@ -88,6 +108,7 @@ function Header() {
       boxShadow: "none",
       paddingTop: "1.5rem",
       paddingBottom: "1.5rem",
+      backgroundColor: "transparent",
       transition: {
         duration: 0.7,
         ease: [0.33, 1, 0.68, 1],
@@ -98,7 +119,7 @@ function Header() {
       boxShadow: "0 4px 6px -2px rgba(0,0,0,0.1)",
       paddingTop: isSmallScreen ? "1.25rem" : "1rem",
       paddingBottom: isSmallScreen ? "1.25rem" : "1rem",
-      backgroundColor: "#F6FBF4",
+      backgroundColor: "#fff",
       transition: {
         duration: 0.7,
         ease: [0.33, 1, 0.68, 1],
@@ -148,20 +169,26 @@ function Header() {
     return (
       <motion.nav
         initial="initial"
-        animate={isScrolling ? "animate" : "backToTop"}
+        animate={isScrolling ? "animate" : "initial"}
         exit="exit"
         variants={NavAnimations}
-        className="fixed top-0 z-30 flex flex-row w-full justify-between px-4 md:px-6 py-6 md:py-9"
+        className="fixed top-0 z-50 flex flex-row w-full justify-between px-4 md:px-6 py-6 md:py-9 transition-colors duration-700"
+        style={{
+          backgroundColor: isScrolling ? "#fff" : "transparent",
+          transition: "background-color 0.7s",
+        }}
       >
         <Link href={"/"}>
           <Image
-            className="md:w-28  md:h-9 lg:w-40 lg:h-11"
+            className="md:w-28 md:h-9 lg:w-40 lg:h-11"
             src={"/logo.svg"}
             width={96}
             height={28}
             alt="logo"
           />
         </Link>
+
+        {/* Desktop Navigation */}
         <Stack
           className="hidden items-center lg:flex"
           direction={"row"}
@@ -188,7 +215,7 @@ function Header() {
           <motion.div variants={linkVars}>
             <NavigationMenu
               className={cn(
-                "space-y-6 hover:text-primary duration-700 transition-colors cursor-pointert",
+                "space-y-6 hover:text-primary duration-700 transition-colors cursor-pointer",
                 isSubPath("/packages")
                   ? "text-primary"
                   : isHomepage
@@ -241,7 +268,7 @@ function Header() {
             <Link
               className={cn(
                 "space-y-6 hover:text-primary duration-700 transition-colors",
-                isExactPath("/About")
+                isExactPath("/about")
                   ? "text-primary"
                   : isHomepage
                     ? isScrolled
@@ -249,16 +276,17 @@ function Header() {
                       : "text-white"
                     : "text-black"
               )}
-              href={"/About"}
+              href={"/about"}
             >
               <p className="bodyl xl:titlel">About</p>
             </Link>
           </motion.div>
+
           <motion.div variants={linkVars}>
             <Link
               className={cn(
                 "space-y-6 hover:text-primary duration-700 transition-colors",
-                isExactPath("/Contact")
+                isExactPath("/contact")
                   ? "text-primary"
                   : isHomepage
                     ? isScrolled
@@ -266,7 +294,7 @@ function Header() {
                       : "text-white"
                     : "text-black"
               )}
-              href={"/Contact"}
+              href={"/contact"}
             >
               <p className="bodyl xl:titlel">Contact</p>
             </Link>
@@ -274,22 +302,78 @@ function Header() {
 
           <ContactDialog link="" title="Enquire Now" />
         </Stack>
-        <div className=" bodyl xl:titlel items-center">
-          <div className={`hidden lg:flex gap-2 items-center h-full `}>
-          <PhoneIcon /> +91 7029749687
+
+        {/* Phone Number Section */}
+        <div className="bodyl xl:titlel items-center">
+          <div className="hidden lg:flex gap-2 items-center h-full">
+            <PhoneIcon
+              className={cn(
+                isHomepage
+                  ? isScrolled
+                    ? "text-black"
+                    : "text-white"
+                  : "text-black"
+              )}
+            />
+            <span
+              className={cn(
+                isHomepage
+                  ? isScrolled
+                    ? "text-black"
+                    : "text-white"
+                  : "text-black"
+              )}
+            >
+              +91 7029749687
+            </span>
           </div>
           <div className="lg:hidden">
             <Link className="flex gap-2 items-center" href="tel:+917029749687">
-              <PhoneIcon /> +91 7029749687
+              <PhoneIcon
+                className={cn(
+                  isHomepage
+                    ? isScrolled
+                      ? "text-black"
+                      : "text-white"
+                    : "text-black"
+                )}
+              />
+              <span
+                className={cn(
+                  isHomepage
+                    ? isScrolled
+                      ? "text-black"
+                      : "text-white"
+                    : "text-black"
+                )}
+              >
+                +91 7029749687
+              </span>
             </Link>
           </div>
         </div>
-        <IconButton className="lg:hidden rounded-none p-0" onClick={toggleMenu}>
-          <MenuIcon className={cn(isScrolled ? "text-black" : "text-white")} />
-        </IconButton>
+
+        {/* Mobile Menu Button - Hide on packages routes for mobile devices */}
+        {(!isPackagesRoute || !isSmallScreen) && (
+          <IconButton
+            className="lg:hidden rounded-none p-0 main-navbar-toggle-button"
+            onClick={toggleMenu}
+          >
+            <MenuIcon
+              className={cn(
+                isHomepage
+                  ? isScrolled
+                    ? "text-black"
+                    : "text-white"
+                  : "text-black"
+              )}
+            />
+          </IconButton>
+        )}
       </motion.nav>
     );
   };
+
   const isExactPath = (path: string) => pathname === path;
   const isSubPath = (path: string) =>
     pathname.startsWith(path) && pathname !== path;
@@ -297,8 +381,13 @@ function Header() {
   return (
     <>
       <AnimatePresence>
-        <Navbar toggleMenu={toggleMenu} isScrolling={isScrolled} />
+        {/* Only render the navbar if it's not a packages route on mobile or if it's desktop */}
+        {(!isPackagesRoute || !isSmallScreen) && (
+          <Navbar toggleMenu={toggleMenu} isScrolling={isScrolled} />
+        )}
       </AnimatePresence>
+
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {navbar && (
           <motion.div
@@ -306,24 +395,25 @@ function Header() {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="fixed left-0 top-0  z-50 h-screen w-full origin-top bg-white px-8 md:px-24 py-6"
+            className="fixed left-0 top-0 z-60 h-screen w-full origin-top bg-white px-8 md:px-24 py-6"
           >
             <div className="w-full relative h-full">
               <motion.div variants={linkVars} className="relative">
                 <IconButton
                   size="large"
                   onClick={toggleMenu}
-                  className=" bg-transparent fixed right-4 p-0"
+                  className="bg-transparent fixed right-4 top-6 p-0 main-navbar-close-button z-70"
                 >
                   <CloseIcon />
                 </IconButton>
               </motion.div>
 
-              <div className="flex flex-col-reverse lg:fl̃ex-row justify-between h-full">
+              <div className="flex flex-col-reverse lg:flex-row justify-between h-full">
                 <motion.div
                   variants={linkVars}
                   className="flex flex-row lg:self-end items-center gap-2"
                 ></motion.div>
+
                 <div className="lg:w-1/2 text-black pt-32 flex flex-col justify-end gap-10 2xl:gap-14">
                   <motion.div variants={linkVars}>
                     <Link
@@ -397,22 +487,23 @@ function Header() {
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        isExactPath("/About") ? "text-primary" : "text-black"
+                        isExactPath("/about") ? "text-primary" : "text-black"
                       )}
-                      href={"/About"}
+                      href={"/about"}
                     >
                       <p className="body">About</p>
                       <div className="bg-black w-full h-px" />
                     </Link>
                   </motion.div>
+
                   <motion.div variants={linkVars}>
                     <Link
                       onClick={toggleMenu}
                       className={cn(
                         "space-y-6 headlines hover:text-primary duration-700 transition-colors",
-                        isExactPath("/Contact") ? "text-primary" : "text-black"
+                        isExactPath("/contact") ? "text-primary" : "text-black"
                       )}
-                      href={"/Contact"}
+                      href={"/contact"}
                     >
                       <p className="body">Contact</p>
                       <div className="bg-black w-full h-px" />

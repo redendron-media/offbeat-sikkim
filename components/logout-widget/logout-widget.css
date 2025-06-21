@@ -1,0 +1,53 @@
+/* Styles for Logout World widget */
+#book-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  max-height: 60px; /* Limit the height to prevent layout issues */
+  overflow: hidden;
+}
+
+/* Ensure the widget doesn't interfere with content */
+.logout-footer-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20; /* Reduced z-index to avoid conflicts with navbar (z-index: 30) */
+  background: #f6fbf4;
+  border-radius: 0.75rem 0.75rem 0 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  max-height: 70px; /* Ensure it doesn't take up too much space */
+}
+
+/* Custom button styles */
+.btn-custom {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Add padding to main content to prevent overlap with fixed footer */
+.padding-for-footer {
+  padding-bottom: 80px; /* Slightly more than the footer height */
+}
+
+/* Ensure the widget is responsive */
+@media (max-width: 768px) {
+  #book-container {
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: center;
+    max-height: 50px;
+  }
+  .logout-footer-container {
+    max-height: 60px;
+  }
+}

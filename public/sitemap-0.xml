@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>http://localhost:3000/failure</loc><lastmod>2024-12-18T09:01:09.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000/faq</loc><lastmod>2024-12-18T09:01:09.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000/About</loc><lastmod>2024-12-18T09:01:09.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000/Contact</loc><lastmod>2024-12-18T09:01:09.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000/success</loc><lastmod>2024-12-18T09:01:09.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000/terms-conditions</loc><lastmod>2024-12-18T09:01:09.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000/packages</loc><lastmod>2024-12-18T09:01:09.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000</loc><lastmod>2024-12-18T09:01:09.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000/cancellation-policy</loc><lastmod>2024-12-18T09:01:09.901Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000/privacy-policy</loc><lastmod>2024-12-18T09:01:09.901Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000/blog</loc><lastmod>2024-12-18T09:01:09.901Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3000/destinations</loc><lastmod>2024-12-18T09:01:09.901Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/faq</loc><lastmod>2025-06-21T08:30:29.258Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/Careers</loc><lastmod>2025-06-21T08:30:29.258Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/success</loc><lastmod>2025-06-21T08:30:29.258Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/Contact</loc><lastmod>2025-06-21T08:30:29.258Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/About</loc><lastmod>2025-06-21T08:30:29.258Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/terms-conditions</loc><lastmod>2025-06-21T08:30:29.258Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/cancellation-policy</loc><lastmod>2025-06-21T08:30:29.258Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/failure</loc><lastmod>2025-06-21T08:30:29.258Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/destinations</loc><lastmod>2025-06-21T08:30:29.258Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/packages</loc><lastmod>2025-06-21T08:30:29.258Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/payment-policy</loc><lastmod>2025-06-21T08:30:29.259Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/blog</loc><lastmod>2025-06-21T08:30:29.259Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com/privacy-policy</loc><lastmod>2025-06-21T08:30:29.259Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://offbeatsikkim.com</loc><lastmod>2025-06-21T08:30:29.259Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

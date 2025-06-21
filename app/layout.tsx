@@ -11,6 +11,8 @@ import WhatsAppWidget from "@/components/WhatappButton/page";
 import Loader from "@/components/loader/page";
 import Image from "next/image";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { usePathname } from "next/navigation";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "700"],
@@ -22,7 +24,8 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "Offbeat Sikkim",
-  description: "Explore Northeast India and Bhutan with Offbeat Sikkim - your gateway to hidden gems in Sikkim, Meghalaya, Arunachal, and beyond. Book North East India and Bhutan tours, treks, and cultural experiences."
+  description:
+    "Explore Northeast India and Bhutan with Offbeat Sikkim - your gateway to hidden gems in Sikkim, Meghalaya, Arunachal, and beyond. Book North East India and Bhutan tours, treks, and cultural experiences.",
 };
 
 export default function RootLayout({
@@ -30,6 +33,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Add mobile and pathname detection
+  const pathname =
+    typeof window !== "undefined" ? window.location.pathname : "";
+  const isMobile =
+    typeof window !== "undefined" ? window.innerWidth < 768 : false;
+  // Hide header on mobile for /packages and /packages/[link]
+  const hideHeaderOnMobile =
+    isMobile && (pathname === "/packages" || pathname.startsWith("/packages/"));
+
   return (
     <html lang="en">
       <head>
@@ -59,7 +71,8 @@ export default function RootLayout({
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Loader />
-          <Header />
+          {/* Conditionally render Header */}
+          {!hideHeaderOnMobile && <Header />}
           {children}
           <WhatsAppWidget />
           <Footer />
@@ -76,6 +89,7 @@ export default function RootLayout({
             }
           />
         </noscript>
+        <div id="logout-widget-portal"></div>
       </body>
     </html>
   );
