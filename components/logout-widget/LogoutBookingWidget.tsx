@@ -35,12 +35,15 @@ export default function LogoutBookingWidget({
   const widgetInitialized = useRef(false);
   const [mounted, setMounted] = useState(false);
 
+  // Check if current package is a curated package - don't show widget for these
+  const isCuratedPackage = packageSlug?.startsWith("curated-");
+
   useEffect(() => {
     setMounted(true);
   }, []);
-
   useEffect(() => {
-    if (!mounted) return;
+    // Don't initialize for curated packages or if not mounted
+    if (!mounted || isCuratedPackage) return;
 
     // Cleanup previous widget instance
     if (widgetInitialized.current && window.logout?.widget?.destroy) {
@@ -108,9 +111,9 @@ export default function LogoutBookingWidget({
         widgetInitialized.current = false;
       }
     };
-  }, [packageSlug, mounted]);
-
-  if (!mounted) return null;
+  }, [packageSlug, mounted, isCuratedPackage]);
+  // Don't render anything for curated packages or if not mounted
+  if (!mounted || isCuratedPackage) return null;
 
   const portalRoot =
     typeof window !== "undefined"
