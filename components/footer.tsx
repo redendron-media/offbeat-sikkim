@@ -21,11 +21,11 @@ const Footer = () => {
           <div className="flex flex-col gap-7">
             <h1 className="headlinem">Get In Touch</h1>
             <div className="flex flex-col gap-3">
-              <Link href="tel:+917029749687">
+              <Link href="tel:+918391980947">
                 <Stack direction={"row"} gap={1}>
                   <PhoneIcon />
                   <p className="bodyl hover:text-primary hover:transition-colors hover:duration-500">
-                    +91 70297 49687{" "}
+                    +91 83919 80947{" "}
                   </p>
                 </Stack>
               </Link>

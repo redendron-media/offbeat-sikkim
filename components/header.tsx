@@ -324,11 +324,11 @@ function Header() {
                   : "text-black"
               )}
             >
-              +91 7029749687
+              +91 8391980947
             </span>
           </div>
           <div className="lg:hidden">
-            <Link className="flex gap-2 items-center" href="tel:+917029749687">
+            <Link className="flex gap-2 items-center" href="tel:+918391980947">
               <PhoneIcon
                 className={cn(
                   isHomepage
@@ -347,7 +347,7 @@ function Header() {
                     : "text-black"
                 )}
               >
-                +91 7029749687
+                +91 8391980947
               </span>
             </Link>
           </div>

@@ -33,9 +33,9 @@ function Contact() {
           
             <Stack direction={"row"} gap={1}>
               <PhoneIcon className="text-white" />
-              <Link href="tel:+917029749687">
+              <Link href="tel:+918391980947">
               <p className="bodyl text-white hover:text-primary hover:transition-colors hover:duration-500">
-                +91 70297 49687{" "}
+                +91 83919 80947{" "}
               </p>
               <p>/</p>
               </Link>
